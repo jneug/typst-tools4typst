@@ -191,7 +191,7 @@
 )
 
 // Requires `#same-type()`
-#let clamp( value, min, max ) = {
+#let clamp( min, max, value ) = {
   if type(min) != type(max) or type(min) != type(value) {
 		panic("Can't clamp values of different types!")
 	}
@@ -201,12 +201,28 @@
 	else { return value }
 }
 
-#let lerp(t, min, max) = {
+#let lerp( min, max, t ) = {
   if type(min) != type(max) {
 		panic("Can't lerp values of different types!")
 	}
  // (min, max) = minmax(min, max)
   return min + (max - min) * t
+}
+
+#let map( min, max, range-min, range-max, value ) = {
+  if type(min) != type(max) {
+		panic("Can't map values from ranges of different types!")
+	}
+  if type(range-min) != type(range-max) {
+		panic("Can't map values to ranges of different types!")
+	}
+  if type(min) != type(value) {
+		panic("Can't map values with different types as the initial range!")
+	}
+  // (min, max) = minmax(min, max)
+  // (range-min, range-max) = minmax(range-min, range-max)
+	let t = (value - min) / (max - min)
+	return range-min + t * (range-max - range-min)
 }
 
 
@@ -260,13 +276,19 @@
   }
 }
 
-#let stroke-dict( stroke, ..overrides ) = (
-  paint: stroke-paint(stroke),
-  thickness: stroke-thickness(stroke),
-  dash: "solid",
-  cap: "round",
-  join: "round"
-) + overrides.named()
+#let stroke-dict( stroke, ..overrides ) = {
+  let dict = (
+    paint: stroke-paint(stroke),
+    thickness: stroke-thickness(stroke),
+    dash: "solid",
+    cap: "round",
+    join: "round"
+  )
+  if type(stroke) == "dictionary" {
+    dict = dict + stroke
+  }
+  return dict + overrides.named()
+}
 
 #let inset-at( direction, inset, default: 0pt ) = {
   direction = repr(direction)   // allows use of alignment values
@@ -289,12 +311,18 @@
   }
 }
 
-#let inset-dict( inset, ..overrides ) = (
-  top: inset-at(top, inset),
-  bottom: inset-at(bottom, inset),
-  left: inset-at(left, inset),
-  right: inset-at(right, inset)
-) + overrides.named()
+#let inset-dict( inset, ..overrides ) = {
+  let dict = (
+    top: inset-at(top, inset),
+    bottom: inset-at(bottom, inset),
+    left: inset-at(left, inset),
+    right: inset-at(right, inset)
+  )
+  if type(inset) == "dictionary" {
+    dict = dict + inset
+  }
+  return dict + overrides.named()
+}
 
 #let x-align( align, default:left ) = {
   if align in (left, right, center) {
