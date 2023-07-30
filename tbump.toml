@@ -28,4 +28,4 @@ src = "README.md"
 search = '\(v{current_version}\)'
 [[file]]
 src = "README.md"
-search = "codelst:{current_version}"
+search = "t4t:{current_version}"

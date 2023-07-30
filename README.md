@@ -1,4 +1,4 @@
-# Tools for Typst
+# Tools for Typst (v0.0.0)
 
 > A utility package for typst package authors.
 
@@ -7,6 +7,16 @@
 The package can be imported or any useful parts of it copied into a project. It is perfectly fine to treat `t4t` as a snippet collection and to pick and choose only some useful functions. For this reason, most functions are implemented without further dependencies. 
 
 Hopefully, this collection will grow over time with *Typst* to provide solutions for common problems.
+
+## Usage
+
+Either import the package from the Typst preview repository:
+
+```js
+#import "@preview/t4t:0.0.0": *
+```
+
+If only a few functions from `t4t` are needed, simply copy the necessary code to the beginning of the document.
 
 ## Reference
 
