@@ -19,7 +19,8 @@
   return d
 }
 
-// typst-canvas
+// Based on work by @johannes-wolf for johannes-wolf/typst-canvas
+// See: https://github.com/johannes-wolf/typst-canvas/
 #let dict-merge( ..dicts ) = {
   if all-of-type("dictionary", ..dicts.pos()) {
     let c = (:)
