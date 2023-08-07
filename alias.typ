@@ -6,6 +6,7 @@
 #let align = align
 #let type = type
 #let text = text
+#let label = label
 
 #let raw = raw
 #let table = table
