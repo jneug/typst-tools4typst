@@ -335,6 +335,23 @@ The following functions have aliases right now:
 - `stack`
 - `columns`
 
+## Experimental functions
+
+```js
+#import "@preview/t4t:0.1.0": meta
+```
+
+These functions are experimental and will most likely break at some point. The idea is to use Typsts' build-in systems to add meta-data to content elements for later use. In some cases, this allows context aware processing of content elements returned by functions.
+
+At the very least, these are fun experiments with the Typst language.
+
+- `#meta.mark-as( mark, elem )`: Adds a label to any content element. `mark` can be a string or label.
+- `#meta.has-mark( mark, elem )`: Checks, if `elem` has the label `mark`.
+- `#meta.not-has-mark( mark, elem )`: Tests, if the label `mark` is not attached to `elem`.
+
+- `#meta.place-marker( name )`: Places a hidden marker in the content, that can be modified by `#show` rules in differnt contexts.
+- `#marker( name )`: 
+
 
 ## Changelog
 
