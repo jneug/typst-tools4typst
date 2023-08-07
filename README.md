@@ -76,6 +76,7 @@ There are two exceptions: `is-none` and `is-auto`. Since keywords can't be used 
 
 The `is` submodule still has these tests, but under different names (`is.n` and `is.non` for `none` and `is.a` and `is.aut` for `auto`).
 
+- `#is.neq( test )`: Creates a new test function, that is `true`, when `test` is `false`. Can be used to create negations of tests like `#let not-raw = is.neg(is.raw)`.
 - `#is.eq( a, b )`: Tests if values `a` and `b` are equal.
 - `#is.neq( a, b )`: Tests if values `a` and `b` are not equal.
 - `#is.n( ..values )`: Tests if any of the passed `values` is `none`.
@@ -94,7 +95,7 @@ The `is` submodule still has these tests, but under different names (`is.n` and 
 - `#is.type( t, value )`: Tests if `value` is of type `t`.
 - `#is.dict( value )`: Tests if `value` is a dictionary.
 - `#is.arr( value )`: Tests if `value` is an array.
-- `#is.content( value )`: Tests if `value` is of type `content`.
+- `#is.content( value )`: Tests if `value` is of type content.
 - `#is.color( value )`: Tests if `value` is a color.
 - `#is.stroke( value )`: Tests if `value` is a stroke.
 - `#is.loc( value )`: Tests if `value` is a location.
@@ -114,7 +115,15 @@ The `is` submodule still has these tests, but under different names (`is.n` and 
 - `#is.same-type( ..values )`: Tests if all passed in values have the same type.
 - `#is.all-of-type( t, ..values )`: Tests if all of the passed in values have the type `t`.
 - `#is.none-of-type( t, ..values )`: Tests if none of the passed in values has the type `t`.
-- `#is.elem( func, value )`: Tests if `value` is a content element with `value.func() == func`.
+- `#is.one-not-none( ..values )`: Checks, if at least one value in `values` is not equal to `none`. Useful for checking mutliple optoinal arguments for a valid value: `#if is.one-not-none(..args.pos()) [ #args.pos().find(is.not-none) ]`
+- `#is.elem( func, value )`: Tests if `value` is a content element with `value.func() == func`. If `func` is a string, `value` will be compared to `repr(value.func())`, instead.
+
+	Both of these effectively do the same:
+	```js
+	#is.elem(raw, some_content)
+	#is.elem("raw", some_content)
+	```
+- `#is.sequence( value )`: Tests if `value` is a sequence of content.
 - `#is.raw( value )`: Tests if `value` is a raw element.
 - `#is.table( value )`: Tests if `value` is a table element.
 - `#is.list( value )`: Tests if `value` is a list element.
@@ -123,6 +132,7 @@ The `is` submodule still has these tests, but under different names (`is.n` and 
 - `#is.cols( value )`: Tests if `value` is a columns element.
 - `#is.grid( value )`: Tests if `value` is a grid element.
 - `#is.stack( value )`: Tests if `value` is a stack element.
+- `#is.label( value )`: Tests if `value` is of type `label`.
 
 ### Default values 
 
@@ -132,13 +142,28 @@ The `is` submodule still has these tests, but under different names (`is.n` and 
 
 These functions perform a test to decide, if a given `value` is _invalid_. If the test _passes_, the `default` is returned, the `value` otherwise.
 
-- `#def.if-true( test, default, value )`: Returns `default` if `test` is `true`, `value` otherwise.
-- `#def.if-false( test, default, value )`: Returns `default` if `test` is `false`, `value` otherwise.
-- `#def.if-none( default, value )`: Returns `default` if `value` is `none`, `value` otherwise.
-- `#def.if-auto( default, value )`: Returns `default` if `value` is `auto`, `value` otherwise.
-- `#def.if-any( ..compare, default, value )`: Returns `default` if `value` is equal to any of the passed in values, `value` otherwise. (`#def.if-any(none, auto, 1pt, width)`)
-- `#def.if-not-any( ..compare, default, value )`:  Returns `default` if `value` is not equal to any of the passed in values, `value` otherwise. (`#def.if-not-any(left, right, top, bottom, left, position)`)
-- `#def.if-empty( default, value )`: Returns `default` if `value` is _empty_, `value` otherwise.
+Almost all functions support an optional `do` argument, to be set to a function of one argument, that will be applied to the value, if the test fails. For example:
+```js
+// Sets date to a datetime from an optional
+// string argument in the format "YYYY-MM-DD"
+#let date = def.if-none(
+	datetime.today(), 	// default
+	passed_date, 		// passed in argument
+	do: (d) >= {		// post-processor
+		d = d.split("-")
+		datetime(year=d[0], month=d[1], day=d[2])
+	}
+)
+```
+
+- `#def.if-true( test, default, do:none, value )`: Returns `default` if `test` is `true`, `value` otherwise.
+- `#def.if-false( test, default, do:none, value )`: Returns `default` if `test` is `false`, `value` otherwise.
+- `#def.if-none( default, do:none, value )`: Returns `default` if `value` is `none`, `value` otherwise.
+- `#def.if-auto( default, do:none, value )`: Returns `default` if `value` is `auto`, `value` otherwise.
+- `#def.if-any( ..compare, default, do:none, value )`: Returns `default` if `value` is equal to any of the passed in values, `value` otherwise. (`#def.if-any(none, auto, 1pt, width)`)
+- `#def.if-not-any( ..compare, default, do:none, value )`:  Returns `default` if `value` is not equal to any of the passed in values, `value` otherwise. (`#def.if-not-any(left, right, top, bottom, left, position)`)
+- `#def.if-empty( default,do:none,  value )`: Returns `default` if `value` is _empty_, `value` otherwise.
+- `#def.as-arr( ..values )`: Always returns an array containing all `values`. Any arrays in `values` will be flattened into the result. This is useful for arguments, that can have one element or an array of elements: `#def.as-arr(author).join(", ")`.
 
 ### Assertions
 
@@ -153,6 +178,7 @@ Since a module in typst is not callable, the `assert` functino is now available 
 All assert functions take an optional argument `message` to set the error message shown if the assert fails.
 
 - `#assert.that( test )`: Asserts that the passed `test` is `true`.
+- `#assert.that-not( test )`: Asserts that the passed `test` is `false`.
 - `#assert.eq( a, b )`: Asserts that  `a` is equal to `b`.
 - `#assert.ne( a, b )`: Asserts that `a` is not equal to `b`.
 - `#assert.neq( a, b )`: Alias for `assert.ne`.
@@ -242,7 +268,7 @@ This submodule is a collection of functions, that mostly deal with content eleme
 	```
 - `#y-align( align, default:top )`: Returns the alignment along the y-axis from the passed in `align` value. If none is present, `default` is returned.
 
-== Math functions
+## Math functions
 
 ```js
 #import "@preview/t4t:0.1.0": math
@@ -298,6 +324,7 @@ The following functions have aliases right now:
 - `numbering`
 - `align`
 - `type`
+- `label`
 - `text`
 - `raw`
 - `table`
@@ -307,3 +334,27 @@ The following functions have aliases right now:
 - `grid`
 - `stack`
 - `columns`
+
+
+## Changelog
+
+### Version 0.2.0
+
+- Added `is.neg` function to negate a test function.
+- Added `alias.label`.
+- Added `is.label` test.
+- Added `def.as-arr` to create an array of the supplied values. Useful if an argument can be both a single value or an array.
+- Added `assert.that-not` for negated assertions.
+- Added `is.one-not-none` test to check multiple values, if at least one is not none.
+- Added `do` argument to all functions in `def`.
+- Allowed strings in `is.elem` (see #1).
+	- Added `is.sequence` test.
+- Added `meta` submodule to do some hacky things with hidden meta data and labels.
+	- `meta.mark-as` "marks" an element with a label.
+	- `meta.has-mark` / `meta.not-has-mark` checks for the presence / abssence of a certain label.
+	- `meta.place-marker(name)` adds a hidden placeholder that can be later used with `show meta.marker(name)`
+	- `meta.add`, `meta.get` and `meta.rm` can add, get and remove hidden meta data to /from any content element.
+
+### Version 0.1.0
+
+- Initial release
