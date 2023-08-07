@@ -133,7 +133,17 @@
 #let none-of-type( t, ..values ) = values.pos().all((v) => alias.type(v) != t)
 
 #let elem( func, value ) = if alias.type(value) == "content" {
-  return value.func() == func
+  if alias.type(func) == "String" {
+    return repr(value.func()) == func
+  } else {
+    return value.func() == func
+  }
+} else {
+  return false
+}
+
+#let sequence( value ) = if alias.type(value) == "content" {
+  return repr(value.func()) == "sequence"
 } else {
   return false
 }
