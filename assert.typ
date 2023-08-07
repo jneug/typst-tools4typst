@@ -3,6 +3,7 @@
 #import "alias.typ"
 
 #let that = assert
+#let that-not( test, message:"" ) = assert(not test, message:message)
 #let eq = assert.eq
 #let ne = assert.ne
 #let neq = assert.ne
