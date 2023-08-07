@@ -78,6 +78,8 @@
 		} else {
 			""
 		}
+  } else if type(element) in ("array", "dict") {
+    return ""
 	} else {
 		str(element)
 	}
