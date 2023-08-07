@@ -6,6 +6,7 @@
 #import "alias.typ"
 
 #import "get.typ"
+#import "meta.typ"
 #import "math.typ"
 
 #let is-none( ..values ) = {
