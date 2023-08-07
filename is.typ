@@ -22,6 +22,10 @@
 }
 #let not-n = not-none
 
+#let one-not-none( ..values ) = {
+  return values.pos().any((v) => v != none)
+}
+
 #let a( ..values ) = {
   return auto in values.pos()
 }
