@@ -2,6 +2,8 @@
 
 #import "alias.typ"
 
+#let neg( test ) = (..args) => { not test(..args) }
+
 #let eq( compare, value ) = {
   return value == compare
 }
