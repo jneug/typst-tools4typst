@@ -87,6 +87,8 @@
 
 #let content( value ) = alias.type(value) == "content"
 
+#let label( value ) = alias.type(value) == "label"
+
 #let color( value ) = alias.type(value) == "color"
 
 #let stroke( value ) = alias.type(value) == "stroke"
