@@ -133,7 +133,7 @@
 #let none-of-type( t, ..values ) = values.pos().all((v) => alias.type(v) != t)
 
 #let elem( func, value ) = if alias.type(value) == "content" {
-  if alias.type(func) == "String" {
+  if alias.type(func) == "string" {
     return repr(value.func()) == func
   } else {
     return value.func() == func
