@@ -89,6 +89,7 @@
 // See: https://github.com/PgBiel/typst-tablex
 #let stroke-paint-regex = regex("\+ ((rgb|cmyk|luma)\(.+\))$")
 
+// {deprecated}
 #let stroke-paint( stroke, default: black ) = {
   if type(stroke) in ("length", "relative length") {
     return default
@@ -108,6 +109,7 @@
 
 #let stroke-thickness-regex = regex("^\\d+(?:em|pt|cm|in|%)")
 
+// {deprecated}
 #let stroke-thickness( stroke, default: 1pt ) = {
   if type(stroke) in ("length", "relative length") {
     return stroke
@@ -173,6 +175,7 @@
   return dict + overrides.named()
 }
 
+// {deprecated}
 #let x-align( align, default:left ) = {
   if align in (left, right, center) {
     return align
@@ -183,6 +186,7 @@
   }
 }
 
+// {deprecated}
 #let y-align( align, default:top ) = {
   if align in (top, bottom, horizon) {
     return align
