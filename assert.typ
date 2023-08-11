@@ -1,11 +1,23 @@
-// Asserts
 
 #import "alias.typ"
 
+// =================================
+//  Asserts
+// =================================
+
+/// Asserts that the passed `test` is `true`.
 #let that = assert
+
+/// Asserts that the passed `test` is `false`.
 #let that-not( test, message:"" ) = assert(not test, message:message)
+
+/// Asserts that the passed values are equal.
 #let eq = assert.eq
+
+/// Asserts that the passed values are not equal.
 #let ne = assert.ne
+
+/// Alias for @@ne()
 #let neq = assert.ne
 
 #let not-none = assert.ne.with(none)
