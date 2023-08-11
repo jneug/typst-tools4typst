@@ -161,8 +161,8 @@ Almost all functions support an optional `do` argument, to be set to a function 
 - `#def.if-none( default, do:none, value )`: Returns `default` if `value` is `none`, `value` otherwise.
 - `#def.if-auto( default, do:none, value )`: Returns `default` if `value` is `auto`, `value` otherwise.
 - `#def.if-any( ..compare, default, do:none, value )`: Returns `default` if `value` is equal to any of the passed in values, `value` otherwise. (`#def.if-any(none, auto, 1pt, width)`)
-- `#def.if-not-any( ..compare, default, do:none, value )`:  Returns `default` if `value` is not equal to any of the passed in values, `value` otherwise. (`#def.if-not-any(left, right, top, bottom, left, position)`)
-- `#def.if-empty( default,do:none,  value )`: Returns `default` if `value` is _empty_, `value` otherwise.
+- `#def.if-not-any( ..compare, default, do:none, value )`:  Returns `default` if `value` is not equal to any of the passed in values, `value` otherwise. (`#def.if-not-any(left, right, top, bottom, position)`)
+- `#def.if-empty( default, do:none,  value )`: Returns `default` if `value` is _empty_, `value` otherwise.
 - `#def.as-arr( ..values )`: Always returns an array containing all `values`. Any arrays in `values` will be flattened into the result. This is useful for arguments, that can have one element or an array of elements: `#def.as-arr(author).join(", ")`.
 
 ### Assertions
@@ -206,7 +206,7 @@ All assert functions take an optional argument `message` to set the error messag
 
 This submodule is a collection of functions, that mostly deal with content elements and _get_ some information from them. Though some handle other types like dictionaries.
 
-- `#get.dict( ..values )`: Creat a new dictionary from the passed `values`. All named arguments are stored in the new dictionary as is. All positional arguments are grouped in key/value-pairs and inserted into the dictionary:
+- `#get.dict( ..values )`: Create a new dictionary from the passed `values`. All named arguments are stored in the new dictionary as is. All positional arguments are grouped in key/value-pairs and inserted into the dictionary:
 
 	```js
 	#get.dict("a", 1, "b", 2, "c", d:4, e:5)
@@ -247,26 +247,26 @@ This submodule is a collection of functions, that mostly deal with content eleme
 		text-fill: red, text-size: 1.2em
 	)[#lorem(5)]
 	```
-- `#get-text( element, sep: "" )`: Recursively extracts the text content of a content element. 
+- `#get.text( element, sep: "" )`: Recursively extracts the text content of a content element. 
 	
 	If present, all child elements are converted to text and joined with `sep`.
-- `#stroke-paint( stroke, default: black )`: Returns the color of `stroke`. If no color information is available, `default` is used. (Deprecated, use `stroke.paint` instead.)
-- `#stroke-thickness( stroke, default: 1pt )`: Returns the thickness of `stroke`. If no thickness information is available, `default` is used. (Deprecated, use `stroke.thickness` instead.)
-- `#stroke-dict( stroke, ..overrides )`: Creates a dictionary with the keys necessary for a stroke. The returned dictionary is guaranteed to have the keys `paint`, `thickness`, `dash`, `cap` and `join`.
+- `#get.stroke-paint( stroke, default: black )`: Returns the color of `stroke`. If no color information is available, `default` is used. (Deprecated, use `stroke.paint` instead.)
+- `#get.stroke-thickness( stroke, default: 1pt )`: Returns the thickness of `stroke`. If no thickness information is available, `default` is used. (Deprecated, use `stroke.thickness` instead.)
+- `#get.stroke-dict( stroke, ..overrides )`: Creates a dictionary with the keys necessary for a stroke. The returned dictionary is guaranteed to have the keys `paint`, `thickness`, `dash`, `cap` and `join`.
 
 	If `stroke` is a dictionary itself, all key/value-pairs are copied to the resulting stroke. Any named arguments in `overrides` will override the previous value.
-- `#inset-at( direction, inset, default: 0pt )`: Returns the inset (or outset) in a given `direction`, ascertained from `inset`.
-- `#inset-dict( inset, ..overrides )`: Creates a dictionary usable as an inset (or outset) argument.
+- `#get.inset-at( direction, inset, default: 0pt )`: Returns the inset (or outset) in a given `direction`, ascertained from `inset`.
+- `#get.inset-dict( inset, ..overrides )`: Creates a dictionary usable as an inset (or outset) argument.
 
 	The resulting dictionary is guaranteed to have the keys `top`, `left`, `bottom` and `right`.
 
 	If `inset` is a dictionary itself, all key/value-pairs are copied to the resulting stroke. Any named arguments in `overrides` will override the previous value.
-- `#x-align( align, default:left )`: Returns the alignment along the x-axis from the passed in `align` value. If none is present, `default` is returned. (Deprecated, use `align.x` instead.)
+- `#get.x-align( align, default:left )`: Returns the alignment along the x-axis from the passed in `align` value. If none is present, `default` is returned. (Deprecated, use `align.x` instead.)
 
 	```js
 	#get.x-align(top + center) // center
 	```
-- `#y-align( align, default:top )`: Returns the alignment along the y-axis from the passed in `align` value. If none is present, `default` is returned. (Deprecated, use `align.y` instead.)
+- `#get.y-align( align, default:top )`: Returns the alignment along the y-axis from the passed in `align` value. If none is present, `default` is returned. (Deprecated, use `align.y` instead.)
 
 ## Math functions
 
@@ -337,6 +337,12 @@ The following functions have aliases right now:
 
 
 ## Changelog
+
+### Version 0.2.1
+
+- Added a manual (build with `tidy` and `Mantys`).
+- Added simple tests for all functions.
+- Fixed bug in `is.elem` (see #2).
 
 ### Version 0.2.0
 
