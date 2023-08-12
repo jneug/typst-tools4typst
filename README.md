@@ -30,7 +30,7 @@ The modules are:
 - `math` 
 - `get`
 
-Any or all modules cann be imported the usual way:
+Any or all modules can be imported the usual way:
 
 ```js
 // Import as "t4t"
@@ -173,7 +173,7 @@ Almost all functions support an optional `do` argument, to be set to a function 
 
 This submodule overloads the default `assert` function and provides more asserts to quickly check if given values are valid. All functions use `assert` in the background.
 
-Since a module in typst is not callable, the `assert` functino is now available as `assert.that()`. `assert.eq` and `assert.ne` work as expected.
+Since a module in Typst is not callable, the `assert` function is now available as `assert.that()`. `assert.eq` and `assert.ne` work as expected.
 
 All assert functions take an optional argument `message` to set the error message shown if the assert fails.
 
@@ -340,7 +340,7 @@ The following functions have aliases right now:
 
 ### Version 0.2.1
 
-- Added a manual (build with `tidy` and `Mantys`).
+- Added a manual (build with [tidy](https://github.com/Mc-Zen/tidy) and [Mantys](https://github.com/jneug/typst-mantys)).
 - Added simple tests for all functions.
 - Fixed bug in `is.elem` (see #2).
 
