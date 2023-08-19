@@ -5,10 +5,10 @@
 //  Get default values
 // =================================
 
-/// Returns `default` if `test` is `true`, `value` otherwise.
+/// Returns #arg[default] if #arg[test] is #value[true], #arg[value] otherwise.
 ///
-/// If `test` is `false` and `do` is set to a function,
-/// `value` is passed to `do`, before being returned.
+/// If #arg[test] is #value[false] and #arg[do] is set to a function,
+/// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
 /// #test(
@@ -18,10 +18,10 @@
 ///   `def.if-true(1 == 1, 2, 3, do: (n) => n+1) == 2`,
 /// )
 ///
-/// - test (boolean): a test result
-/// - default (any): default value to return
-/// - do (function): postprocessor for `value`
-/// - value (any): the valu eto test
+/// - test (boolean): A test result.
+/// - default (any): A default value.
+/// - do (function): Post-processor for #arg[value].
+/// - value (any): The value to test.
 #let if-true( test, default, do:none, value ) = if test {
   return default
 } else if do == none {
@@ -30,10 +30,10 @@
   return do(value)
 }
 
-/// Returns `default` if `test` is `false`, `value` otherwise.
+/// Returns #arg[default] if #arg[test] is #value[false], #arg[value] otherwise.
 ///
-/// If `test` is `true` and `do` is set to a function,
-/// `value` is passed to `do`, before being returned.
+/// If #arg[test] is #value[true] and #arg[do] is set to a function,
+/// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
 /// #test(
@@ -43,10 +43,10 @@
 ///   `def.if-false(1 == 2, 2, 3, do: (n) => n+1) == 2`,
 /// )
 ///
-/// - test (boolean): a test result
-/// - default (any): default value to return
-/// - do (function): postprocessor for `value`
-/// - value (any): the valu eto test
+/// - test (boolean): A test result.
+/// - default (any): A default value.
+/// - do (function): Post-processor for #arg[value].
+/// - value (any): The value to test.
 #let if-false( test, default, do:none, value ) = if not test {
   return default
 } else if do == none {
@@ -55,10 +55,10 @@
   return do(value)
 }
 
-/// Returns `default` if `value` is `none`, `value` otherwise.
+/// Returns #arg[default] if #arg[value] is #value[none], #arg[value] otherwise.
 ///
-/// If `value` is not `none` and `do` is set to a function,
-/// `value` is passed to `do`, before being returned.
+/// If #arg[value] is not #value[none] and #arg[do] is set to a function,
+/// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
 /// #test(
@@ -68,9 +68,9 @@
 ///   `def.if-none(auto, 5, do: (v) => v*1cm) == 5cm`,
 /// )
 ///
-/// - default (any): default value to return
-/// - do (function): postprocessor for `value`
-/// - value (any): the valu eto test
+/// - default (any): A default value.
+/// - do (function): Post-processor for #arg[value].
+/// - value (any): The value to test.
 #let if-none( default, do:none, value ) = if value == none {
   return default
 } else if do == none {
@@ -79,10 +79,10 @@
   return do(value)
 }
 
-/// Returns `default` if `value` is `auto`, `value` otherwise.
+/// Returns #arg[default] if #arg[value] is #value[auto], #arg[value] otherwise.
 ///
-/// If `value` is not `auto` and `do` is set to a function,
-/// `value` is passed to `do`, before being returned.
+/// If #arg[value] is not #value[auto] and #arg[do] is set to a function,
+/// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
 /// #test(
@@ -92,9 +92,9 @@
 ///   `def.if-auto(1mm, 5, do: (v) => v*1cm) == 5cm`,
 /// )
 ///
-/// - default (any): default value to return
-/// - do (function): postprocessor for `value`
-/// - value (any): the valu eto test
+/// - default (any): A default value.
+/// - do (function): Post-processor for #arg[value].
+/// - value (any): The value to test.
 #let if-auto( default, do:none, value ) = if value == auto {
   return default
 } else if do == none {
@@ -103,7 +103,7 @@
   return do(value)
 }
 
-/// Returns `default` if `value` is equal to any value in `compare`, `value` otherwise.
+/// Returns #arg[default] if #arg[value] is equal to any value in `compare`, #arg[value] otherwise.
 ///
 /// ```typ
 /// #def.if-any(
@@ -113,8 +113,8 @@
 /// )
 /// ```
 ///
-/// If `value` is in `compare` and `do` is set to a function,
-/// `value` is passed to `do`, before being returned.
+/// If #arg[value] is in `compare` and #arg[do] is set to a function,
+/// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
 /// #test(
@@ -125,9 +125,9 @@
 ///   `def.if-any(none, auto, 1pt, none, do:(v)=>3mm) == 1pt`,
 /// )
 ///
-/// - ..compare (any): list of values to compare `value` to
-/// - default (any): default value to return
-/// - do (function): postprocessor for `value`
+/// - ..compare (any): list of values to compare #arg[value] to
+/// - default (any): A default value.
+/// - do (function): Post-processor for #arg[value].
 /// - value (any): value to test
 #let if-any( ..compare, default, do:none, value ) = if value in compare.pos() {
   return default
@@ -137,7 +137,7 @@
   return do(value)
 }
 
-/// Returns `default` if `value` is not equal to any value in `compare`, `value` otherwise.
+/// Returns #arg[default] if #arg[value] is not equal to any value in `compare`, #arg[value] otherwise.
 ///
 /// ```typ
 /// #def.if-not-any(
@@ -147,8 +147,8 @@
 /// )
 /// ```
 ///
-/// If `value` is in `compare` and `do` is set to a function,
-/// `value` is passed to `do`, before being returned.
+/// If #arg[value] is in `compare` and #arg[do] is set to a function,
+/// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
 /// #test(
@@ -158,9 +158,9 @@
 ///   `def.if-auto(1mm, 5, do: (v) => v*1cm) == 5cm`,
 /// )
 ///
-/// - ..compare (any): list of values to compare `value` to
-/// - default (any): default value to return
-/// - do (function): postprocessor for `value`
+/// - ..compare (any): list of values to compare #arg[value] to
+/// - default (any): A default value.
+/// - do (function): Post-processor for #arg[value].
 /// - value (any): value to test
 #let if-not-any( ..compare, default, do:none, value ) = if value not in compare.pos() {
   return default
@@ -170,10 +170,10 @@
   return do(value)
 }
 
-/// Returns `default` if `value` is empty, `value` otherwise.
+/// Returns #arg[default] if #arg[value] is empty, #arg[value] otherwise.
 ///
-/// If `value` is not empty and `do` is set to a function,
-/// `value` is passed to `do`, before being returned.
+/// If #arg[value] is not empty and #arg[do] is set to a function,
+/// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// Depends on `is.empty()`. See there for an explanation
 /// of _empty_.
@@ -186,8 +186,8 @@
 ///   `def.if-empty("a", (:)) == "a"`,
 /// )
 ///
-/// - default (any): default value to return
-/// - do (function): postprocessor for `value`
+/// - default (any): A default value.
+/// - do (function): Post-processor for #arg[value].
 /// - value (any): value to test
 #let if-empty( default, do:none, value ) = if empty(value) {
   return default
@@ -197,10 +197,10 @@
   return do(value)
 }
 
-/// Returns `default` if `key` is not an existing key in `args.named()`, `args.named().at(key)` otherwise.
+/// Returns #arg[default] if `key` is not an existing key in `args.named()`, `args.named().at(key)` otherwise.
 ///
-/// If `value` is not in `args` and `do` is set to a function,
-/// the value is passed to `do`, before being returned.
+/// If #arg[value] is not in `args` and #arg[do] is set to a function,
+/// the value is passed to #arg[do], before being returned.
 ///
 /// // Tests
 /// #test(
@@ -209,8 +209,8 @@
 ///   `fun(a:1, b:2, width:30%) == 30%`,
 /// )
 ///
-/// - default (any): default value to return
-/// - do (function): postprocessor for `value`
+/// - default (any): A default value.
+/// - do (function): Post-processor for #arg[value].
 /// - args (any): arguments to test
 /// - key (any): key to look for
 #let if-arg( default, do:none, args, key ) = if key not in args.named() {
