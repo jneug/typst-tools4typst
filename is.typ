@@ -5,12 +5,12 @@
 //  all() or find()
 // =================================
 
-/// Creates a new test function, that is `true`, when `test` is `false`.
+/// Creates a new test function, that is #value(true), when #arg[test] is #value(false).
 ///
 /// Can be used to create negations of tests like:
-/// ```typ
+/// #codesnippet[```typ
 /// #let not-raw = is.neg(is.raw)
-/// ```
+/// ```]
 ///
 /// // Tests
 /// #test(
@@ -22,11 +22,11 @@
 ///   ```
 /// )
 ///
-/// - test (function, boolean): test to negate.
+/// - test (function, boolean): Test to negate.
 /// -> function
 #let neg( test ) = (..args) => { not test(..args) }
 
-/// Tests if values `compare` and `value` are equal.
+/// Tests if values #arg[compare] and #arg[value] are equal.
 ///
 /// // Tests
 /// #test(
@@ -41,7 +41,7 @@
   return value == compare
 }
 
-/// Tests if values `compare` and `value` are not equal.
+/// Tests if #arg[compare] and #arg[value] are not equal.
 ///
 /// // Tests
 /// #test(
@@ -51,14 +51,14 @@
 ///   `not is.neq("1", "1")`,
 /// )
 ///
-/// - compare (any): first value
-/// - value (any): second value
+/// - compare (any): First value.
+/// - value (any): Second value.
 /// -> boolean
 #let neq( compare, value ) = {
   return value != compare
 }
 
-/// Tests if any one of `values` is equal to `none`.
+/// Tests if any one of #arg[values] is equal to #value(none).
 ///
 /// // Tests
 /// #test(
@@ -68,7 +68,7 @@
 ///   `not is.n(1, false, "none")`
 /// )
 ///
-/// - ..values (any): values to test
+/// - ..values (any): Values to test.
 /// -> boolean
 #let n( ..values ) = {
   return none in values.pos()
@@ -77,7 +77,7 @@
 /// Alias for @@n().
 #let non = n
 
-/// Tests if none of `values` is equal to `none`.
+/// Tests if none of #arg[values] is equal to #value(none).
 ///
 /// // Tests
 /// #test(
@@ -87,7 +87,7 @@
 ///   `is.not-none(1, false, "none")`
 /// )
 ///
-/// - ..values (any): values to test
+/// - ..values (any): Values to test.
 /// -> boolean
 #let not-none( ..values ) = {
   return none not in values.pos()
@@ -97,10 +97,10 @@
 #let not-n = not-none
 
 
-/// Tests, if at least one value in `values` is not equal to
-/// `none`.
+/// Tests, if at least one value in #arg[values] is not equal to
+/// #value(none).
 ///
-/// Useful for checking mutliple optoinal arguments for a
+/// Useful for checking mutliple optional arguments for a
 /// valid value:
 /// ```typ
 /// #if is.one-not-none(..args.pos()) [
@@ -117,13 +117,13 @@
 ///   `not is.one-not-none(none, none, none)`
 /// )
 ///
-/// - ..values (any): values to test
+/// - ..values (any): Values to test.
 /// -> boolean
 #let one-not-none( ..values ) = {
   return values.pos().any((v) => v != none)
 }
 
-/// Tests if any one of `values` is equal to `auto`.
+/// Tests if any one of #arg[values] is equal to #value(auto).
 ///
 /// // Tests
 /// #test(
@@ -133,7 +133,7 @@
 ///   `not is.a(1, false, "auto")`
 /// )
 ///
-/// - ..values (any): values to test
+/// - ..values (any): Values to test.
 /// -> boolean
 #let a( ..values ) = {
   return auto in values.pos()
@@ -141,7 +141,7 @@
 /// Alias for @@a()
 #let aut = a
 
-/// Tests if none of `values` is equal to `auto`.
+/// Tests if none of #arg[values] is equal to #value(auto).
 ///
 /// // Tests
 /// #test(
@@ -151,7 +151,7 @@
 ///   `is.not-auto(1, false, "auto")`
 /// )
 ///
-/// - ..values (any): values to test
+/// - ..values (any): Values to test.
 /// -> boolean
 #let not-auto( ..values ) = {
   return auto not in values.pos()
@@ -160,10 +160,10 @@
 /// Alias for @@not-auto()
 #let not-a = not-auto
 
-/// Tests, if `value` is _empty_.
+/// Tests, if #arg[value] is _empty_.
 ///
 /// A value is considered _empty_ if it is an empty array,
-/// dictionary or string, or the value `none`.
+/// dictionary or string, or the value #value(none).
 ///
 /// // Tests
 /// #test(
@@ -190,7 +190,7 @@
   }
 }
 
-/// Tests, if `value` is not _empty_.
+/// Tests, if #arg[value] is not _empty_.
 ///
 /// See @@empty() for an explanation what _empty_ means.
 ///
@@ -219,7 +219,7 @@
   }
 }
 
-/// Tests, if `value` is not _empty_.
+/// Tests, if #arg[value] is not _empty_.
 ///
 /// See @@empty() for an explanation what _empty_ means.
 ///
@@ -240,7 +240,7 @@
   return value in compare.pos()
 }
 
-/// Tests if `value` is not equals to any one of the
+/// Tests if #arg[value] is not equals to any one of the
 /// other passed in values.
 ///
 /// // Tests
@@ -261,10 +261,10 @@
   return not value in compare.pos()
 }
 
-/// Tests if `value` contains all the passed `keys`.
+/// Tests if #arg[value] contains all the passed `keys`.
 ///
 /// Either as keys in a dictionary or elements in an array.
-/// If `value` is neither of those types, `false` is returned.
+/// If #arg[value] is neither of those types, #value(false) is returned.
 ///
 /// // Tests
 /// #test(
@@ -292,7 +292,7 @@
 //  Types
 // =================================
 
-/// Tests if `value` is of type `t`.
+/// Tests if #arg[value] is of type `t`.
 ///
 /// // Tests
 /// #test(
@@ -308,7 +308,7 @@
 /// - value (any): value to test
 #let type( t, value ) = alias.type(value) == t
 
-/// Tests if `value` is of type dictionary.
+/// Tests if #arg[value] is of type dictionary.
 ///
 /// // Tests
 /// #test(
@@ -322,7 +322,7 @@
 /// - value (any): value to test
 #let dict( value ) = alias.type(value) == "dictionary"
 
-/// Tests if `value` is of type array.
+/// Tests if #arg[value] is of type array.
 ///
 /// // Tests
 /// #test(
@@ -337,7 +337,7 @@
 /// - value (any): value to test
 #let arr( value ) = alias.type(value) == "array"
 
-/// Tests if `value` is of type content.
+/// Tests if #arg[value] is of type content.
 ///
 /// // Tests
 /// #test(
@@ -351,7 +351,7 @@
 /// - value (any): value to test
 #let content( value ) = alias.type(value) == "content"
 
-/// Tests if `value` is of type label.
+/// Tests if #arg[value] is of type label.
 ///
 /// // Tests
 /// #test(
@@ -365,7 +365,7 @@
 /// - value (any): value to test
 #let label( value ) = alias.type(value) == "label"
 
-/// Tests if `value` is of type color.
+/// Tests if #arg[value] is of type color.
 ///
 /// // Tests
 /// #test(
@@ -379,7 +379,7 @@
 /// - value (any): value to test
 #let color( value ) = alias.type(value) == "color"
 
-/// Tests if `value` is of type stroke.
+/// Tests if #arg[value] is of type stroke.
 ///
 /// // Tests
 /// #test(
@@ -391,7 +391,7 @@
 /// - value (any): value to test
 #let stroke( value ) = alias.type(value) == "stroke"
 
-/// Tests if `value` is of type location.
+/// Tests if #arg[value] is of type location.
 ///
 /// // Tests
 /// #locate(loc => test(
@@ -403,7 +403,7 @@
 /// - value (any): value to test
 #let loc( value ) = alias.type(value) == "location"
 
-/// Tests if `value` is of type boolean.
+/// Tests if #arg[value] is of type boolean.
 ///
 /// // Tests
 /// #test(
@@ -438,7 +438,7 @@
 
 #let func( value ) = alias.type(value) == "function"
 
-/// Tests if types `value` is any one of `types`.
+/// Tests if types #arg[value] is any one of `types`.
 ///
 /// // Tests
 /// #test(
@@ -465,7 +465,7 @@
 ///   `not is.same-type(none, none, none, auto)`
 /// )
 ///
-/// - ..values (any): values to test
+/// - ..values (any): Values to test.
 #let same-type( ..values ) = {
   let t = alias.type(values.pos().first())
   return values.pos().all((v) => alias.type(v) == t)
@@ -482,7 +482,7 @@
 /// )
 ///
 /// - t (string): type to test against
-/// - ..values (any): values to test
+/// - ..values (any): Values to test.
 #let all-of-type( t, ..values ) = values.pos().all((v) => alias.type(v) == t)
 
 /// Tests if none of the passed in values has the type `t`.
@@ -496,12 +496,12 @@
 /// )
 ///
 /// - t (string): type to test against
-/// - ..values (any): values to test
+/// - ..values (any): Values to test.
 #let none-of-type( t, ..values ) = values.pos().all((v) => alias.type(v) != t)
 
-/// Tests if `value` is a content element with `value.func() == func`.
+/// Tests if #arg[value] is a content element with `value.func() == func`.
 ///
-/// If `func` is a string, `value` will be compared to `repr(value.func())`, instead.
+/// If `func` is a string, #arg[value] will be compared to `repr(value.func())`, instead.
 /// Both of these effectively do the same:
 /// ```js
 /// #is.elem(raw, some_content)
@@ -529,7 +529,7 @@
   return false
 }
 
-/// Tests if `value` is a sequence of content.
+/// Tests if #arg[value] is a sequence of content.
 ///
 /// // Tests
 /// #test(
