@@ -16,43 +16,105 @@
   return lazy-message(..args)
 }
 
-/// Asserts that #arg[test] is #value(true). See #doc("foundations/assert")
-#let that = assert
+/// Asserts that #arg[test] is #value(true).
+/// See #doc("foundations/assert").
+///
+/// - test (boolean): Assertion to test.
+/// - message (string,function): A message to show if the assertion fails.
+#let that(test, message:none) = assert(
+  test,
+  message:lazy-message(message, test)
+)
 
 /// Asserts that #arg[test] is #value(false).
 ///
 /// - test (boolean): Assertion to test.
-/// - message (str): A message to show if the assertion fails.
-#let that-not(test, message:"") = assert(not test, message:message)
+/// - message (string, function): A message to show if the assertion fails.
+#let that-not(test, message:none) = assert(
+  not test,
+  message:lazy-message(message, a, b)
+)
 
 /// Asserts that two values are equal.
-#let eq = assert.eq
+/// See #doc("foundations/assert", name:"assert.eq", anchor:"assert-eq").
+///
+/// - a (any): First value.
+/// - b (any): Second value.
+/// - message (string, function): A message to show if the assertion fails.
+#let eq(a, b, message:(..a) => "Values should be the same, got " + repr(a.pos())) = assert.eq(
+  a, b,
+  message:lazy-message(message, a, b)
+)
 
 /// Asserts that two values are not equal.
-#let ne = assert.ne
+/// See #doc("foundations/assert", name:"assert.ne", anchor:"assert-ne").
+///
+/// - a (any): First value.
+/// - b (any): Second value.
+/// - message (string, function): A message to show if the assertion fails.
+#let ne(a, b, message:(..a) => "Values should not be the same, got " + repr(a.pos())) = assert.ne(
+  a, b,
+  message:lazy-message(message, test)
+)
 
 /// Alias for @@ne()
 #let neq = assert.ne
 
-/// Asserts that a value is not #value(none)
-#let not-none = assert.ne.with(none)
+/// Asserts that not one of #arg[values] is #value(none).
+/// Positional and named arguments are tested if provided.
+/// For named key-value pairs the value is tested.
+///
+/// // Tests
+/// #assert.not-none(1)
+/// #assert.not-none(..range(4))
+///
+/// - ..values (any): The values to test.
+/// - message (string, function): A message to show if the assertion fails.
+#let not-none(
+  ..values,
+  message:(..a) => "Values should not be none. Got " + repr(a)
+) = {
+  assert(
+    values.pos().all((v) => v != none)
+    and
+    values.named().values().all((v) => v != none),
+    message:lazy-message(message, ..values)
+  )
+}
 
 /// Assert that #arg[value] is any one of #arg[values].
 ///
-/// - ..values (any): A set of values to compare `value` to.
+/// Tests
+/// #assert.any(..range(4), 3)
+///
+/// - ..values (any): A set of values to compare #arg[value] to.
 /// - value (any): Value to compare.
-/// - message (str): A message to show if the assertion fails.
-#let any( ..values, value, message:"" ) = assert(value in values.pos(), message:message)
+/// - message (string, function): A message to show if the assertion fails.
+#let any(
+  ..values,
+  value,
+  message:(..a) => "Allowed values: " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first())
+) = assert(
+  value in values.pos(),
+  message:lazy-message(message, value, ..values)
+)
 
 /// Assert that #arg[value] is not any one of #arg[values].
 ///
 /// // Tests
-/// assert.not-any(none, auto, 3)
+/// #assert.not-any(none, auto, 3)
 ///
 /// - ..values (any): A set of values to compare `value` to.
 /// - value (any): Value to compare.
-/// - message (str): A message to show if the assertion fails.
-#let not-any( ..values, value, message:"" ) = assert(value not in values.pos(), message:message)
+/// - message (string, function): A message to show if the assertion fails.
+#let not-any(
+  ..values,
+  value,
+  message:(..a) => "Disallowed values: " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first())
+) = assert(
+  value not in values.pos(),
+  message:lazy-message(message, value, ..values)
+)
 
 /// Assert that #arg[value]s type is any one of #arg[types].
 ///
@@ -64,8 +126,15 @@
 ///
 /// - ..types (string): A set of types to compare the type of `value` to.
 /// - value (any): Value to compare.
-/// - message (str): A message to show if the assertion fails.
-#let any-type( ..types, value, message:"") = assert(type(value) in types.pos(), message:message)
+/// - message (string, function): A message to show if the assertion fails.
+#let any-type(
+  ..types,
+  value,
+  message:(..a) => "\nAllowed types: " + repr(a.pos().slice(1)) + ".\nGot " + repr(a.pos().first()) + " (" + type(a.pos().first()) + ")"
+) = assert(
+  type(value) in types.pos(),
+  message:lazy-message(message, value, ..types)
+)
 
 /// Assert that #arg[value]s type is not any one of #arg[types].
 ///
@@ -75,8 +144,15 @@
 ///
 /// - ..types (string): A set of types to compare the type of `value` to.
 /// - value (any): Value to compare.
-/// - message (str): A message to show if the assertion fails.
-#let not-any-type( ..types, value, message:"" ) = assert(type(value) not in types.pos(), message:message)
+/// - message (string, function): A message to show if the assertion fails.
+#let not-any-type(
+  ..types,
+  value,
+  message:(..a) => "\nDisallowed types: " + repr(a.pos().slice(1)) + ".\nGot " + repr(a.pos().first()) + " (" + type(a.pos().first()) + ")"
+) = assert(
+  type(value) not in types.pos(),
+  message:lazy-message(message, value, ..types)
+)
 
 /// Assert that the types of all #arg[values] are equal to #arg[t].
 ///
@@ -86,9 +162,33 @@
 ///
 /// - t (string): The type to test against.
 /// - ..values (any): Values to test.
-/// - message (str): A message to show if the assertion fails.
-#let all-of-type( t, ..values, message:"") = assert(values.pos().all((v) => alias.type(v) == t), message:message)
-#let none-of-type( t, ..values, message:"") = assert(values.pos().all((v) => alias.type(v) != t), message:message)
+/// - message (string, function): A message to show if the assertion fails.
+#let all-of-type(
+  t,
+  ..values,
+  message:(..a) => "\nValues need to be of type " + repr(a.pos().first()) + ".\nGot " + repr(a.pos().slice(1)) + " / " + repr(a.pos().slice(1).map(type))
+) = assert(
+  values.pos().all((v) => alias.type(v) == t),
+  message:lazy-message(message, t, ..values)
+)
+
+/// Assert that none of the #arg[values] are of type #arg[t].
+///
+/// // Tests
+/// #assert.none-of-type("integer", "a", "b", false, 1.2)
+/// #assert.none-of-type("string", 1pt, 3%, true)
+///
+/// - t (string): The type to test against.
+/// - ..values (any): Values to test.
+/// - message (string, function): A message to show if the assertion fails.
+#let none-of-type(
+  t,
+  ..values,
+  message:(..a) => "\nValues may not be of type " + repr(a.pos().first()) + ".\nGot " + repr(a.pos().slice(1)) + " / " + repr(a.pos().slice(1).map(type))
+) = assert(
+  values.pos().all((v) => alias.type(v) != t),
+  message:lazy-message(message, t, ..values)
+)
 
 /// Assert that #arg[value] is not _empty_.
 ///
@@ -98,8 +198,13 @@
 /// #assert.not-empty((a:1))
 ///
 /// - value (any): The value to test.
-/// - message (string): A message to show if the assertion fails.
-#let not-empty( value, message:"" ) = {
+/// - message (string, function): A message to show if the assertion fails.
+#let not-empty(
+  value,
+  message:(v, ..a) => {
+    "Value may not be empty. Got " + repr(v)
+  }
+) = {
   let empty = (
     array: (),
     dictionary: (:),
@@ -108,9 +213,15 @@
   )
   let t = type(value)
   if t in empty {
-    assert.ne(value, empty.at(t), message:message)
+    assert.ne(
+      value, empty.at(t),
+      message:lazy-message(message, value)
+    )
   } else {
-    assert.ne(value, none, message:message)
+    assert.ne(
+      value, none,
+      message:lazy-message(message, value)
+    )
   }
 }
 
