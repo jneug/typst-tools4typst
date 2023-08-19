@@ -338,11 +338,14 @@ The following functions have aliases right now:
 
 ## Changelog
 
-### Version 0.2.1
+### Version 0.3.0
 
 - Added a manual (build with [tidy](https://github.com/Mc-Zen/tidy) and [Mantys](https://github.com/jneug/typst-mantys)).
 - Added simple tests for all functions.
 - Fixed bug in `is.elem` (see #2).
+- Added `assert.has-pos`, `assert.no-pos`, `assert.has-named` and `assert.no-named`.
+- Added meaningful messages to asserts.
+	- Asserts now support functions as message arguments that can dynamically build an error message from the arguments.
 
 ### Version 0.2.0
 

@@ -13,7 +13,6 @@
   math: tools4typst.math
 )
 
-
 #let test( scope: (:), ..tests ) = {
   for test in tests.pos() {
     let msg = if test.text.starts-with("not ") {
@@ -50,6 +49,18 @@
     Hopefully, this collection will grow over time with *Typst* to provide solutions for common problems.
   ]
 )
+
+== Development
+
+=== Manual
+
+The manual requires two packages:
+
+- `typst-mantys`
+- `tidy`
+
+
+= Module reference
 
 == Test functions
 
