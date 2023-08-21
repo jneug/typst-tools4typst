@@ -41,7 +41,7 @@ Any or all modules can be imported the usual way:
 #import "@preview/t4t:0.2.0": is, def
 ```
 
-In general, the main value is passed last to the utility functions. `#def.if-none()` for example, takes the default value first and the value to test second. This is somewhat counterintuitive at first, but allows the use of `.with()` to generate derivative functions:
+In general, the main value is passed last to the utility functions. `#def.if-none()`, for example, takes the default value first and the value to test second. This is somewhat counterintuitive at first, but allows the use of `.with()` to generate derivative functions:
 
 ```js
 #let is-foo = eq.with("foo")
@@ -53,7 +53,7 @@ In general, the main value is passed last to the utility functions. `#def.if-non
 #import "@preview/t4t:0.2.0": is
 ```
 
-These functions provide shortcuts to common tests like `#is.eq()`. Some of these are not shorter as writing pure typst code (e.g. `a == b`), but can easily be used in `.any()` or `.find()` calls:
+These functions provide shortcuts to common tests like `#is.eq()`. Some of these are not shorter as writing pure Typst code (e.g. `a == b`), but can easily be used in `.any()` or `.find()` calls:
 
 ```js
 // check all values for none
@@ -76,7 +76,7 @@ There are two exceptions: `is-none` and `is-auto`. Since keywords can't be used 
 
 The `is` submodule still has these tests, but under different names (`is.n` and `is.non` for `none` and `is.a` and `is.aut` for `auto`).
 
-- `#is.neq( test )`: Creates a new test function, that is `true` when `test` is `false`. Can be used to create negations of tests like `#let not-raw = is.neg(is.raw)`.
+- `#is.neq( test )`: Creates a new test function that is `true` when `test` is `false`. Can be used to create negations of tests like `#let not-raw = is.neg(is.raw)`.
 - `#is.eq( a, b )`: Tests if values `a` and `b` are equal.
 - `#is.neq( a, b )`: Tests if values `a` and `b` are not equal.
 - `#is.n( ..values )`: Tests if any of the passed `values` is `none`.
@@ -90,7 +90,7 @@ The `is` submodule still has these tests, but under different names (`is.n` and 
 - `#is.empty( value )`: Tests if `value` is _empty_. A value is considered _empty_ if it is an empty array, dictionary or string or `none` otherwise.
 - `#is.not-empty( value )`: Tests if `value` is not empty.
 - `#is.any( ..compare, value )`: Tests if `value` is equal to any one of the other passed-in values.
-- `#is.not-any( ..compare, value)`: Tests if `value` is not equals to any one of the other passed-in values.
+- `#is.not-any( ..compare, value)`: Tests if `value` is not equal to any one of the other passed-in values.
 - `#is.has( ..keys, value )`: Tests if `value` contains all the passed `keys`. Either as keys in a dictionary or elements in an array. If `value` is neither of those types, `false` is returned.
 - `#is.type( t, value )`: Tests if `value` is of type `t`.
 - `#is.dict( value )`: Tests if `value` is a dictionary.
@@ -111,12 +111,12 @@ The `is` submodule still has these tests, but under different names (`is.n` and 
 - `#is.align( value )`: Tests if `value` is an alignment.
 - `#is.align2d( value )`: Tests if `value` is a 2d alignment.
 - `#is.func( value )`: Tests if `value` is a function.
-- `#is.any-type( ..types, value )`: Tests if `value` has any of the passe in types.
+- `#is.any-type( ..types, value )`: Tests if `value` has any of the passed-in types.
 - `#is.same-type( ..values )`: Tests if all passed-in values have the same type.
 - `#is.all-of-type( t, ..values )`: Tests if all of the passed-in values have the type `t`.
 - `#is.none-of-type( t, ..values )`: Tests if none of the passed-in values has the type `t`.
-- `#is.one-not-none( ..values )`: Checks, if at least one value in `values` is not equal to `none`. Useful for checking mutliple optional arguments for a valid value: `#if is.one-not-none(..args.pos()) [ #args.pos().find(is.not-none) ]`
-- `#is.elem( func, value )`: Tests if `value` is a content element with `value.func() == func`. If `func` is a string, `value` will be compared to `repr(value.func())`, instead.
+- `#is.one-not-none( ..values )`: Checks, if at least one value in `values` is not equal to `none`. Useful for checking multiple optional arguments for a valid value: `#if is.one-not-none(..args.pos()) [ #args.pos().find(is.not-none) ]`
+- `#is.elem( func, value )`: Tests if `value` is a content element with `value.func() == func`. If `func` is a string, `value` will be compared to `repr(value.func())` instead.
 
 	Both of these effectively do the same:
 	```js
@@ -248,7 +248,6 @@ This submodule is a collection of functions, that mostly deal with content eleme
 	)[#lorem(5)]
 	```
 - `#get.text( element, sep: "" )`: Recursively extracts the text content of a content element.
-	
 	If present, all child elements are converted to text and joined with `sep`.
 - `#get.stroke-paint( stroke, default: black )`: Returns the color of `stroke`. If no color information is available, `default` is used. (Deprecated, use `stroke.paint` instead.)
 - `#get.stroke-thickness( stroke, default: 1pt )`: Returns the thickness of `stroke`. If no thickness information is available, `default` is used. (Deprecated, use `stroke.thickness` instead.)
@@ -311,7 +310,7 @@ Some functions to complement the native `calc` module.
 
 Some of the native Typst function as aliases, to prevent collisions with some common argument names.
 
-For example using `numbering` as an argument is not possible, if the value is supposed to be passed to the `numbering()` function. To still allow argument names, that are in line with the common Typst names (like `numbering`, `align` ...), these alias functions can be used:
+For example using `numbering` as an argument is not possible if the value is supposed to be passed to the `numbering()` function. To still allow argument names that are in line with the common Typst names (like `numbering`, `align` ...), these alias functions can be used:
 
 ```js
 #let excercise( no, numbering: "1)" ) = [
