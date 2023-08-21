@@ -179,12 +179,16 @@
 /// - value (any): value to test
 /// -> boolean
 #let empty( value ) = {
-  if alias.type(value) == "array" {
-    return value == ()
-  } else if alias.type(value) == "dictionary" {
-    return value == (:)
-  } else if alias.type(value) == "string" {
-    return value == ""
+  let empty-values = (
+    array: (),
+    dictionary: (:),
+    string: "",
+    content: []
+  )
+
+  let t = type(value)
+  if t in empty-values {
+    return value == empty-values.at(t)
   } else {
     return value == none
   }
@@ -208,12 +212,16 @@
 /// - value (any): value to test
 /// -> boolean
 #let not-empty( value ) = {
-  if alias.type(value) == "array" {
-    return value != ()
-  } else if alias.type(value) == "dictionary" {
-    return value != (:)
-  } else if alias.type(value) == "string" {
-    return value != ""
+  let empty-values = (
+    array: (),
+    dictionary: (:),
+    string: "",
+    content: []
+  )
+
+  let t = type(value)
+  if t in empty-values {
+    return value != empty-values.at(t)
   } else {
     return value != none
   }
@@ -431,6 +439,8 @@
 #let rlength( value ) = alias.type(value) == "relative length"
 
 #let ratio( value ) = alias.type(value) == "ratio"
+
+#let angle( value ) = alias.type(value) == "angle"
 
 #let align( value ) = alias.type(value) == "alignment"
 
