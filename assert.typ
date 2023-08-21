@@ -1,5 +1,6 @@
 
 #import "alias.typ"
+#import "is.typ"
 
 // =================================
 //  Asserts
@@ -192,6 +193,9 @@
 
 /// Assert that #arg[value] is not _empty_.
 ///
+/// Depends on `is.empty()`. See there for an explanation
+/// of _empty_.
+///
 /// // Tests
 /// #assert.not-empty("string")
 /// #assert.not-empty((1,))
@@ -205,24 +209,10 @@
     "Value may not be empty. Got " + repr(v)
   }
 ) = {
-  let empty = (
-    array: (),
-    dictionary: (:),
-    string: "",
-    content: []
+  assert(
+    is.not-empty(value),
+    message:lazy-message(message, value)
   )
-  let t = type(value)
-  if t in empty {
-    assert.ne(
-      value, empty.at(t),
-      message:lazy-message(message, value)
-    )
-  } else {
-    assert.ne(
-      value, none,
-      message:lazy-message(message, value)
-    )
-  }
 }
 
 /// Assert that #arg[args] has positional arguments.

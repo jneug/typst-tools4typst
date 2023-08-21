@@ -5,9 +5,9 @@
 //  Get default values
 // =================================
 
-/// Returns #arg[default] if #arg[test] is #value[true], #arg[value] otherwise.
+/// Returns #arg[default] if #arg[test] is #value(true), #arg[value] otherwise.
 ///
-/// If #arg[test] is #value[false] and #arg[do] is set to a function,
+/// If #arg[test] is #value(false) and #arg[do] is set to a function,
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
@@ -20,7 +20,7 @@
 ///
 /// - test (boolean): A test result.
 /// - default (any): A default value.
-/// - do (function): Post-processor for #arg[value].
+/// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
 /// - value (any): The value to test.
 #let if-true( test, default, do:none, value ) = if test {
   return default
@@ -30,9 +30,9 @@
   return do(value)
 }
 
-/// Returns #arg[default] if #arg[test] is #value[false], #arg[value] otherwise.
+/// Returns #arg[default] if #arg[test] is #value(false), #arg[value] otherwise.
 ///
-/// If #arg[test] is #value[true] and #arg[do] is set to a function,
+/// If #arg[test] is #value(true) and #arg[do] is set to a function,
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
@@ -45,7 +45,7 @@
 ///
 /// - test (boolean): A test result.
 /// - default (any): A default value.
-/// - do (function): Post-processor for #arg[value].
+/// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
 /// - value (any): The value to test.
 #let if-false( test, default, do:none, value ) = if not test {
   return default
@@ -55,9 +55,9 @@
   return do(value)
 }
 
-/// Returns #arg[default] if #arg[value] is #value[none], #arg[value] otherwise.
+/// Returns #arg[default] if #arg[value] is #value(none), #arg[value] otherwise.
 ///
-/// If #arg[value] is not #value[none] and #arg[do] is set to a function,
+/// If #arg[value] is not #value(none) and #arg[do] is set to a function,
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
@@ -69,7 +69,7 @@
 /// )
 ///
 /// - default (any): A default value.
-/// - do (function): Post-processor for #arg[value].
+/// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
 /// - value (any): The value to test.
 #let if-none( default, do:none, value ) = if value == none {
   return default
@@ -79,9 +79,9 @@
   return do(value)
 }
 
-/// Returns #arg[default] if #arg[value] is #value[auto], #arg[value] otherwise.
+/// Returns #arg[default] if #arg[value] is #value(auto), #arg[value] otherwise.
 ///
-/// If #arg[value] is not #value[auto] and #arg[do] is set to a function,
+/// If #arg[value] is not #value(auto) and #arg[do] is set to a function,
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
@@ -93,7 +93,7 @@
 /// )
 ///
 /// - default (any): A default value.
-/// - do (function): Post-processor for #arg[value].
+/// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
 /// - value (any): The value to test.
 #let if-auto( default, do:none, value ) = if value == auto {
   return default
@@ -127,7 +127,7 @@
 ///
 /// - ..compare (any): list of values to compare #arg[value] to
 /// - default (any): A default value.
-/// - do (function): Post-processor for #arg[value].
+/// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
 /// - value (any): value to test
 #let if-any( ..compare, default, do:none, value ) = if value in compare.pos() {
   return default
@@ -160,7 +160,7 @@
 ///
 /// - ..compare (any): list of values to compare #arg[value] to
 /// - default (any): A default value.
-/// - do (function): Post-processor for #arg[value].
+/// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
 /// - value (any): value to test
 #let if-not-any( ..compare, default, do:none, value ) = if value not in compare.pos() {
   return default
@@ -187,7 +187,7 @@
 /// )
 ///
 /// - default (any): A default value.
-/// - do (function): Post-processor for #arg[value].
+/// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
 /// - value (any): value to test
 #let if-empty( default, do:none, value ) = if empty(value) {
   return default
@@ -210,7 +210,7 @@
 /// )
 ///
 /// - default (any): A default value.
-/// - do (function): Post-processor for #arg[value].
+/// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
 /// - args (any): arguments to test
 /// - key (any): key to look for
 #let if-arg( default, do:none, args, key ) = if key not in args.named() {
@@ -222,20 +222,29 @@
 }
 
 /// Always returns an array containing all `values`.
+/// Any arrays in #arg[values] are unpacked into the resulting
+/// array.
 ///
-/// Any arrays in `values` will be flattened into the result.
 /// This is useful for arguments, that can have one element
 /// or an array of elements:
 /// ```typ
 /// #def.as-arr(author).join(", ")
 /// ```
+///
 /// // Tests
 /// #test(
 ///   `def.as-arr("a", "b", "c") == ("a", "b", "c")`,
 ///   `def.as-arr(("a", "b"), "c") == ("a", "b", "c")`,
 ///   `def.as-arr(("a", "b", "c")) == ("a", "b", "c")`,
-///   `def.as-arr(("a"), ("b"), "c") == ("a", "b", "c")`,
-///   `def.as-arr(("a"), (("b"), "c")) == ("a", "b", "c")`,
+///   `def.as-arr(("a",), ("b",), "c") == ("a", "b", "c")`,
+///   `def.as-arr(("a",), (("b",), "c")) == ("a", ("b", ), "c")`,
 /// )
-#let as-arr( ..values ) = (..values.pos(),).flatten()
+#let as-arr( ..values ) = values.pos().fold((), (arr, v) => {
+  if type(v) == "array" {
+    arr += v
+  } else {
+    arr.push(v)
+  }
+  arr
+})
 

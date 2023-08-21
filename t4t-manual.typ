@@ -13,6 +13,20 @@
   math: tools4typst.math
 )
 
+#let show-tests( display:false, ..tests ) = {
+  if display {
+    let code = tests.pos().fold("", (c, r) => {
+      c += r.text + "\n"
+      c
+    })
+    scale(x:75%, y:75%, origin:left)[
+      *Tests*\
+      #v(-1.25em)
+      #codesnippet(raw(lang:"typc", code))
+    ]
+  }
+}
+
 #let test( scope: (:), ..tests ) = {
   for test in tests.pos() {
     let msg = if test.text.starts-with("not ") {
@@ -25,6 +39,7 @@
       message: msg
     )
   }
+  show-tests(..tests)
 }
 
 #let show-module( name ) = module-commands(name)[
@@ -50,25 +65,31 @@
   ]
 )
 
-== Development
+#template.usage(
+  "t4t",
+  "0.2.0",
+  namespace: "preview",
+  imports: "*",
+  repository: "https://github.com/jneug/typst-tools4typst"
+)[]
 
-=== Manual
+==  Manual
 
-The manual requires two packages:
+The manual is created using #package[Tidy]#footnote(link("https://github.com/Mc-Zen/tidy")) with the Mantys#footnote(link("https://github.com/jneug/typst-mantys")) template.
 
-- `typst-mantys`
-- `tidy`
+#package[Tidy] will be loaded from the package repository while Mantys needs to be installed manually into the local package repository. Refer to the Mantys manual for further information.
 
+The manual doubles as a test suite by adding simple tests to the docstring of each function.
 
+#show raw: set raw(lang: "typ")
 = Module reference
 
 == Test functions
-
 #codesnippet[```typ
 #import "@preview/t4t:0.2.0": is
 ```]
 
-These functions provide shortcuts to common tests like #cmd(module: "is")[eq]. Some of these are not shorter as writing pure typst code (e.g. `a == b`), but can easily be used in `.any()` or `.find()` calls:
+These functions provide shortcuts to common tests like #cmd(module: "is")[eq]. Some of these are not shorter than writing pure typst code (e.g. `a == b`), but can easily be used in `.any()` or `.find()` calls:
 
 #sourcecode[```typc
 // check all values for none
@@ -83,7 +104,7 @@ let x = (none, none, 5, none).find(is.not-none)
 let pos-bar = args.pos().position(is.eq.with("|"))
 ```]
 
-There are two exceptions: #cmd[is-none] and #cmd[is-auto]. Since keywords can't be used as function names, the #module[is] module can't define a function to do `is.none()`. Therefore the functions #cmd[is-none] and #cmd[is-auto] are provided in the base module of `t4t`:
+There are two exceptions: #cmd[is-none] and #cmd[is-auto]. Since keywords can't be used as function names, the #module[is] module can't define a function like `is.none()`. Therefore the functions #cmd[is-none] and #cmd[is-auto] are provided in the base module of `t4t`:
 
 ```js
 #import "@preview/t4t:0.2.0": is-none, is-auto
@@ -95,21 +116,20 @@ The `is` submodule still has these tests, but under different names (#cmd(module
 #show-module("is")
 
 == Default values
-
 #codesnippet[```typ
 #import "@preview/t4t:0.2.0": def
 ```]
 
-These functions perform a test to decide, if a given `value` is _invalid_. If the test _passes_, the `default` is returned, the `value` otherwise.
+These functions perform a test to decide if a given `value` is _invalid_. If the test _passes_, the `default` is returned, the `value` otherwise.
 
-Almost all functions support an optional `do` argument, to be set to a function of one argument, that will be applied to the value, if the test fails. For example:
+Almost all functions support an optional `do` argument, to be set to a function of one argument, that will be applied to the value if the test fails. For example:
 #sourcecode[```typc
 // Sets date to a datetime from an optional
 // string argument in the format "YYYY-MM-DD"
 let date = def.if-none(
-	datetime.today(), 	// default
-	passed_date, 		// passed in argument
-	do: (d) >= {		// post-processor
+	datetime.today(),   // default
+	passed_date,        // passed in argument
+	do: (d) => {        // post-processor
 		d = d.split("-")
 		datetime(year=d[0], month=d[1], day=d[2])
 	}
@@ -167,7 +187,7 @@ Some functions to complement the native `calc` module.
 
 Some of the native Typst function as aliases, to prevent collisions with some common argument namens.
 
-For example using #arg[numbering] as an argument is not possible, if the value is supposed to be passed to the #cmd[numbering] function. To still allow argument names, that are in line with the common Typst names (like `type`, `align` ...), these alias functions can be used:
+For example using #arg[numbering] as an argument is not possible if the value is supposed to be passed to the #cmd[numbering] function. To still allow argument names, that are in line with the common Typst names (like `type`, `align` ...), these alias functions can be used:
 
 #sourcecode[```typ
 #let excercise( no, numbering: "1)" ) = [
