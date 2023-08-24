@@ -1,5 +1,4 @@
 
-// #import "@preview/tidy:0.1.0"
 #import "@local/mantys:0.0.3": *
 
 #import "tools4typst.typ"
