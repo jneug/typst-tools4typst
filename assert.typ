@@ -353,4 +353,4 @@
 /// #diameter(2)
 ///
 /// - test (function): A test function: #lambda("..any", ret:true)
-#let new( test, message:"" ) = (..v, message:message) => assert(test(..v), message:message)
+#let new( test, message:"" ) = (..v, message:message) => assert(test(..v), message:lazy-message(message, ..v))
