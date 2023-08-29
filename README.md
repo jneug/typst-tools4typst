@@ -20,6 +20,12 @@ If only a few functions from `t4t` are needed, simply copy the necessary code to
 
 ## Reference
 
+----
+
+**Note:** This reference might be out of date. Please refer to the manual for a complete overview of all functions.
+
+----
+
 The functions are categorized into different submodules that can be imported separately.
 
 The modules are:
@@ -336,6 +342,10 @@ The following functions have aliases right now:
 
 
 ## Changelog
+
+### Version 0.3.1
+
+- Some fixes for message evaluation in `assert` module.
 
 ### Version 0.3.0
 

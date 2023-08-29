@@ -10,11 +10,15 @@
   user-message,
   ..args
 ) = {
-  let lazy-message = user-message
-  if type(lazy-message) != "function" {
-    lazy-message = (..) => str(user-message)
+  if user-message == none {
+    return ""
   }
-  return lazy-message(..args)
+
+  let lazy = user-message
+  if type(lazy) != "function" {
+    lazy = (..) => str(lazy)
+  }
+  return lazy(..args)
 }
 
 /// Asserts that #arg[test] is #value(true).
@@ -22,7 +26,7 @@
 ///
 /// - test (boolean): Assertion to test.
 /// - message (string,function): A message to show if the assertion fails.
-#let that(test, message:none) = assert(
+#let that(test, message:"Test returned false, should be true.") = assert(
   test,
   message:lazy-message(message, test)
 )
@@ -31,9 +35,9 @@
 ///
 /// - test (boolean): Assertion to test.
 /// - message (string, function): A message to show if the assertion fails.
-#let that-not(test, message:none) = assert(
+#let that-not(test, message:"Test returned true, should be false.") = assert(
   not test,
-  message:lazy-message(message, a, b)
+  message:lazy-message(message, test)
 )
 
 /// Asserts that two values are equal.
@@ -42,7 +46,7 @@
 /// - a (any): First value.
 /// - b (any): Second value.
 /// - message (string, function): A message to show if the assertion fails.
-#let eq(a, b, message:(..a) => "Values should be the same, got " + repr(a.pos())) = assert.eq(
+#let eq(a, b, message:(a, b) => "Value "+repr(a)+" was not equal to "+repr(b)) = assert.eq(
   a, b,
   message:lazy-message(message, a, b)
 )
@@ -53,9 +57,9 @@
 /// - a (any): First value.
 /// - b (any): Second value.
 /// - message (string, function): A message to show if the assertion fails.
-#let ne(a, b, message:(..a) => "Values should not be the same, got " + repr(a.pos())) = assert.ne(
+#let ne(a, b, message:(a, b) => "Value "+repr(a)+" was equal to "+repr(b)) = assert.ne(
   a, b,
-  message:lazy-message(message, test)
+  message:lazy-message(message, a, b)
 )
 
 /// Alias for @@ne()
@@ -94,7 +98,7 @@
 #let any(
   ..values,
   value,
-  message:(..a) => "Allowed values: " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first())
+  message:(..a) => "Value should be one of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first())
 ) = assert(
   value in values.pos(),
   message:lazy-message(message, value, ..values)
@@ -111,7 +115,7 @@
 #let not-any(
   ..values,
   value,
-  message:(..a) => "Disallowed values: " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first())
+  message:(..a) => "Value should not be one of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first())
 ) = assert(
   value not in values.pos(),
   message:lazy-message(message, value, ..values)
@@ -131,7 +135,7 @@
 #let any-type(
   ..types,
   value,
-  message:(..a) => "\nAllowed types: " + repr(a.pos().slice(1)) + ".\nGot " + repr(a.pos().first()) + " (" + type(a.pos().first()) + ")"
+  message:(..a) => "Value should have any type of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first()) + " (" + type(a.pos().first()) + ")"
 ) = assert(
   type(value) in types.pos(),
   message:lazy-message(message, value, ..types)
@@ -149,7 +153,7 @@
 #let not-any-type(
   ..types,
   value,
-  message:(..a) => "\nDisallowed types: " + repr(a.pos().slice(1)) + ".\nGot " + repr(a.pos().first()) + " (" + type(a.pos().first()) + ")"
+  message:(..a) => "Value should not have any type of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first()) + " (" + type(a.pos().first()) + ")"
 ) = assert(
   type(value) not in types.pos(),
   message:lazy-message(message, value, ..types)
@@ -167,7 +171,7 @@
 #let all-of-type(
   t,
   ..values,
-  message:(..a) => "\nValues need to be of type " + repr(a.pos().first()) + ".\nGot " + repr(a.pos().slice(1)) + " / " + repr(a.pos().slice(1).map(type))
+  message:(..a) => "Values need to be of type " + repr(a.pos().first()) + ". Got " + repr(a.pos().slice(1)) + " / " + repr(a.pos().slice(1).map(type))
 ) = assert(
   values.pos().all((v) => alias.type(v) == t),
   message:lazy-message(message, t, ..values)
@@ -185,7 +189,7 @@
 #let none-of-type(
   t,
   ..values,
-  message:(..a) => "\nValues may not be of type " + repr(a.pos().first()) + ".\nGot " + repr(a.pos().slice(1)) + " / " + repr(a.pos().slice(1).map(type))
+  message:(..a) => "Values may not be of type " + repr(a.pos().first()) + ". Got " + repr(a.pos().slice(1)) + " / " + repr(a.pos().slice(1).map(type))
 ) = assert(
   values.pos().all((v) => alias.type(v) != t),
   message:lazy-message(message, t, ..values)
