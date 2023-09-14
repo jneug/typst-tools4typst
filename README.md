@@ -1,4 +1,4 @@
-# Tools for Typst (v0.3.1)
+# Tools for Typst (v0.3.2)
 
 > A utility package for typst package authors.
 
@@ -13,7 +13,7 @@ Hopefully, this collection will grow over time with *Typst* to provide solutions
 Either import the package from the Typst preview repository:
 
 ```js
-#import "@preview/t4t:0.3.1": *
+#import "@preview/t4t:0.3.2": *
 ```
 
 If only a few functions from `t4t` are needed, simply copy the necessary code to the beginning of the document.
@@ -40,11 +40,11 @@ Any or all modules can be imported the usual way:
 
 ```js
 // Import as "t4t"
-#import "@preview/t4t:0.3.1"
+#import "@preview/t4t:0.3.2"
 // Import all modules
-#import "@preview/t4t:0.3.1": *
+#import "@preview/t4t:0.3.2": *
 // Import specific modules
-#import "@preview/t4t:0.3.1": is, def
+#import "@preview/t4t:0.3.2": is, def
 ```
 
 In general, the main value is passed last to the utility functions. `#def.if-none()`, for example, takes the default value first and the value to test second. This is somewhat counterintuitive at first, but allows the use of `.with()` to generate derivative functions:
@@ -56,7 +56,7 @@ In general, the main value is passed last to the utility functions. `#def.if-non
 ### Test functions
 
 ```js
-#import "@preview/t4t:0.3.1": is
+#import "@preview/t4t:0.3.2": is
 ```
 
 These functions provide shortcuts to common tests like `#is.eq()`. Some of these are not shorter as writing pure Typst code (e.g. `a == b`), but can easily be used in `.any()` or `.find()` calls:
@@ -77,7 +77,7 @@ let pos-bar = args.pos().position(is.eq.with("|"))
 There are two exceptions: `is-none` and `is-auto`. Since keywords can't be used as function names, the `is` module can't define a function to do `is.none()`. Therefore the methods `is-none` and `is-auto` are provided in the base module of `t4t`:
 
 ```js
-#import "@preview/t4t:0.3.1": is-none, is-auto
+#import "@preview/t4t:0.3.2": is-none, is-auto
 ```
 
 The `is` submodule still has these tests, but under different names (`is.n` and `is.non` for `none` and `is.a` and `is.aut` for `auto`).
@@ -143,7 +143,7 @@ The `is` submodule still has these tests, but under different names (`is.n` and 
 ### Default values
 
 ```js
-#import "@preview/t4t:0.3.1": def
+#import "@preview/t4t:0.3.2": def
 ```
 
 These functions perform a test to decide if a given `value` is _invalid_. If the test _passes_, the `default` is returned, the `value` otherwise.
@@ -174,7 +174,7 @@ Almost all functions support an optional `do` argument, to be set to a function 
 ### Assertions
 
 ```js
-#import "@preview/t4t:0.3.1": assert
+#import "@preview/t4t:0.3.2": assert
 ```
 
 This submodule overloads the default `assert` function and provides more asserts to quickly check if given values are valid. All functions use `assert` in the background.
@@ -207,7 +207,7 @@ All assert functions take an optional argument `message` to set the error messag
 ## Element helpers
 
 ```js
-#import "@preview/t4t:0.3.1": get
+#import "@preview/t4t:0.3.2": get
 ```
 
 This submodule is a collection of functions, that mostly deal with content elements and _get_ some information from them. Though some handle other types like dictionaries.
@@ -276,7 +276,7 @@ This submodule is a collection of functions, that mostly deal with content eleme
 ## Math functions
 
 ```js
-#import "@preview/t4t:0.3.1": math
+#import "@preview/t4t:0.3.2": math
 ```
 
 Some functions to complement the native `calc` module.
@@ -311,7 +311,7 @@ Some functions to complement the native `calc` module.
 ## Alias functions
 
 ```js
-#import "@preview/t4t:0.3.1": alias
+#import "@preview/t4t:0.3.2": alias
 ```
 
 Some of the native Typst function as aliases, to prevent collisions with some common argument names.
