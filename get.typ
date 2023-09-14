@@ -369,7 +369,7 @@
 ///
 /// // Tests
 /// #test(
-///   `get.x-align(top + center) == center`,
+///  `get.x-align(top + center) == center`,
 ///   `get.x-align(top) == left`,
 ///   `get.x-align(center) == center`
 /// )
@@ -380,7 +380,7 @@
 #let x-align( align, default:left ) = {
   if align in (left, right, center) {
     return align
-  } else if type(align) == "2d alignment" {
+  } else if type(align) == "alignment" and align.x != none {
     return align.x
   } else {
     return default
@@ -407,7 +407,7 @@
 #let y-align( align, default:top ) = {
   if align in (top, bottom, horizon) {
     return align
-  } else if type(align) == "2d alignment" {
+  } else if type(align) == "alignment" and align.y != none {
     return align.y
   } else {
     return default

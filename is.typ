@@ -186,7 +186,7 @@
     content: []
   )
 
-  let t = type(value)
+  let t = str(type(value))
   if t in empty-values {
     return value == empty-values.at(t)
   } else {
@@ -219,7 +219,7 @@
     content: []
   )
 
-  let t = type(value)
+  let t = str(type(value))
   if t in empty-values {
     return value != empty-values.at(t)
   } else {
@@ -289,7 +289,7 @@
 /// - value (any): value to test
 /// -> boolean
 #let has( ..keys, value ) = {
-  if type(value) in ("dictionary", "array") {
+  if type(value) in (dictionary, array) {
     return keys.pos().all((k) => k in value)
   } else {
     return false
@@ -444,7 +444,7 @@
 
 #let align( value ) = alias.type(value) == "alignment"
 
-#let align2d( value ) = alias.type(value) == "2dalignment"
+#let align2d( value ) = alias.type(value) == "alignment"
 
 #let func( value ) = alias.type(value) == "function"
 
