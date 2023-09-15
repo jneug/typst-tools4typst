@@ -343,6 +343,10 @@ The following functions have aliases right now:
 
 ## Changelog
 
+### Version 0.3.2
+
+- Fixed issue with the new `#type` function in Typst 0.8.0.
+
 ### Version 0.3.1
 
 - Some fixes for message evaluation in `assert` module.
