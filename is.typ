@@ -24,7 +24,11 @@
 ///
 /// - test (function, boolean): Test to negate.
 /// -> function
-#let neg( test ) = (..args) => { not test(..args) }
+#let neg(test) = (
+  (..args) => {
+    not test(..args)
+  }
+)
 
 /// Tests if values #arg[compare] and #arg[value] are equal.
 ///
@@ -37,7 +41,7 @@
 /// - compare (any): first value
 /// - value (any): second value
 /// -> boolean
-#let eq( compare, value ) = {
+#let eq(compare, value) = {
   return value == compare
 }
 
@@ -54,7 +58,7 @@
 /// - compare (any): First value.
 /// - value (any): Second value.
 /// -> boolean
-#let neq( compare, value ) = {
+#let neq(compare, value) = {
   return value != compare
 }
 
@@ -70,7 +74,7 @@
 ///
 /// - ..values (any): Values to test.
 /// -> boolean
-#let n( ..values ) = {
+#let n(..values) = {
   return none in values.pos()
 }
 
@@ -89,7 +93,7 @@
 ///
 /// - ..values (any): Values to test.
 /// -> boolean
-#let not-none( ..values ) = {
+#let not-none(..values) = {
   return none not in values.pos()
 }
 
@@ -119,8 +123,8 @@
 ///
 /// - ..values (any): Values to test.
 /// -> boolean
-#let one-not-none( ..values ) = {
-  return values.pos().any((v) => v != none)
+#let one-not-none(..values) = {
+  return values.pos().any(v => v != none)
 }
 
 /// Tests if any one of #arg[values] is equal to #value(auto).
@@ -135,7 +139,7 @@
 ///
 /// - ..values (any): Values to test.
 /// -> boolean
-#let a( ..values ) = {
+#let a(..values) = {
   return auto in values.pos()
 }
 /// Alias for @@a()
@@ -153,7 +157,7 @@
 ///
 /// - ..values (any): Values to test.
 /// -> boolean
-#let not-auto( ..values ) = {
+#let not-auto(..values) = {
   return auto not in values.pos()
 }
 
@@ -178,12 +182,12 @@
 ///
 /// - value (any): value to test
 /// -> boolean
-#let empty( value ) = {
+#let empty(value) = {
   let empty-values = (
     array: (),
     dictionary: (:),
     string: "",
-    content: []
+    content: [],
   )
 
   let t = str(type(value))
@@ -211,12 +215,12 @@
 ///
 /// - value (any): value to test
 /// -> boolean
-#let not-empty( value ) = {
+#let not-empty(value) = {
   let empty-values = (
     array: (),
     dictionary: (:),
     string: "",
-    content: []
+    content: [],
   )
 
   let t = str(type(value))
@@ -243,7 +247,7 @@
 ///
 /// - value (any): value to test
 /// -> boolean
-#let any( ..compare, value ) = {
+#let any(..compare, value) = {
   // return compare.pos().any((v) => v == value)
   return value in compare.pos()
 }
@@ -264,7 +268,7 @@
 /// - ..compare (any): values to compare to
 /// - value (any): value to test
 /// -> boolean
-#let not-any( ..compare, value) = {
+#let not-any(..compare, value) = {
   // return not compare.pos().any((v) => v == value)
   return not value in compare.pos()
 }
@@ -288,9 +292,9 @@
 /// - ..keys (any): keys or values to look for
 /// - value (any): value to test
 /// -> boolean
-#let has( ..keys, value ) = {
+#let has(..keys, value) = {
   if type(value) in (dictionary, array) {
-    return keys.pos().all((k) => k in value)
+    return keys.pos().all(k => k in value)
   } else {
     return false
   }
@@ -314,7 +318,7 @@
 ///
 /// - t (string): name of the type
 /// - value (any): value to test
-#let type( t, value ) = alias.type(value) == t
+#let type(t, value) = alias.type(value) == t
 
 /// Tests if #arg[value] is of type dictionary.
 ///
@@ -328,7 +332,7 @@
 /// )
 ///
 /// - value (any): value to test
-#let dict( value ) = alias.type(value) == "dictionary"
+#let dict(value) = alias.type(value) == "dictionary"
 
 /// Tests if #arg[value] is of type array.
 ///
@@ -343,7 +347,7 @@
 /// )
 ///
 /// - value (any): value to test
-#let arr( value ) = alias.type(value) == "array"
+#let arr(value) = alias.type(value) == "array"
 
 /// Tests if #arg[value] is of type content.
 ///
@@ -357,7 +361,7 @@
 /// )
 ///
 /// - value (any): value to test
-#let content( value ) = alias.type(value) == "content"
+#let content(value) = alias.type(value) == "content"
 
 /// Tests if #arg[value] is of type label.
 ///
@@ -371,7 +375,7 @@
 /// )
 ///
 /// - value (any): value to test
-#let label( value ) = alias.type(value) == "label"
+#let label(value) = alias.type(value) == "label"
 
 /// Tests if #arg[value] is of type color.
 ///
@@ -385,7 +389,7 @@
 /// )
 ///
 /// - value (any): value to test
-#let color( value ) = alias.type(value) == "color"
+#let color(value) = alias.type(value) == "color"
 
 /// Tests if #arg[value] is of type stroke.
 ///
@@ -397,7 +401,7 @@
 /// )
 ///
 /// - value (any): value to test
-#let stroke( value ) = alias.type(value) == "stroke"
+#let stroke(value) = alias.type(value) == "stroke"
 
 /// Tests if #arg[value] is of type location.
 ///
@@ -409,7 +413,7 @@
 /// ))
 ///
 /// - value (any): value to test
-#let loc( value ) = alias.type(value) == "location"
+#let loc(value) = alias.type(value) == "location"
 
 /// Tests if #arg[value] is of type boolean.
 ///
@@ -422,31 +426,31 @@
 /// )
 ///
 /// - value (any): value to test
-#let bool( value ) = alias.type(value) == "boolean"
+#let bool(value) = alias.type(value) == "boolean"
 
-#let str( value ) = alias.type(value) == "string"
+#let str(value) = alias.type(value) == "string"
 
-#let int( value ) = alias.type(value) == "integer"
+#let int(value) = alias.type(value) == "integer"
 
-#let float( value ) = alias.type(value) == "float"
+#let float(value) = alias.type(value) == "float"
 
-#let num( value ) = alias.type(value) in ("float", "integer")
+#let num(value) = alias.type(value) in ("float", "integer")
 
-#let frac( value ) = alias.type(value) == "fraction"
+#let frac(value) = alias.type(value) == "fraction"
 
-#let length( value ) = alias.type(value) == "length"
+#let length(value) = alias.type(value) == "length"
 
-#let rlength( value ) = alias.type(value) == "relative length"
+#let rlength(value) = alias.type(value) == "relative length"
 
-#let ratio( value ) = alias.type(value) == "ratio"
+#let ratio(value) = alias.type(value) == "ratio"
 
-#let angle( value ) = alias.type(value) == "angle"
+#let angle(value) = alias.type(value) == "angle"
 
-#let align( value ) = alias.type(value) == "alignment"
+#let align(value) = alias.type(value) == "alignment"
 
-#let align2d( value ) = alias.type(value) == "alignment"
+#let align2d(value) = alias.type(value) == "alignment"
 
-#let func( value ) = alias.type(value) == "function"
+#let func(value) = alias.type(value) == "function"
 
 /// Tests if types #arg[value] is any one of `types`.
 ///
@@ -459,7 +463,7 @@
 ///
 /// - ..types (string): type names to check against
 /// - value (any): value to test
-#let any-type( ..types, value ) = {
+#let any-type(..types, value) = {
   return alias.type(value) in types.pos()
 }
 
@@ -476,9 +480,9 @@
 /// )
 ///
 /// - ..values (any): Values to test.
-#let same-type( ..values ) = {
+#let same-type(..values) = {
   let t = alias.type(values.pos().first())
-  return values.pos().all((v) => alias.type(v) == t)
+  return values.pos().all(v => alias.type(v) == t)
 }
 
 /// Tests if all of the passed in values have the type `t`.
@@ -493,7 +497,7 @@
 ///
 /// - t (string): type to test against
 /// - ..values (any): Values to test.
-#let all-of-type( t, ..values ) = values.pos().all((v) => alias.type(v) == t)
+#let all-of-type(t, ..values) = values.pos().all(v => alias.type(v) == t)
 
 /// Tests if none of the passed in values has the type `t`.
 ///
@@ -507,7 +511,7 @@
 ///
 /// - t (string): type to test against
 /// - ..values (any): Values to test.
-#let none-of-type( t, ..values ) = values.pos().all((v) => alias.type(v) != t)
+#let none-of-type(t, ..values) = values.pos().all(v => alias.type(v) != t)
 
 /// Tests if #arg[value] is a content element with `value.func() == func`.
 ///
@@ -529,7 +533,7 @@
 ///
 /// - func (function): element function
 /// - value (any): value to test
-#let elem( func, value ) = if alias.type(value) == "content" {
+#let elem(func, value) = if alias.type(value) == "content" {
   if alias.type(func) == "string" {
     return repr(value.func()) == func
   } else {
@@ -549,55 +553,55 @@
 ///     a b
 ///   ])`,
 /// )
-#let sequence( value ) = if alias.type(value) == "content" {
+#let sequence(value) = if alias.type(value) == "content" {
   return repr(value.func()) == "sequence"
 } else {
   return false
 }
 
-#let raw( value ) = if alias.type(value) == "content" {
+#let raw(value) = if alias.type(value) == "content" {
   return value.func() == alias.raw
 } else {
   return false
 }
 
-#let table( value ) = if alias.type(value) == "content" {
+#let table(value) = if alias.type(value) == "content" {
   return value.func() == alias.table
 } else {
   return false
 }
 
-#let list( value ) = if alias.type(value) == "content" {
+#let list(value) = if alias.type(value) == "content" {
   return value.func() == alias.list
 } else {
   return false
 }
 
-#let enum( value ) = if alias.type(value) == "content" {
+#let enum(value) = if alias.type(value) == "content" {
   return value.func() == alias.enum
 } else {
   return false
 }
 
-#let terms( value ) = if alias.type(value) == "content" {
+#let terms(value) = if alias.type(value) == "content" {
   return value.func() == alias.terms
 } else {
   return false
 }
 
-#let cols( value ) = if alias.type(value) == "content" {
+#let cols(value) = if alias.type(value) == "content" {
   return value.func() == alias.columns
 } else {
   return false
 }
 
-#let grid( value ) = if alias.type(value) == "content" {
+#let grid(value) = if alias.type(value) == "content" {
   return value.func() == alias.grid
 } else {
   return false
 }
 
-#let stack( value ) = if alias.type(value) == "content" {
+#let stack(value) = if alias.type(value) == "content" {
   return value.func() == alias.stack
 } else {
   return false

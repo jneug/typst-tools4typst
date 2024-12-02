@@ -24,12 +24,12 @@
 ///
 /// - ..dicts (any): Values to merge into the dictionary.
 /// -> dictionary
-#let dict( ..dicts ) = {
+#let dict(..dicts) = {
   let d = (:)
-  for i in range(1, dicts.pos().len(), step:2) {
+  for i in range(1, dicts.pos().len(), step: 2) {
     d.insert(
       str(dicts.pos().at(i - 1)),
-      dicts.pos().at(i)
+      dicts.pos().at(i),
     )
   }
   if calc.odd(dicts.pos().len()) {
@@ -64,7 +64,7 @@
 ///
 /// - ..dicts (dictionary): Dictionaries to merge.
 /// -> dictionary
-#let dict-merge( ..dicts ) = {
+#let dict-merge(..dicts) = {
   if all-of-type("dictionary", ..dicts.pos()) {
     let c = (:)
     for dict in dicts.pos() {
@@ -131,27 +131,29 @@
 /// - prefix (string): A prefix for the argument keys to extract.
 /// -> dictionary
 #let args(
-	args,
-	prefix: ""
-) = (..keys) => {
-	let vars = (:)
-  for key in keys.pos() {
-    let k = prefix + key
-    if k in args.named() {
-			vars.insert(key, args.named().at(k))
-		}
-  }
-	for (key, value) in keys.named() {
-	  let k = prefix + key
-		if k in args.named() {
-			vars.insert(key, args.named().at(k))
-		} else {
-			vars.insert(key, value)
-		}
-	}
+  args,
+  prefix: "",
+) = (
+  (..keys) => {
+    let vars = (:)
+    for key in keys.pos() {
+      let k = prefix + key
+      if k in args.named() {
+        vars.insert(key, args.named().at(k))
+      }
+    }
+    for (key, value) in keys.named() {
+      let k = prefix + key
+      if k in args.named() {
+        vars.insert(key, args.named().at(k))
+      } else {
+        vars.insert(key, value)
+      }
+    }
 
-	return vars
-}
+    return vars
+  }
+)
 
 /// Recursively extracts the text content of #arg[element].
 ///
@@ -171,24 +173,26 @@
 /// - element (any)
 /// - sep (string, content)
 /// -> string
-#let text( element, sep: "" ) = {
-	if type(element) == "content" {
-		if element.has("text") {
-			element.text
-		} else if element.has("children") {
-     element.children.map(text).join(sep)
-		} else if element.has("child") {
-			text(element.child)
-		} else if element.has("body") {
-			text(element.body)
-		} else {
-			""
-		}
+#let text(element, sep: "") = {
+  if type(element) == "content" {
+    if element.has("text") {
+      element.text
+    } else if element.has("children") {
+      element.children.map(text).join(sep)
+    } else if element.has("child") {
+      text(element.child)
+    } else if element.has("body") {
+      text(element.body)
+    } else if repr(element.func()) == "space" {
+      " "
+    } else {
+      ""
+    }
   } else if type(element) in ("array", "dictionary") {
     return ""
-	} else {
-		str(element)
-	}
+  } else {
+    str(element)
+  }
 }
 
 /// Returns the color of #arg[stroke].
@@ -211,7 +215,7 @@
 /// - stroke (length, color, dictionary, stroke): The stroke value.
 /// - default (color): A default color to use.
 /// -> color
-#let stroke-paint( stroke, default: black ) = {
+#let stroke-paint(stroke, default: black) = {
   if type(stroke) in ("length", "relative length") {
     return default
   } else if type(stroke) == "color" {
@@ -243,12 +247,13 @@
 /// - stroke (length, color, dictionary, stroke): The stroke value.
 /// - default (length): A default thickness to use.
 /// -> length
-#let stroke-thickness( stroke, default: 1pt ) = {
+#let stroke-thickness(stroke, default: 1pt) = {
   if type(stroke) in ("length", "relative length") {
     return stroke
   } else if type(stroke) == "color" {
     return 1pt
-  } else if type(stroke) == "stroke" {  // 2em + blue
+  } else if type(stroke) == "stroke" {
+    // 2em + blue
     stroke.thickness
   } else if type(stroke) == "dictionary" and "thickness" in stroke {
     return stroke.thickness
@@ -281,13 +286,13 @@
 /// - stroke (length, color, dictionary, stroke): A stroke value.
 /// - ..overrides (any): Overrides for the stroke.
 /// -> dictionary
-#let stroke-dict( stroke, ..overrides ) = {
+#let stroke-dict(stroke, ..overrides) = {
   let dict = (
     paint: stroke-paint(stroke),
     thickness: stroke-thickness(stroke),
     dash: "solid",
     cap: "round",
-    join: "round"
+    join: "round",
   )
   if type(stroke) == "dictionary" {
     dict = dict + stroke
@@ -311,8 +316,8 @@
 /// - inset (length, dictionary): The inset value.
 /// - default (length): A default value.
 /// -> length
-#let inset-at( direction, inset, default: 0pt ) = {
-  direction = repr(direction)   // allows use of alignment values
+#let inset-at(direction, inset, default: 0pt) = {
+  direction = repr(direction) // allows use of alignment values
   if type(inset) == "dictionary" {
     if direction in inset {
       return inset.at(direction)
@@ -347,12 +352,12 @@
 /// - inset (length, dictionary): The base inset value.
 /// - ..overrides (any): Overrides for the inset.
 /// -> dictionary
-#let inset-dict( inset, ..overrides ) = {
+#let inset-dict(inset, ..overrides) = {
   let dict = (
     top: inset-at(top, inset),
     bottom: inset-at(bottom, inset),
     left: inset-at(left, inset),
-    right: inset-at(right, inset)
+    right: inset-at(right, inset),
   )
   if type(inset) == "dictionary" {
     dict = dict + inset
@@ -377,7 +382,7 @@
 /// - align (alignment, 2d alignment): The alignment to get the x-alignment from.
 /// - default (alignment): A default alignment.
 /// -> alignment
-#let x-align( align, default:left ) = {
+#let x-align(align, default: left) = {
   if align in (left, right, center) {
     return align
   } else if type(align) == "alignment" and align.x != none {
@@ -404,7 +409,7 @@
 /// - align (alignment, 2d alignment): The alignment to get the y-alignment from.
 /// - default (alignment): A default alignment.
 /// -> alignment
-#let y-align( align, default:top ) = {
+#let y-align(align, default: top) = {
   if align in (top, bottom, horizon) {
     return align
   } else if type(align) == "alignment" and align.y != none {
