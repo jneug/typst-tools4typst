@@ -1,5 +1,5 @@
+
 #import "test.typ": is-empty
-#import "def-compat.typ" as compat
 
 // =================================
 //  Get default values
@@ -12,18 +12,18 @@
 ///
 /// // Tests
 /// #test(
-///   `def.if-true(1 == 1, 2, def:3) == 3`,
-///   `def.if-true(1 == 2, 2, def:3) == 2`,
-///   `def.if-true(1 == 2, 2, def:3, do: (n) => n+1) == 3`,
-///   `def.if-true(1 == 1, 2, def:3, do: (n) => n+1) == 3`,
+///   `def.if-true(1 == 1, 2, 3) == 2`,
+///   `def.if-true(1 == 2, 2, 3) == 3`,
+///   `def.if-true(1 == 2, 2, 3, do: (n) => n+1) == 4`,
+///   `def.if-true(1 == 1, 2, 3, do: (n) => n+1) == 2`,
 /// )
 ///
 /// - test (boolean): A test result.
-/// - value (any): The value to test.
-/// - def (any): The default value.
+/// - default (any): A default value.
 /// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
-#let if-true(test, value, def: none, do: none) = if test {
-  return def
+/// - value (any): The value to test.
+#let if-true(test, default, do: none, value) = if test {
+  return default
 } else if do == none {
   return value
 } else {
@@ -37,18 +37,18 @@
 ///
 /// // Tests
 /// #test(
-///   `def.if-false(1 == 1, 2, def:3) == 2`,
-///   `def.if-false(1 == 2, 2, def:3) == 3`,
-///   `def.if-false(1 == 1, 2, def:3, do: (n) => n+1) == 3`,
-///   `def.if-false(1 == 2, 2, def:3, do: (n) => n+1) == 3`,
+///   `def.if-false(1 == 1, 2, 3) == 3`,
+///   `def.if-false(1 == 2, 2, 3) == 2`,
+///   `def.if-false(1 == 1, 2, 3, do: (n) => n+1) == 4`,
+///   `def.if-false(1 == 2, 2, 3, do: (n) => n+1) == 2`,
 /// )
 ///
 /// - test (boolean): A test result.
-/// - value (any): The value to test.
-/// - def (any): The default value.
+/// - default (any): A default value.
 /// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
-#let if-false(test, value, def: none, do: none) = if not test {
-  return def
+/// - value (any): The value to test.
+#let if-false(test, default, do: none, value) = if not test {
+  return default
 } else if do == none {
   return value
 } else {
@@ -62,17 +62,17 @@
 ///
 /// // Tests
 /// #test(
-///   `def.if-none(none, def:auto) == auto`,
-///   `def.if-none(5, def:auto) == 5`,
-///   `def.if-none(none, def:auto, do: (v) => v*1cm) == auto`,
-///   `def.if-none(5, def:auto, do: (v) => v*1cm) == 5cm`,
+///   `def.if-none(auto, none) == auto`,
+///   `def.if-none(auto, 5) == 5`,
+///   `def.if-none(auto, none, do: (v) => 1cm) == auto`,
+///   `def.if-none(auto, 5, do: (v) => v*1cm) == 5cm`,
 /// )
 ///
-/// - value (any): The value to test.
-/// - def (any): The default value.
+/// - default (any): A default value.
 /// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
-#let if-none(value, def: none, do: none) = if value == none {
-  return def
+/// - value (any): The value to test.
+#let if-none(default, do: none, value) = if value == none {
+  return default
 } else if do == none {
   return value
 } else {
@@ -86,17 +86,17 @@
 ///
 /// // Tests
 /// #test(
-///   `def.if-auto(auto, def:none) == none`,
-///   `def.if-auto(5, def:1mm) == 5`,
-///   `def.if-auto(auto, def:1mm, do: (v) => v*1cm) == 1mm`,
-///   `def.if-auto(5, def:1mm, do: (v) => v*1cm) == 5cm`,
+///   `def.if-auto(none, auto) == none`,
+///   `def.if-auto(1mm, 5) == 5`,
+///   `def.if-auto(1mm, auto, do: (v) => 1cm) == 1mm`,
+///   `def.if-auto(1mm, 5, do: (v) => v*1cm) == 5cm`,
 /// )
 ///
-/// - value (any): The value to test.
-/// - def (any): A default value.
+/// - default (any): A default value.
 /// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
-#let if-auto(value, def: none, do: none) = if value == auto {
-  return def
+/// - value (any): The value to test.
+#let if-auto(default, do: none, value) = if value == auto {
+  return default
 } else if do == none {
   return value
 } else {
@@ -118,19 +118,19 @@
 ///
 /// // Tests
 /// #test(
-///   `def.if-any(def:none, auto, 1pt, none) == 1pt`,
-///   `def.if-any(def:none, auto, 1pt, auto) == 1pt`,
-///   `def.if-any(def:none, auto, 1pt, 2pt) == 2pt`,
-///   `def.if-any(def:none, auto, 1pt, 2pt, do:(v)=>3mm) == 3mm`,
-///   `def.if-any(def:none, auto, 1pt, none, do:(v)=>3mm) == 1pt`,
+///   `def.if-any(none, auto, 1pt, none) == 1pt`,
+///   `def.if-any(none, auto, 1pt, auto) == 1pt`,
+///   `def.if-any(none, auto, 1pt, 2pt) == 2pt`,
+///   `def.if-any(none, auto, 1pt, 2pt, do:(v)=>3mm) == 3mm`,
+///   `def.if-any(none, auto, 1pt, none, do:(v)=>3mm) == 1pt`,
 /// )
 ///
-/// - value (any): value to test
 /// - ..compare (any): list of values to compare #arg[value] to
-/// - def (any): The default value.
+/// - default (any): A default value.
 /// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
-#let if-any(value, ..compare, def: none, do: none) = if value in compare.pos() {
-  return def
+/// - value (any): value to test
+#let if-any(..compare, default, do: none, value) = if value in compare.pos() {
+  return default
 } else if do == none {
   return value
 } else {
@@ -152,18 +152,18 @@
 ///
 /// // Tests
 /// #test(
-///   `def.if-auto(def:none, auto) == none`,
-///   `def.if-auto(def:1mm, 5) == 5`,
-///   `def.if-auto(def:1mm, auto, do: (v) => 1cm) == 1mm`,
-///   `def.if-auto(def:1mm, 5, do: (v) => v*1cm) == 5cm`,
+///   `def.if-auto(none, auto) == none`,
+///   `def.if-auto(1mm, 5) == 5`,
+///   `def.if-auto(1mm, auto, do: (v) => 1cm) == 1mm`,
+///   `def.if-auto(1mm, 5, do: (v) => v*1cm) == 5cm`,
 /// )
 ///
-/// - value (any): value to test
 /// - ..compare (any): list of values to compare #arg[value] to
-/// - def (any): The default value.
+/// - default (any): A default value.
 /// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
-#let if-not-any(value, ..compare, def: none, do: none) = if value not in compare.pos() {
-  return def
+/// - value (any): value to test
+#let if-not-any(..compare, default, do: none, value) = if value not in compare.pos() {
+  return default
 } else if do == none {
   return value
 } else {
@@ -180,17 +180,17 @@
 ///
 /// // Tests
 /// #test(
-///   `def.if-empty(def:"a", "") == "a"`,
-///   `def.if-empty(def:"a", none) == "a"`,
-///   `def.if-empty(def:"a", ()) == "a"`,
-///   `def.if-empty(def:"a", (:)) == "a"`,
+///   `def.if-empty("a", "") == "a"`,
+///   `def.if-empty("a", none) == "a"`,
+///   `def.if-empty("a", ()) == "a"`,
+///   `def.if-empty("a", (:)) == "a"`,
 /// )
 ///
-/// - value (any): value to test
-/// - def (any): The default value.
+/// - default (any): A default value.
 /// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
-#let if-empty(value, def: none, do: none) = if is-empty(value) {
-  return def
+/// - value (any): value to test
+#let if-empty(default, do: none, value) = if is-empty(value) {
+  return default
 } else if do == none {
   return value
 } else {
@@ -204,17 +204,17 @@
 ///
 /// // Tests
 /// #test(
-///   scope: (fun: (..args) => def.if-arg("width", args, def:100%)),
+///   scope: (fun: (..args) => def.if-arg(100%, args, "width")),
 ///   `fun(a:1, b:2, c:30%) == 100%`,
 ///   `fun(a:1, b:2, width:30%) == 30%`,
 /// )
 ///
-/// - key (any): key to look for
-/// - def (any): The default value.
+/// - default (any): A default value.
 /// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
-/// - args (arguments): arguments to test
-#let if-arg(key, def: none, do: none, args) = if key not in args.named() {
-  return def
+/// - args (any): arguments to test
+/// - key (any): key to look for
+#let if-arg(default, do: none, args, key) = if key not in args.named() {
+  return default
 } else if do == none {
   args.named().at(key)
 } else {
