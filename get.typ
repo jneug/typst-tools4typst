@@ -1,5 +1,5 @@
 
-#import "is.typ": all-of-type
+#import "test.typ": all-of-type
 
 // =================================
 //  Dictionaries
@@ -216,16 +216,11 @@
 /// - default (color): A default color to use.
 /// -> color
 #let stroke-paint(stroke, default: black) = {
-  if type(stroke) in ("length", "relative length") {
+  let paint = std.stroke(stroke).paint
+  if paint == auto {
     return default
-  } else if type(stroke) == "color" {
-    return stroke
-  } else if type(stroke) == "stroke" {
-    return stroke.paint
-  } else if type(stroke) == "dictionary" and "paint" in stroke {
-    return stroke.paint
   } else {
-    return default
+    return paint
   }
 }
 
@@ -248,17 +243,11 @@
 /// - default (length): A default thickness to use.
 /// -> length
 #let stroke-thickness(stroke, default: 1pt) = {
-  if type(stroke) in ("length", "relative length") {
-    return stroke
-  } else if type(stroke) == "color" {
-    return 1pt
-  } else if type(stroke) == "stroke" {
-    // 2em + blue
-    stroke.thickness
-  } else if type(stroke) == "dictionary" and "thickness" in stroke {
-    return stroke.thickness
-  } else {
+  let thickness = std.stroke(stroke).thickness
+  if thickness == auto {
     return default
+  } else {
+    return thickness
   }
 }
 
@@ -383,9 +372,7 @@
 /// - default (alignment): A default alignment.
 /// -> alignment
 #let x-align(align, default: left) = {
-  if align in (left, right, center) {
-    return align
-  } else if type(align) == "alignment" and align.x != none {
+  if std.type(align) == alignment and align.x != none {
     return align.x
   } else {
     return default
@@ -410,9 +397,7 @@
 /// - default (alignment): A default alignment.
 /// -> alignment
 #let y-align(align, default: top) = {
-  if align in (top, bottom, horizon) {
-    return align
-  } else if type(align) == "alignment" and align.y != none {
+  if std.type(align) == alignment and align.y != none {
     return align.y
   } else {
     return default

@@ -1,6 +1,5 @@
 
-#import "alias.typ"
-#import "is.typ"
+#import "test.typ"
 
 // =================================
 //  Asserts
@@ -8,7 +7,7 @@
 
 #let lazy-message(
   user-message,
-  ..args
+  ..args,
 ) = {
   if user-message == none {
     return ""
@@ -26,18 +25,18 @@
 ///
 /// - test (boolean): Assertion to test.
 /// - message (string,function): A message to show if the assertion fails.
-#let that(test, message:"Test returned false, should be true.") = assert(
+#let that(test, message: "Test returned false, should be true.") = assert(
   test,
-  message:lazy-message(message, test)
+  message: lazy-message(message, test),
 )
 
 /// Asserts that #arg[test] is #value(false).
 ///
 /// - test (boolean): Assertion to test.
 /// - message (string, function): A message to show if the assertion fails.
-#let that-not(test, message:"Test returned true, should be false.") = assert(
+#let that-not(test, message: "Test returned true, should be false.") = assert(
   not test,
-  message:lazy-message(message, test)
+  message: lazy-message(message, test),
 )
 
 /// Asserts that two values are equal.
@@ -46,9 +45,10 @@
 /// - a (any): First value.
 /// - b (any): Second value.
 /// - message (string, function): A message to show if the assertion fails.
-#let eq(a, b, message:(a, b) => "Value "+repr(a)+" was not equal to "+repr(b)) = assert.eq(
-  a, b,
-  message:lazy-message(message, a, b)
+#let eq(a, b, message: (a, b) => "Value " + repr(a) + " was not equal to " + repr(b)) = assert.eq(
+  a,
+  b,
+  message: lazy-message(message, a, b),
 )
 
 /// Asserts that two values are not equal.
@@ -57,9 +57,10 @@
 /// - a (any): First value.
 /// - b (any): Second value.
 /// - message (string, function): A message to show if the assertion fails.
-#let ne(a, b, message:(a, b) => "Value "+repr(a)+" was equal to "+repr(b)) = assert.ne(
-  a, b,
-  message:lazy-message(message, a, b)
+#let ne(a, b, message: (a, b) => "Value " + repr(a) + " was equal to " + repr(b)) = assert.ne(
+  a,
+  b,
+  message: lazy-message(message, a, b),
 )
 
 /// Alias for @@ne()
@@ -77,13 +78,11 @@
 /// - message (string, function): A message to show if the assertion fails.
 #let not-none(
   ..values,
-  message:(..a) => "Values should not be none. Got " + repr(a)
+  message: (..a) => "Values should not be none. Got " + repr(a),
 ) = {
   assert(
-    values.pos().all((v) => v != none)
-    and
-    values.named().values().all((v) => v != none),
-    message:lazy-message(message, ..values)
+    values.pos().all(v => v != none) and values.named().values().all(v => v != none),
+    message: lazy-message(message, ..values),
   )
 }
 
@@ -98,10 +97,10 @@
 #let any(
   ..values,
   value,
-  message:(..a) => "Value should be one of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first())
+  message: (..a) => "Value should be one of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first()),
 ) = assert(
   value in values.pos(),
-  message:lazy-message(message, value, ..values)
+  message: lazy-message(message, value, ..values),
 )
 
 /// Assert that #arg[value] is not any one of #arg[values].
@@ -115,10 +114,10 @@
 #let not-any(
   ..values,
   value,
-  message:(..a) => "Value should not be one of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first())
+  message: (..a) => "Value should not be one of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first()),
 ) = assert(
   value not in values.pos(),
-  message:lazy-message(message, value, ..values)
+  message: lazy-message(message, value, ..values),
 )
 
 /// Assert that #arg[value]s type is any one of #arg[types].
@@ -135,10 +134,14 @@
 #let any-type(
   ..types,
   value,
-  message:(..a) => "Value should have any type of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first()) + " (" + type(a.pos().first()) + ")"
+  message: (..a) => (
+    "Value should have any type of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first()) + " (" + type(
+      a.pos().first(),
+    ) + ")"
+  ),
 ) = assert(
   type(value) in types.pos(),
-  message:lazy-message(message, value, ..types)
+  message: lazy-message(message, value, ..types),
 )
 
 /// Assert that #arg[value]s type is not any one of #arg[types].
@@ -153,10 +156,14 @@
 #let not-any-type(
   ..types,
   value,
-  message:(..a) => "Value should not have any type of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first()) + " (" + type(a.pos().first()) + ")"
+  message: (..a) => (
+    "Value should not have any type of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first()) + " (" + type(
+      a.pos().first(),
+    ) + ")"
+  ),
 ) = assert(
   type(value) not in types.pos(),
-  message:lazy-message(message, value, ..types)
+  message: lazy-message(message, value, ..types),
 )
 
 /// Assert that the types of all #arg[values] are equal to #arg[t].
@@ -171,10 +178,14 @@
 #let all-of-type(
   t,
   ..values,
-  message:(..a) => "Values need to be of type " + repr(a.pos().first()) + ". Got " + repr(a.pos().slice(1)) + " / " + repr(a.pos().slice(1).map(type))
+  message: (..a) => (
+    "Values need to be of type " + repr(a.pos().first()) + ". Got " + repr(a.pos().slice(1)) + " / " + repr(
+      a.pos().slice(1).map(type),
+    )
+  ),
 ) = assert(
-  values.pos().all((v) => alias.type(v) == t),
-  message:lazy-message(message, t, ..values)
+  values.pos().all(v => alias.type(v) == t),
+  message: lazy-message(message, t, ..values),
 )
 
 /// Assert that none of the #arg[values] are of type #arg[t].
@@ -189,10 +200,14 @@
 #let none-of-type(
   t,
   ..values,
-  message:(..a) => "Values may not be of type " + repr(a.pos().first()) + ". Got " + repr(a.pos().slice(1)) + " / " + repr(a.pos().slice(1).map(type))
+  message: (..a) => (
+    "Values may not be of type " + repr(a.pos().first()) + ". Got " + repr(a.pos().slice(1)) + " / " + repr(
+      a.pos().slice(1).map(type),
+    )
+  ),
 ) = assert(
-  values.pos().all((v) => alias.type(v) != t),
-  message:lazy-message(message, t, ..values)
+  values.pos().all(v => alias.type(v) != t),
+  message: lazy-message(message, t, ..values),
 )
 
 /// Assert that #arg[value] is not _empty_.
@@ -209,13 +224,13 @@
 /// - message (string, function): A message to show if the assertion fails.
 #let not-empty(
   value,
-  message:(v, ..a) => {
+  message: (v, ..a) => {
     "Value may not be empty. Got " + repr(v)
-  }
+  },
 ) = {
   assert(
     is.not-empty(value),
-    message:lazy-message(message, value)
+    message: lazy-message(message, value),
   )
 }
 
@@ -241,17 +256,21 @@
 /// - n (integer, none): The mandatory number of positional arguments or #value(none).
 /// - args (arguments): The arguments to test.
 /// - message (string,function): A message to show if the assertion fails.
-#let has-pos( n:none, args, message:(n:none, ..a) => {
+#let has-pos(
+  n: none,
+  args,
+  message: (n: none, ..a) => {
+    if n == none {
+      "At least one positional argument required."
+    } else {
+      "Exactly " + str(n) + " positional arguments required, got " + repr(a.pos())
+    }
+  },
+) = {
   if n == none {
-    "At least one positional argument required."
+    assert.ne(args.pos(), (), message: lazy-message(message, n: n, ..args))
   } else {
-    "Exactly " + str(n) +" positional arguments required, got " + repr(a.pos())
-  }
-} ) = {
-  if n == none {
-    assert.ne(args.pos(), (), message:lazy-message(message, n:n, ..args))
-  } else {
-    assert.eq(args.pos().len(), n, message:lazy-message(message, n:n, ..args))
+    assert.eq(args.pos().len(), n, message: lazy-message(message, n: n, ..args))
   }
 }
 
@@ -271,8 +290,8 @@
 ///
 /// - args (arguments): The arguments to test.
 /// - message (string,function): A message to show if the assertion fails.
-#let no-pos( args, message:(..a) => "Unexpected positional arguments: " + repr(a) ) = {
-  assert.eq(args.pos(), (), message:lazy-message(message, ..args.pos()))
+#let no-pos(args, message: (..a) => "Unexpected positional arguments: " + repr(a)) = {
+  assert.eq(args.pos(), (), message: lazy-message(message, ..args.pos()))
 }
 
 /// Assert that #arg[args] has named arguments.
@@ -294,29 +313,29 @@
 /// - args (arguments): The arguments to test.
 /// - message (string, function): A message to show if the assertion fails.
 #let has-named(
-  names:none,
+  names: none,
   strict: false,
   args,
-  message:(..a) => {
-    let names = a.named().at("names", default:())
+  message: (..a) => {
+    let names = a.named().at("names", default: ())
     if names == () {
       "Missing named arguments."
     } else {
       let named = a.named()
       let keys = named.keys()
-      names = names.filter((k) => k != "names" and k not in keys)
+      names = names.filter(k => k != "names" and k not in keys)
       "Missing named arguments: " + names.join(", ")
     }
-  }
+  },
 ) = {
   if names == none {
-    assert.ne(args.named(), (:), message:lazy-message(message, names:(), ..args))
+    assert.ne(args.named(), (:), message: lazy-message(message, names: (), ..args))
   } else {
     if type(names) != "array" {
       names = (names,)
     }
     let keys = args.named().keys()
-    assert(names.all((v) => v in keys), message:lazy-message(message, names:names, ..args))
+    assert(names.all(v => v in keys), message: lazy-message(message, names: names, ..args))
   }
 }
 
@@ -330,13 +349,13 @@
 ///
 /// - args (arguments): The arguments to test.
 /// - message (string,function): A message to show if the assertion fails.
-#let no-named( args, message:(..a) => "Unexpected named arguments: " + repr(a.named()) ) = {
-  assert.eq(args.named(), (:), message:lazy-message(message, ..args))
+#let no-named(args, message: (..a) => "Unexpected named arguments: " + repr(a.named())) = {
+  assert.eq(args.named(), (:), message: lazy-message(message, ..args))
 }
 
 /// Creates a new assertion from `test`.
 ///
-/// The new assertion will take a any number of  `values` and pass them to `test`.
+/// The new assertion will take any number of  `values` and pass them to `test`.
 /// `test` should return a `boolean`.
 /// #sourcecode[```typ
 /// #let assert-numeric = assert.new(is.num)
@@ -348,7 +367,7 @@
 /// ```]
 ///
 /// // Tests
-/// #let assert-numeric = assert.new(is.num)
+/// #let assert-numeric = assert.new(is-num)
 /// #let diameter(radius) = {
 ///   assert-numeric(radius)
 ///   return 2*radius
@@ -357,4 +376,4 @@
 /// #diameter(2)
 ///
 /// - test (function): A test function: #lambda("..any", ret:true)
-#let new( test, message:"" ) = (..v, message:message) => assert(test(..v), message:lazy-message(message, ..v))
+#let new(test, message: "") = (..v, message: message) => assert(test(..v), message: lazy-message(message, ..v))

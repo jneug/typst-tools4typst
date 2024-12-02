@@ -1,4 +1,4 @@
-#import "is.typ": same-type
+#import "test.typ": same-type
 
 // =================================
 //  Math
@@ -21,9 +21,9 @@
 /// - a (integer, float, length, relative length, fraction, ratio): First value.
 /// - b (integer, float, length, relative length, fraction, ratio): Second value.
 /// -> integer, float, length, relative length, fraction, ratio
-#let minmax( a, b ) = (
+#let minmax(a, b) = (
   calc.min(a, b),
-  calc.max(a, b)
+  calc.max(a, b),
 )
 
 /// Clamps a value between `min` and `max`.
@@ -47,16 +47,16 @@
 /// - min (integer, float, length, relative length, fraction, ratio): Maximum for `value`.
 /// - value (integer, float, length, relative length, fraction, ratio): The value to clamp.
 /// -> any
-#let clamp( min, max, value ) = {
-  assert.eq(type(min), type(max),
-    message:"Can't clamp values of different types!"
-  )
-  assert.eq(type(min), type(value),
-    message:"Can't clamp values of different types!"
-  )
-	if value < min { return min }
-	else if value > max { return max }
-	else { return value }
+#let clamp(min, max, value) = {
+  assert.eq(type(min), type(max), message: "Can't clamp values of different types!")
+  assert.eq(type(min), type(value), message: "Can't clamp values of different types!")
+  if value < min {
+    return min
+  } else if value > max {
+    return max
+  } else {
+    return value
+  }
 }
 
 /// Calculates the linear interpolation of `t` between `min` and `max`.
@@ -82,11 +82,9 @@
 /// - max (integer, float, length, relative length, fraction, ratio): Maximum for `value`.
 /// - t (float): Interpolation parameter .
 /// -> integer, float, length, relative length, fraction, ratio
-#let lerp( min, max, t ) = {
-  assert.eq(type(min), type(max),
-    message:"Can't lerp values of different types!"
-  )
-  return (1 - t) * min + t * max;
+#let lerp(min, max, t) = {
+  assert.eq(type(min), type(max), message: "Can't lerp values of different types!")
+  return (1 - t) * min + t * max
 }
 
 /// Maps a `value` from the interval `[min, max]` into the interval `[range-min, range-max]`:
@@ -112,16 +110,10 @@
 /// - range-min (integer, float, length, relative length, fraction, ratio): Maximum of the target interval.
 /// - value (integer, float, length, relative length, fraction, ratio): The value to map.
 /// -> integer, float, length, relative length, fraction, ratio
-#let map( min, max, range-min, range-max, value ) = {
-  assert.eq(type(min), type(max),
-    message:"Can't map values from ranges of different types!"
-  )
-  assert.eq(type(range-min), type(range-max),
-    message:"Can't map values to ranges of different types!"
-  )
-  assert.eq(type(min), type(value),
-    message:"Can't map values with different types as the initial range!"
-  )
-	let t = (value - min) / (max - min)
-  return (1 - t) * range-min + t * range-max;
+#let map(min, max, range-min, range-max, value) = {
+  assert.eq(type(min), type(max), message: "Can't map values from ranges of different types!")
+  assert.eq(type(range-min), type(range-max), message: "Can't map values to ranges of different types!")
+  assert.eq(type(min), type(value), message: "Can't map values with different types as the initial range!")
+  let t = (value - min) / (max - min)
+  return (1 - t) * range-min + t * range-max
 }
