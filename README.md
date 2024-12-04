@@ -12,7 +12,7 @@ Hopefully, this collection will grow over time with *Typst* to provide solutions
 
 Either import the package from the Typst preview repository:
 
-```js
+```typst
 #import "@preview/t4t:0.3.2": *
 ```
 
@@ -38,7 +38,7 @@ The modules are:
 
 Any or all modules can be imported the usual way:
 
-```js
+```typst
 // Import as "t4t"
 #import "@preview/t4t:0.3.2"
 // Import all modules
@@ -49,112 +49,116 @@ Any or all modules can be imported the usual way:
 
 In general, the main value is passed last to the utility functions. `#def.if-none()`, for example, takes the default value first and the value to test second. This is somewhat counterintuitive at first, but allows the use of `.with()` to generate derivative functions:
 
-```js
+```typst
 #let is-foo = eq.with("foo")
 ```
 
 ### Test functions
 
-```js
-#import "@preview/t4t:0.3.2": is
+```typst
+#import "@preview/t4t:0.3.2": *
+#import "@preview/t4t:0.3.2": test
 ```
 
-These functions provide shortcuts to common tests like `#is.eq()`. Some of these are not shorter as writing pure Typst code (e.g. `a == b`), but can easily be used in `.any()` or `.find()` calls:
+These functions provide shortcuts to common tests like `#is-eq()`. Some of these are not shorter as writing pure Typst code (e.g. `a == b`), but can easily be used in `.any()` or `.find()` calls:
 
-```js
+```typst
 // check all values for none
 if some-array.any(is-none) {
 	...
 }
 
 // find first not none value
-let x = (none, none, 5, none).find(is.not-none)
+let x = (none, none, 5, none).find(not-none)
 
 // find position of a value
-let pos-bar = args.pos().position(is.eq.with("|"))
+let pos-bar = args.pos().position(test.is-eq.with("|"))
 ```
 
-There are two exceptions: `is-none` and `is-auto`. Since keywords can't be used as function names, the `is` module can't define a function to do `is.none()`. Therefore the methods `is-none` and `is-auto` are provided in the base module of `t4t`:
+Some of the more frequently used tests are available as top-level imports from `t4t`. The rest can be found in the `test` module.
 
-```js
-#import "@preview/t4t:0.3.2": is-none, is-auto
+```typst
+#import "@preview/t4t:0.3.2"
+
+#if t4t.is-none(none) [
+	it is none
+]
 ```
 
-The `is` submodule still has these tests, but under different names (`is.n` and `is.non` for `none` and `is.a` and `is.aut` for `auto`).
+The following tests are available in the base `t4t` module:
 
-- `#is.neq( test )`: Creates a new test function that is `true` when `test` is `false`. Can be used to create negations of tests like `#let not-raw = is.neg(is.raw)`.
-- `#is.eq( a, b )`: Tests if values `a` and `b` are equal.
-- `#is.neq( a, b )`: Tests if values `a` and `b` are not equal.
-- `#is.n( ..values )`: Tests if any of the passed `values` is `none`.
-- `#is.non( ..values )`: Alias for `is.n`.
-- `#is.not-none( ..values )`: Tests if all of the passed `values` are not `none`.
-- `#is.not-n( ..values )`: Alias for `is.not-none`.
-- `#is.a( ..values )`: Tests if any of the passed `values` is `auto`.
-- `#is.aut( ..values )`: Alias for `is-a`.
-- `#is.not-auto( ..values )`: Tests if all of the passed `values` are not `auto`.
-- `#is.not-a( ..values )`: Alias for `is.not-auto`.
-- `#is.empty( value )`: Tests if `value` is _empty_. A value is considered _empty_ if it is an empty array, dictionary or string or `none` otherwise.
-- `#is.not-empty( value )`: Tests if `value` is not empty.
-- `#is.any( ..compare, value )`: Tests if `value` is equal to any one of the other passed-in values.
-- `#is.not-any( ..compare, value)`: Tests if `value` is not equal to any one of the other passed-in values.
-- `#is.has( ..keys, value )`: Tests if `value` contains all the passed `keys`. Either as keys in a dictionary or elements in an array. If `value` is neither of those types, `false` is returned.
-- `#is.type( t, value )`: Tests if `value` is of type `t`.
-- `#is.dict( value )`: Tests if `value` is a dictionary.
-- `#is.arr( value )`: Tests if `value` is an array.
-- `#is.content( value )`: Tests if `value` is of type content.
-- `#is.color( value )`: Tests if `value` is a color.
-- `#is.stroke( value )`: Tests if `value` is a stroke.
-- `#is.loc( value )`: Tests if `value` is a location.
-- `#is.bool( value )`: Tests if `value` is a boolean.
-- `#is.str( value )`: Tests if `value` is a string.
-- `#is.int( value )`: Tests if `value` is an integer.
-- `#is.float( value )`: Tests if `value` is a float.
-- `#is.num( value )`: Tests if `value` is a numeric value (`integer` or `float`).
-- `#is.frac( value )`: Tests if `value` is a fraction.
-- `#is.length( value )`: Tests if `value` is a length.
-- `#is.rlength( value )`: Tests if `value` is a relative length.
-- `#is.ratio( value )`: Tests if `value` is a ratio.
-- `#is.align( value )`: Tests if `value` is an alignment.
-- `#is.align2d( value )`: Tests if `value` is a 2d alignment.
-- `#is.func( value )`: Tests if `value` is a function.
-- `#is.any-type( ..types, value )`: Tests if `value` has any of the passed-in types.
-- `#is.same-type( ..values )`: Tests if all passed-in values have the same type.
-- `#is.all-of-type( t, ..values )`: Tests if all of the passed-in values have the type `t`.
-- `#is.none-of-type( t, ..values )`: Tests if none of the passed-in values has the type `t`.
-- `#is.one-not-none( ..values )`: Checks, if at least one value in `values` is not equal to `none`. Useful for checking multiple optional arguments for a valid value: `#if is.one-not-none(..args.pos()) [ #args.pos().find(is.not-none) ]`
-- `#is.elem( func, value )`: Tests if `value` is a content element with `value.func() == func`. If `func` is a string, `value` will be compared to `repr(value.func())` instead.
+- `#is-none( ..values )`: Tests if any of the passed `values` is `none`.
+- `#not-none( ..values )`: Tests if all of the passed `values` are not `none`.
+- `#is-auto( ..values )`: Tests if any of the passed `values` is `auto`.
+- `#not-auto( ..values )`: Tests if all of the passed `values` are not `auto`.
+- `#is-empty( value )`: Tests if `value` is _empty_. A value is considered _empty_ if it is an empty array, dictionary or string or `none` otherwise.
+- `#not-empty( value )`: Tests if `value` is not empty.
+
+- `#is-dict( value )`: Tests if `value` is a dictionary.
+- `#is-arr( value )`: Tests if `value` is an array.
+- `#is-content( value )`: Tests if `value` is of type content.
+- `#is-color( value )`: Tests if `value` is a color.
+- `#is-stroke( value )`: Tests if `value` is a stroke.
+- `#is-loc( value )`: Tests if `value` is a location.
+- `#is-bool( value )`: Tests if `value` is a boolean.
+- `#is-str( value )`: Tests if `value` is a string.
+- `#is-int( value )`: Tests if `value` is an integer.
+- `#is-float( value )`: Tests if `value` is a float.
+- `#is-num( value )`: Tests if `value` is a numeric value (`integer` or `float`).
+- `#is-frac( value )`: Tests if `value` is a fraction.
+- `#is-length( value )`: Tests if `value` is a length.
+- `#is-rlength( value )`: Tests if `value` is a relative length.
+- `#is-ratio( value )`: Tests if `value` is a ratio.
+- `#is-align( value )`: Tests if `value` is an alignment.
+- `#is-align2d( value )`: Tests if `value` is a 2d alignment.
+- `#is-func( value )`: Tests if `value` is a function.
+
+- `#test.neg( test )`: Creates a new test function that is `true` when `test` is `false`. Can be used to create negations of tests like `#let not-raw = is.neg(is.raw)`.
+- `#test.eq( a, b )`: Tests if values `a` and `b` are equal.
+- `#test.neq( a, b )`: Tests if values `a` and `b` are not equal.
+- `#test.any( ..compare, value )`: Tests if `value` is equal to any one of the other passed-in values.
+- `#test.not-any( ..compare, value)`: Tests if `value` is not equal to any one of the other passed-in values.
+- `#test.has( ..keys, value )`: Tests if `value` contains all the passed `keys`. Either as keys in a dictionary or elements in an array. If `value` is neither of those types, `false` is returned.
+- `#test.is-type( t, value )`: Tests if `value` is of type `t`.
+- `#test.is-elem( func, value )`: Tests if `value` is a content element with `value.func() == func`. If `func` is a string, `value` will be compared to `repr(value.func())` instead.
 
 	Both of these effectively do the same:
-	```js
-	#is.elem(raw, some_content)
-	#is.elem("raw", some_content)
+	```typst
+	#test.is-elem(raw, some_content)
+	#test.is-elem("raw", some_content)
 	```
-- `#is.sequence( value )`: Tests if `value` is a sequence of content.
-- `#is.raw( value )`: Tests if `value` is a raw element.
-- `#is.table( value )`: Tests if `value` is a table element.
-- `#is.list( value )`: Tests if `value` is a list element.
-- `#is.enum( value )`: Tests if `value` is an enum element.
-- `#is.terms( value )`: Tests if `value` is a terms element.
-- `#is.cols( value )`: Tests if `value` is a columns element.
-- `#is.grid( value )`: Tests if `value` is a grid element.
-- `#is.stack( value )`: Tests if `value` is a stack element.
-- `#is.label( value )`: Tests if `value` is of type `label`.
+- `#test.any-type( ..types, value )`: Tests if `value` has any of the passed-in types.
+- `#test.same-type( ..values )`: Tests if all passed-in values have the same type.
+- `#test.all-of-type( t, ..values )`: Tests if all of the passed-in values have the type `t`.
+- `#test.none-of-type( t, ..values )`: Tests if none of the passed-in values has the type `t`.
+- `#test.one-not-none( ..values )`: Checks, if at least one value in `values` is not equal to `none`. Useful for checking multiple optional arguments for a valid value: `#if is.one-not-none(..args.pos()) [ #args.pos().find(is.not-none) ]`
+
+- `#test.is-sequence( value )`: Tests if `value` is a sequence of content.
+- `#test.is-raw( value )`: Tests if `value` is a raw element.
+- `#test.is-table( value )`: Tests if `value` is a table element.
+- `#test.is-list( value )`: Tests if `value` is a list element.
+- `#test.is-enum( value )`: Tests if `value` is an enum element.
+- `#test.is-terms( value )`: Tests if `value` is a terms element.
+- `#test.is-cols( value )`: Tests if `value` is a columns element.
+- `#test.is-grid( value )`: Tests if `value` is a grid element.
+- `#test.is-stack( value )`: Tests if `value` is a stack element.
+- `#test.is-label( value )`: Tests if `value` is of type `label`.
 
 ### Default values
 
-```js
+```typst
 #import "@preview/t4t:0.3.2": def
 ```
 
-These functions perform a test to decide if a given `value` is _invalid_. If the test _passes_, the `default` is returned, the `value` otherwise.
+These functions perform a test to decide if a given `value` is _invalid_. If the test _passes_, the default `def` is returned, `value` otherwise.
 
-Almost all functions support an optional `do` argument, to be set to a function of one argument, that will be applied to the value if the test fails. For example:
-```js
+Almost all functions support an optional `do` argument to be set to a function of one argument that will be applied to the value if the test fails. For example:
+```typst
 // Sets date to a datetime from an optional
 // string argument in the format "YYYY-MM-DD"
 #let date = def.if-none(
-	datetime.today(), 	// default
 	passed_date, 		// passed-in argument
+	def: datetime.today(), 	// default
 	do: (d) >= {		// post-processor
 		d = d.split("-")
 		datetime(year=d[0], month=d[1], day=d[2])
@@ -162,18 +166,24 @@ Almost all functions support an optional `do` argument, to be set to a function 
 )
 ```
 
-- `#def.if-true( test, default, do:none, value )`: Returns `default` if `test` is `true`, `value` otherwise.
-- `#def.if-false( test, default, do:none, value )`: Returns `default` if `test` is `false`, `value` otherwise.
-- `#def.if-none( default, do:none, value )`: Returns `default` if `value` is `none`, `value` otherwise.
-- `#def.if-auto( default, do:none, value )`: Returns `default` if `value` is `auto`, `value` otherwise.
-- `#def.if-any( ..compare, default, do:none, value )`: Returns `default` if `value` is equal to any of the passed-in values, `value` otherwise. (`#def.if-any(none, auto, 1pt, width)`)
-- `#def.if-not-any( ..compare, default, do:none, value )`:  Returns `default` if `value` is not equal to any of the passed-in values, `value` otherwise. (`#def.if-not-any(left, right, top, bottom, position)`)
-- `#def.if-empty( default, do:none,  value )`: Returns `default` if `value` is _empty_, `value` otherwise.
+Note that previous versions of these functions got the default passed in as the first positional argument. Since Version 0.4.0 the default is now a named argument in favor of more readable code. To restore the old behaviour, you can import the `def.compat` module as `def`:
+```typst
+#import "@preview/t4t:0.3.2": def
+#import def.compat as def
+```
+
+- `#def.if-true( value, test, def:none, do:none )`: Returns `def` if `test` is `true`, `value` otherwise.
+- `#def.if-false( value, test, def:none, do:none  )`: Returns `def` if `test` is `false`, `value` otherwise.
+- `#def.if-none( value, def:none, do:none )`: Returns `def` if `value` is `none`, `value` otherwise.
+- `#def.if-auto( value,  def:none, do:none )`: Returns `def` if `value` is `auto`, `value` otherwise.
+- `#def.if-any( value,  ..compare, def:none, do:none )`: Returns `def` if `value` is equal to any of the passed-in values, `value` otherwise. (`#def.if-any(none, auto, 1pt, width)`)
+- `#def.if-not-any( value,  ..compare, def:none, do:none )`:  Returns `def` if `value` is not equal to any of the passed-in values, `value` otherwise. (`#def.if-not-any(left, right, top, bottom, position)`)
+- `#def.if-empty( def:none, do:none,  value )`: Returns `def` if `value` is _empty_, `value` otherwise.
 - `#def.as-arr( ..values )`: Always returns an array containing all `values`. Any arrays in `values` will be flattened into the result. This is useful for arguments, that can have one element or an array of elements: `#def.as-arr(author).join(", ")`.
 
 ### Assertions
 
-```js
+```typst
 #import "@preview/t4t:0.3.2": assert
 ```
 
@@ -198,7 +208,7 @@ All assert functions take an optional argument `message` to set the error messag
 - `#assert.not-empty( value )`: Asserts that `value` is not _empty_.
 - `#assert.new( test )`: Creates a new assert function that uses the passed `test`. `test` is a function with signature `(any) => boolean`. This is a quick way to create an assertion from any of the `is` functions:
 
-	```js
+	```typst
 	#let assert-foo = assert.new(is.eq.with("foo"))
 
 	#let assert-length = assert.new(is.length)
@@ -206,7 +216,7 @@ All assert functions take an optional argument `message` to set the error messag
 
 ## Element helpers
 
-```js
+```typst
 #import "@preview/t4t:0.3.2": get
 ```
 
@@ -214,14 +224,14 @@ This submodule is a collection of functions, that mostly deal with content eleme
 
 - `#get.dict( ..values )`: Create a new dictionary from the passed `values`. All named arguments are stored in the new dictionary as is. All positional arguments are grouped in key-value pairs and inserted into the dictionary:
 
-	```js
+	```typst
 	#get.dict("a", 1, "b", 2, "c", d:4, e:5)
 
 	// (a:1, b:2, c:none, d:4, e:5)
 	```
 - `#get.dict-merge( ..dicts )`: Recursively merges the passed-in dictionaries:
 
-	```js
+	```typst
 	#get.dict-merge(
 		(a: 1),
 		(a: (one: 1, two:2)),
@@ -236,7 +246,7 @@ This submodule is a collection of functions, that mostly deal with content eleme
 
 	A `prefix` can be specified, to extract only specific arguments. The resulting dictionary will have all keys with the prefix removed, though.
 
-	```js
+	```typst
 	#let my-func( ..options, title ) = block(
 		..get.args(options)(
 			"spacing", "above", "below",
@@ -255,8 +265,8 @@ This submodule is a collection of functions, that mostly deal with content eleme
 	```
 - `#get.text( element, sep: "" )`: Recursively extracts the text content of a content element.
 	If present, all child elements are converted to text and joined with `sep`.
-- `#get.stroke-paint( stroke, default: black )`: Returns the color of `stroke`. If no color information is available, `default` is used. (Deprecated, use `stroke.paint` instead.)
-- `#get.stroke-thickness( stroke, default: 1pt )`: Returns the thickness of `stroke`. If no thickness information is available, `default` is used. (Deprecated, use `stroke.thickness` instead.)
+- `#get.stroke-paint( stroke, default: black )`: Returns the color of `stroke`. If no color information is available, `def` is used. (Deprecated, use `stroke.paint` instead.)
+- `#get.stroke-thickness( stroke, default: 1pt )`: Returns the thickness of `stroke`. If no thickness information is available, `def` is used. (Deprecated, use `stroke.thickness` instead.)
 - `#get.stroke-dict( stroke, ..overrides )`: Creates a dictionary with the keys necessary for a stroke. The returned dictionary is guaranteed to have the keys `paint`, `thickness`, `dash`, `cap` and `join`.
 
 	If `stroke` is a dictionary itself, all key-value pairs are copied to the resulting stroke. Any named arguments in `overrides` will override the previous value.
@@ -266,16 +276,16 @@ This submodule is a collection of functions, that mostly deal with content eleme
 	The resulting dictionary is guaranteed to have the keys `top`, `left`, `bottom` and `right`.
 
 	If `inset` is a dictionary itself, all key-value pairs are copied to the resulting stroke. Any named arguments in `overrides` will override the previous value.
-- `#get.x-align( align, default:left )`: Returns the alignment along the x-axis from the passed-in `align` value. If none is present, `default` is returned. (Deprecated, use `align.x` instead.)
+- `#get.x-align( align, default:left )`: Returns the alignment along the x-axis from the passed-in `align` value. If none is present, `def` is returned. (Deprecated, use `align.x` instead.)
 
-	```js
+	```typst
 	#get.x-align(top + center) // center
 	```
-- `#get.y-align( align, default:top )`: Returns the alignment along the y-axis from the passed-in `align` value. If none is present, `default` is returned. (Deprecated, use `align.y` instead.)
+- `#get.y-align( align, default:top )`: Returns the alignment along the y-axis from the passed-in `align` value. If none is present, `def` is returned. (Deprecated, use `align.y` instead.)
 
 ## Math functions
 
-```js
+```typst
 #import "@preview/t4t:0.3.2": math
 ```
 
@@ -283,65 +293,48 @@ Some functions to complement the native `calc` module.
 
 - `#math.minmax( a, b )`: Returns an array with the minimum of `a` and `b` as the first element and the maximum as the second:
 
-	```js
+	```typst
 	#let (min, max) = math.minmax(a, b)
 	```
 - `#math.clamp( min, max, value )`: Clamps a value between `min` and `max`. In contrast to `calc.clamp()` this function works for other values than numbers, as long as they are comparable.
 
-	```js
+	```typst
 	text-size = math.clamp(0.8em, 1.2em, text-size)
 	```
 - `#lerp( min, max, t )`: Calculates the linear interpolation of `t` between `min` and `max`.
 
-	```js
+	```typst
 	#let width = math.lerp(0%, 100%, x)
 	```
 
 	`t` should be a value between 0 and 1, but the interpolation works with other values, too. To constrain the result into the given interval, use `math.clamp`:
 
-	```js
+	```typst
 	#let width = math.lerp(0%, 100%, math.clamp(0, 1, x))
 	```
 - `#map( min, max, range-min, range-max, value )`: Maps a `value` from the interval `[min, max]` into the interval `[range-min, range-max]`:
 
-	```js
+	```typst
 	#let text-weight = int(math.map(8pt, 16pt, 400, 800, text-size))
 	```
 
-## Alias functions
-
-```js
-#import "@preview/t4t:0.3.2": alias
-```
-
-Some of the native Typst function as aliases, to prevent collisions with some common argument names.
-
-For example using `numbering` as an argument is not possible if the value is supposed to be passed to the `numbering()` function. To still allow argument names that are in line with the common Typst names (like `numbering`, `align` ...), these alias functions can be used:
-
-```js
-#let excercise( no, numbering: "1)" ) = [
-	Exercise #alias.numbering(numbering, no)
-]
-```
-
-The following functions have aliases right now:
-
-- `numbering`
-- `align`
-- `type`
-- `label`
-- `text`
-- `raw`
-- `table`
-- `list`
-- `enum`
-- `terms`
-- `grid`
-- `stack`
-- `columns`
-
-
 ## Changelog
+
+### Version 0.4.0
+
+- :warning: Removed `alias` module in favor of the Typst 0.12 `std` module.
+- :warning: Changed argument order in `def` module functions.
+	- Old behaviour is still available in the `def.compat` module for now.
+- :warning: Renamed `is` module to `test` and moved some tests to the top-level module.
+	- `is` will become a reserved word in future Typst versions (see [typst/typst#5229](https://github.com/typst/typst/pull/5229))
+- Refactored `get.stroke-paint` and `get.stroke-thickness` to use the native `stroke` type.
+- Refactored `get.x-align` and `get.y-align` to use the native `align.x` and `align.y` values.
+
+### Version 0.3.3
+
+- Fixed language tag in README for all typst examples.
+- Deprecated `alias` module in favor of `std` in Typst 0.12.
+- Fixed missing whitespace in `get.text` (thanks to @).
 
 ### Version 0.3.2
 
