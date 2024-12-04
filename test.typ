@@ -273,22 +273,22 @@
 /// If `func` is a string, #arg[value] will be compared to `repr(value.func())`, instead.
 /// Both of these effectively do the same:
 /// ```js
-/// #test.elem(raw, some_content)
-/// #test.elem("raw", some_content)
+/// #test.is-elem(raw, some_content)
+/// #test.is-elem("raw", some_content)
 /// ```
 ///
 /// // Tests
 /// #test(
-///   `test.elem(raw, raw("code"))`,
-///   `test.elem(table, table())`,
-///   `test.elem("table", table())`,
-///   `not test.elem(table, grid())`,
-///   `not test.elem("table", grid())`,
+///   `test.is-elem(raw, raw("code"))`,
+///   `test.is-elem(table, table())`,
+///   `test.is-elem("table", table())`,
+///   `not test.is-elem(table, grid())`,
+///   `not test.is-elem("table", grid())`,
 /// )
 ///
 /// - func (function): element function
 /// - value (any): value to test
-#let elem(func, value) = if std.type(value) == content {
+#let is-elem(func, value) = if std.type(value) == content {
   if std.type(func) == "string" {
     return repr(value.func()) == func
   } else {
