@@ -16,7 +16,7 @@
 /// ```]
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `get.dict("a", "b", "c") == (a:"b", c:none)`,
 ///   `get.dict("a", "b", "c", 4) == (a:"b", c:4)`,
 ///   `get.dict(a:"b", "c", 4) == (a:"b", c:4)`
@@ -52,7 +52,7 @@
 /// ```]
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `get.dict-merge(
 ///     (a: 1, b: 2),
 ///     (a: (one: 1, two:2)),
@@ -114,7 +114,7 @@
 /// ```]
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   scope:(
 ///     fun: (..args) => get.args(args)("a", b:4),
 ///     fun2: (..args) => get.args(args, prefix:"pre-")("a", b:4)
@@ -161,7 +161,7 @@
 /// to text and joined with #arg[sep].
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `get.text([Hello World!]) == "Hello World!"`,
 ///   `get.text(list([Hello], [World!]), sep:"-") == "Hello-World!"`,
 ///   `get.text(5) == "5"`,
@@ -204,7 +204,7 @@
 /// Based on work by #{sym.at + "PgBiel"} for #link("https://github.com/PgBiel/typst-tablex", "PgBiel/typst-tablex").
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `get.stroke-paint(2pt + green) == green`,
 ///   `get.stroke-paint(2pt) == black`,
 ///   `get.stroke-paint(red) == red`,
@@ -231,7 +231,7 @@
 /// thickness for any possible stroke definition (length, dictionary ...).
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `get.stroke-thickness(2pt + green) == 2pt`,
 ///   `get.stroke-thickness(2pt) == 2pt`,
 ///   `get.stroke-thickness(red) == 1pt`,
@@ -262,7 +262,7 @@
 /// ```]
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `get.stroke-dict(2pt + green) == (
 ///     thickness: 2pt,
 ///     paint: green,
@@ -292,7 +292,7 @@
 /// Returns the inset (or outset) in a given #arg[direction], ascertained from #arg[inset].
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `get.inset-at(left, 4pt) == 4pt`,
 ///   `get.inset-at(left, (left: 4pt)) == 4pt`,
 ///   `get.inset-at(left, (x: 4pt)) == 4pt`,
@@ -334,7 +334,7 @@
 /// Any named arguments in `overrides` will override the previous values.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `get.inset-dict(4pt) == (right:4pt, left:4pt, top:4pt, bottom:4pt)`
 /// )
 ///
@@ -362,7 +362,7 @@
 /// ```]
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///  `get.x-align(top + center) == center`,
 ///   `get.x-align(top) == left`,
 ///   `get.x-align(center) == center`
@@ -387,7 +387,7 @@
 /// ```]
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `get.y-align(top + center) == top`,
 ///   `get.y-align(top) == top`,
 ///   `get.y-align(center) == top`

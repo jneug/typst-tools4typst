@@ -11,7 +11,7 @@
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.if-true(1 == 1, 2, 3) == 2`,
 ///   `def.if-true(1 == 2, 2, 3) == 3`,
 ///   `def.if-true(1 == 2, 2, 3, do: (n) => n+1) == 4`,
@@ -36,7 +36,7 @@
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.if-false(1 == 1, 2, 3) == 3`,
 ///   `def.if-false(1 == 2, 2, 3) == 2`,
 ///   `def.if-false(1 == 1, 2, 3, do: (n) => n+1) == 4`,
@@ -61,7 +61,7 @@
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.if-none(auto, none) == auto`,
 ///   `def.if-none(auto, 5) == 5`,
 ///   `def.if-none(auto, none, do: (v) => 1cm) == auto`,
@@ -85,7 +85,7 @@
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.if-auto(none, auto) == none`,
 ///   `def.if-auto(1mm, 5) == 5`,
 ///   `def.if-auto(1mm, auto, do: (v) => 1cm) == 1mm`,
@@ -117,7 +117,7 @@
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.if-any(none, auto, 1pt, none) == 1pt`,
 ///   `def.if-any(none, auto, 1pt, auto) == 1pt`,
 ///   `def.if-any(none, auto, 1pt, 2pt) == 2pt`,
@@ -151,7 +151,7 @@
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.if-auto(none, auto) == none`,
 ///   `def.if-auto(1mm, 5) == 5`,
 ///   `def.if-auto(1mm, auto, do: (v) => 1cm) == 1mm`,
@@ -175,11 +175,11 @@
 /// If #arg[value] is not empty and #arg[do] is set to a function,
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
-/// Depends on `is.empty()`. See there for an explanation
+/// Depends on `test.is-empty()`. See there for an explanation
 /// of _empty_.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.if-empty("a", "") == "a"`,
 ///   `def.if-empty("a", none) == "a"`,
 ///   `def.if-empty("a", ()) == "a"`,
@@ -203,7 +203,7 @@
 /// the value is passed to #arg[do], before being returned.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   scope: (fun: (..args) => def.if-arg(100%, args, "width")),
 ///   `fun(a:1, b:2, c:30%) == 100%`,
 ///   `fun(a:1, b:2, width:30%) == 30%`,
@@ -232,7 +232,7 @@
 /// ```
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.as-arr("a") == ("a",)`,
 ///   `def.as-arr(("a",)) == ("a",)`,
 ///   `def.as-arr("a", "b", "c") == ("a", "b", "c")`,

@@ -11,7 +11,7 @@
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.if-true(1 == 1, 2, def:3) == 3`,
 ///   `def.if-true(1 == 2, 2, def:3) == 2`,
 ///   `def.if-true(1 == 2, 2, def:3, do: (n) => n+1) == 3`,
@@ -36,7 +36,7 @@
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.if-false(1 == 1, 2, def:3) == 2`,
 ///   `def.if-false(1 == 2, 2, def:3) == 3`,
 ///   `def.if-false(1 == 1, 2, def:3, do: (n) => n+1) == 3`,
@@ -61,7 +61,7 @@
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.if-none(none, def:auto) == auto`,
 ///   `def.if-none(5, def:auto) == 5`,
 ///   `def.if-none(none, def:auto, do: (v) => v*1cm) == auto`,
@@ -85,7 +85,7 @@
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.if-auto(auto, def:none) == none`,
 ///   `def.if-auto(5, def:1mm) == 5`,
 ///   `def.if-auto(auto, def:1mm, do: (v) => v*1cm) == 1mm`,
@@ -103,13 +103,13 @@
   return do(value)
 }
 
-/// Returns #arg[default] if #arg[value] is equal to any value in `compare`, #arg[value] otherwise.
+/// Returns #arg[def] if #arg[value] is equal to any value in `compare`, #arg[value] otherwise.
 ///
 /// ```typ
 /// #def.if-any(
+///   thickness,      // value
 ///   none, auto,     // ..compare
-///   1pt,            // default
-///   thickness       // value
+///   def: 1pt,       // default
 /// )
 /// ```
 ///
@@ -117,12 +117,12 @@
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
-/// #test(
-///   `def.if-any(def:none, auto, 1pt, none) == 1pt`,
-///   `def.if-any(def:none, auto, 1pt, auto) == 1pt`,
-///   `def.if-any(def:none, auto, 1pt, 2pt) == 2pt`,
-///   `def.if-any(def:none, auto, 1pt, 2pt, do:(v)=>3mm) == 3mm`,
-///   `def.if-any(def:none, auto, 1pt, none, do:(v)=>3mm) == 1pt`,
+/// #utest(
+///   `def.if-any(none, none, auto, def:1pt) == 1pt`,
+///   `def.if-any(auto, none, auto, def:1pt) == 1pt`,
+///   `def.if-any(2pt, none, auto, def:1pt) == 2pt`,
+///   `def.if-any(2pt, none, auto, def:1pt, do:(v)=>3mm) == 3mm`,
+///   `def.if-any(none, none, auto, def:1pt, do:(v)=>3mm) == 1pt`,
 /// )
 ///
 /// - value (any): value to test
@@ -151,7 +151,7 @@
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.if-auto(def:none, auto) == none`,
 ///   `def.if-auto(def:1mm, 5) == 5`,
 ///   `def.if-auto(def:1mm, auto, do: (v) => 1cm) == 1mm`,
@@ -175,11 +175,11 @@
 /// If #arg[value] is not empty and #arg[do] is set to a function,
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
-/// Depends on `is.empty()`. See there for an explanation
+/// Depends on `t4t.is-empty()`. See there for an explanation
 /// of _empty_.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.if-empty(def:"a", "") == "a"`,
 ///   `def.if-empty(def:"a", none) == "a"`,
 ///   `def.if-empty(def:"a", ()) == "a"`,
@@ -203,7 +203,7 @@
 /// the value is passed to #arg[do], before being returned.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   scope: (fun: (..args) => def.if-arg("width", args, def:100%)),
 ///   `fun(a:1, b:2, c:30%) == 100%`,
 ///   `fun(a:1, b:2, width:30%) == 30%`,
@@ -232,7 +232,7 @@
 /// ```
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `def.as-arr("a") == ("a",)`,
 ///   `def.as-arr(("a",)) == ("a",)`,
 ///   `def.as-arr("a", "b", "c") == ("a", "b", "c")`,

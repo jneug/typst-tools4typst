@@ -11,7 +11,7 @@
 /// Works with any comparable type.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `math.minmax(50, 60) == (50, 60)`,
 ///   `math.minmax(60, 50) == (50, 60)`,
 ///   `math.minmax(5deg, -4deg) == (-4deg, 5deg)`,
@@ -36,7 +36,7 @@
 /// Works with any comparable type.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `math.clamp(0, 100, 50) == 50`,
 ///   `math.clamp(33%, 99%, 100%) == 99%`,
 ///   `math.clamp(-5in, 8in, -6in) == -5in`,
@@ -70,7 +70,7 @@
 /// ```]
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `math.lerp(0, 100, .5) == 50`,
 ///   `math.lerp(0%, 100%, 1.1) == 110%`,
 ///   `math.lerp(-4em, 3em, -2) == -18em`,
@@ -95,7 +95,7 @@
 /// The types of `min`, `max` and `value` and the types of `range-min` and `range-max` have to be the same.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `math.map(8pt, 16pt, 400, 800, 8pt) == 400`,
 ///   `math.map(8pt, 16pt, 400, 800, 16pt) == 800`,
 ///   `math.map(8pt, 16pt, 400, 800, 4pt) == 200`,

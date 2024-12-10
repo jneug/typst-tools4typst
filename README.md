@@ -320,6 +320,10 @@ Some functions to complement the native `calc` module.
 
 ## Changelog
 
+### Version 0.4.1
+
+- Fixed some bugs after renaming modules.
+
 ### Version 0.4.0
 
 - :warning: Removed `alias` module in favor of the Typst 0.12 `std` module.

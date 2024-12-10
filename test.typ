@@ -7,12 +7,12 @@
 ///
 /// Can be used to create negations of tests like:
 /// #codesnippet[```typ
-/// #let not-raw = test.neg(test.raw)
+/// #let not-raw = test.neg(test.is-raw)
 /// ```]
 ///
 /// // Tests
-/// #test(
-///   scope: (not-raw: test.neg(test.raw)),
+/// #utest(
+///   scope: (not-raw: test.neg(test.is-raw)),
 ///   `not-raw("foo")`,
 ///   `not not-raw(raw("foo"))`,
 ///   ```
@@ -31,7 +31,7 @@
 /// Tests if values #arg[compare] and #arg[value] are equal.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `test.eq("foo", "foo")`,
 ///   `not test.eq("foo", "bar")`
 /// )
@@ -46,7 +46,7 @@
 /// Tests if #arg[compare] and #arg[value] are not equal.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `test.neq(1, 2)`,
 ///   `test.neq("a", false)`,
 ///   `not test.neq(1, 1)`,
@@ -66,14 +66,14 @@
 /// dictionary or string, or the value #value(none).
 ///
 /// // Tests
-/// #test(
-///   `is-empty(none)`,
-///   `is-empty(())`,
-///   `is-empty((:))`,
-///   `is-empty("")`,
-///   `not is-empty(auto)`,
-///   `not is-empty(" ")`,
-///   `not is-empty((none,))`,
+/// #utest(
+///   `t4t.is-empty(none)`,
+///   `t4t.is-empty(())`,
+///   `t4t.is-empty((:))`,
+///   `t4t.is-empty("")`,
+///   `not t4t.is-empty(auto)`,
+///   `not t4t.is-empty(" ")`,
+///   `not t4t.is-empty((none,))`,
 /// )
 ///
 /// - value (any): value to test
@@ -106,7 +106,7 @@
 /// ```
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `test.one-not-none(false)`,
 ///   `not test.one-not-none(none)`,
 ///   `test.one-not-none(none, none, none, 2, "none", none)`,
@@ -125,7 +125,7 @@
 /// See @@is-empty() for an explanation what _empty_ means.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `test.any(2, 2)`,
 ///   `test.any(auto, auto)`,
 ///   `test.any(1, 2, 3, 4, 2)`,
@@ -144,7 +144,7 @@
 /// other passed in values.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `not test.not-any(2, 2)`,
 ///   `not test.not-any(auto, auto)`,
 ///   `not test.not-any(1, 2, 3, 4, 2)`,
@@ -166,7 +166,7 @@
 /// If #arg[value] is neither of those types, #value(false) is returned.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `test.has(4, range(5))`,
 ///   `not test.has(5, range(5))`,
 ///   `not test.has(5, 5)`,
@@ -194,7 +194,7 @@
 /// Tests if #arg[value] is of type `t`.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `test.is-type("string", "test")`,
 ///   `test.is-type("boolean", false)`,
 ///   `test.is-type("length", 1em)`,
@@ -210,7 +210,7 @@
 /// Tests if types #arg[value] is any one of `types`.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `test.any-type("string", "integer", 1)`,
 ///   `test.any-type("string", "integer", "1")`,
 ///   `not test.any-type("string", "integer", false)`
@@ -225,7 +225,7 @@
 /// Tests if all passed in values have the same type.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `test.same-type(..range(5))`,
 ///   `test.same-type(true, false)`,
 ///   `test.same-type(none, none, none)`,
@@ -243,7 +243,7 @@
 /// Tests if all of the passed in values have the type `t`.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `test.all-of-type("boolean", true, false)`,
 ///   `test.all-of-type("none", none)`,
 ///   `test.all-of-type("length", 1pt, 1cm, 1in)`,
@@ -257,7 +257,7 @@
 /// Tests if none of the passed in values has the type `t`.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `not test.none-of-type("boolean", true, false)`,
 ///   `not test.none-of-type("none", none)`,
 ///   `test.none-of-type("boolean", 1pt, 1cm, 1in)`,
@@ -278,7 +278,7 @@
 /// ```
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `test.is-elem(raw, raw("code"))`,
 ///   `test.is-elem(table, table())`,
 ///   `test.is-elem("table", table())`,
@@ -301,7 +301,7 @@
 /// Tests if #arg[value] is a `sequence` of content.
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `test.is-sequence([])`,
 ///   `not test.is-sequence(grid())`,
 ///   `test.is-sequence([

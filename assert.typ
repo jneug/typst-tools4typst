@@ -184,7 +184,7 @@
     )
   ),
 ) = assert(
-  values.pos().all(v => alias.type(v) == t),
+  values.pos().all(v => std.type(v) == t),
   message: lazy-message(message, t, ..values),
 )
 
@@ -206,13 +206,13 @@
     )
   ),
 ) = assert(
-  values.pos().all(v => alias.type(v) != t),
+  values.pos().all(v => std.type(v) != t),
   message: lazy-message(message, t, ..values),
 )
 
 /// Assert that #arg[value] is not _empty_.
 ///
-/// Depends on `is.empty()`. See there for an explanation
+/// Depends on `test.is-empty()`. See there for an explanation
 /// of _empty_.
 ///
 /// // Tests
@@ -229,7 +229,7 @@
   },
 ) = {
   assert(
-    is.not-empty(value),
+    not test.is-empty(value),
     message: lazy-message(message, value),
   )
 }
@@ -358,7 +358,7 @@
 /// The new assertion will take any number of  `values` and pass them to `test`.
 /// `test` should return a `boolean`.
 /// #sourcecode[```typ
-/// #let assert-numeric = assert.new(is.num)
+/// #let assert-numeric = assert.new(t4t.is-num)
 ///
 /// #let diameter(radius) = {
 ///   assert-numeric(radius)
@@ -367,7 +367,7 @@
 /// ```]
 ///
 /// // Tests
-/// #let assert-numeric = assert.new(is-num)
+/// #let assert-numeric = assert.new(t4t.is-num)
 /// #let diameter(radius) = {
 ///   assert-numeric(radius)
 ///   return 2*radius

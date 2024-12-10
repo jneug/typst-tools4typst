@@ -12,11 +12,11 @@
 /// Tests if any one of #arg[values] is equal to #value(none).
 ///
 /// // Tests
-/// #test(
-///   `is-none(none)`,
-///   `not is-none("a")`,
-///   `is-none(1, false, none, "none")`,
-///   `not is-none(1, false, "none")`
+/// #utest(
+///   `t4t.is-none(none)`,
+///   `not t4t.is-none("a")`,
+///   `t4t.is-none(1, false, none, "none")`,
+///   `not t4t.is-none(1, false, "none")`
 /// )
 ///
 /// - ..values (any): Values to test.
@@ -28,11 +28,11 @@
 /// Tests if none of #arg[values] is equal to #value(none).
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `not not-none(none)`,
-///   `not-none("a")`,
+///   `t4t.not-none("a")`,
 ///   `not not-none(1, false, none, "none")`,
-///   `not-none(1, false, "none")`
+///   `t4t.not-none(1, false, "none")`
 /// )
 ///
 /// - ..values (any): Values to test.
@@ -44,11 +44,11 @@
 /// Tests if any one of #arg[values] is equal to #value(auto).
 ///
 /// // Tests
-/// #test(
-///   `is-auto(auto)`,
-///   `not is-auto("a")`,
-///   `is-auto(1, false, auto, "auto")`,
-///   `not is-auto(1, false, "auto")`
+/// #utest(
+///   `t4t.is-auto(auto)`,
+///   `not t4t.is-auto("a")`,
+///   `t4t.is-auto(1, false, auto, "auto")`,
+///   `not t4t.is-auto(1, false, "auto")`
 /// )
 ///
 /// - ..values (any): Values to test.
@@ -60,11 +60,11 @@
 /// Tests if none of #arg[values] is equal to #value(auto).
 ///
 /// // Tests
-/// #test(
+/// #utest(
 ///   `not not-auto(auto)`,
-///   `not-auto("a")`,
+///   `t4t.not-auto("a")`,
 ///   `not not-auto(1, false, auto, "auto")`,
-///   `not-auto(1, false, "auto")`
+///   `t4t.not-auto(1, false, "auto")`
 /// )
 ///
 /// - ..values (any): Values to test.
@@ -79,14 +79,14 @@
 /// dictionary or string, or the value #value(none).
 ///
 /// // Tests
-/// #test(
-///   `is-empty(none)`,
-///   `is-empty(())`,
-///   `is-empty((:))`,
-///   `is-empty("")`,
-///   `not is-empty(auto)`,
-///   `not is-empty(" ")`,
-///   `not is-empty((none,))`,
+/// #utest(
+///   `t4t.is-empty(none)`,
+///   `t4t.is-empty(())`,
+///   `t4t.is-empty((:))`,
+///   `t4t.is-empty("")`,
+///   `not t4t.is-empty(auto)`,
+///   `not t4t.is-empty(" ")`,
+///   `not t4t.is-empty((none,))`,
 /// )
 ///
 /// - value (any): value to test
@@ -98,14 +98,14 @@
 /// See @@empty() for an explanation what _empty_ means.
 ///
 /// // Tests
-/// #test(
-///   `not is.not-empty(none)`,
-///   `not is.not-empty(())`,
-///   `not is.not-empty((:))`,
-///   `not is.not-empty("")`,
-///   `is.not-empty(auto)`,
-///   `is.not-empty(" ")`,
-///   `is.not-empty((none,))`,
+/// #utest(
+///   `not not-empty(none)`,
+///   `not not-empty(())`,
+///   `not not-empty((:))`,
+///   `not not-empty("")`,
+///   `t4t.not-empty(auto)`,
+///   `t4t.not-empty(" ")`,
+///   `t4t.not-empty((none,))`,
 /// )
 ///
 /// - value (any): value to test
@@ -115,12 +115,12 @@
 /// Tests if #arg[value] is of type dictionary.
 ///
 /// // Tests
-/// #test(
-///   `is-dict((a:1, b:2, c:3))`,
-///   `is-dict((:))`,
-///   `not is-dict(())`,
-///   `not is-dict(false)`,
-///   `not is-dict(5)`,
+/// #utest(
+///   `t4t.is-dict((a:1, b:2, c:3))`,
+///   `t4t.is-dict((:))`,
+///   `not t4t.is-dict(())`,
+///   `not t4t.is-dict(false)`,
+///   `not t4t.is-dict(5)`,
 /// )
 ///
 /// - value (any): value to test
@@ -129,13 +129,13 @@
 /// Tests if #arg[value] is of type array.
 ///
 /// // Tests
-/// #test(
-///   `is-arr(())`,
-///   `is-arr((1, 2, 3))`,
-///   `is-arr(range(5))`,
-///   `not is-arr((:))`,
-///   `not is-arr(false)`,
-///   `not is-arr(5)`,
+/// #utest(
+///   `t4t.is-arr(())`,
+///   `t4t.is-arr((1, 2, 3))`,
+///   `t4t.is-arr(range(5))`,
+///   `not t4t.is-arr((:))`,
+///   `not t4t.is-arr(false)`,
+///   `not t4t.is-arr(5)`,
 /// )
 ///
 /// - value (any): value to test
@@ -144,12 +144,12 @@
 /// Tests if #arg[value] is of type content.
 ///
 /// // Tests
-/// #test(
-///   `is-content([])`,
-///   `is-content(raw("foo"))`,
-///   `not is-content(false)`,
-///   `not is-content(1)`,
-///   `not is-content(())`,
+/// #utest(
+///   `t4t.is-content([])`,
+///   `t4t.is-content(raw("foo"))`,
+///   `not t4t.is-content(false)`,
+///   `not t4t.is-content(1)`,
+///   `not t4t.is-content(())`,
 /// )
 ///
 /// - value (any): value to test
@@ -158,12 +158,12 @@
 /// Tests if #arg[value] is of type label.
 ///
 /// // Tests
-/// #test(
-///   `is-label(label("one"))`,
-///   `is-label(<one>)`,
-///   `not is-label(false)`,
-///   `not is-label(1)`,
-///   `not is-label(())`,
+/// #utest(
+///   `t4t.is-label(label("one"))`,
+///   `t4t.is-label(<one>)`,
+///   `not t4t.is-label(false)`,
+///   `not t4t.is-label(1)`,
+///   `not t4t.is-label(())`,
 /// )
 ///
 /// - value (any): value to test
@@ -172,12 +172,12 @@
 /// Tests if #arg[value] is of type color.
 ///
 /// // Tests
-/// #test(
-///   `is-color(red)`,
-///   `is-color(rgb(10%,10%,10%))`,
-///   `is-color(luma(10%))`,
-///   `not is-color(1)`,
-///   `not is-color(())`,
+/// #utest(
+///   `t4t.is-color(red)`,
+///   `t4t.is-color(rgb(10%,10%,10%))`,
+///   `t4t.is-color(luma(10%))`,
+///   `not t4t.is-color(1)`,
+///   `not t4t.is-color(())`,
 /// )
 ///
 /// - value (any): value to test
@@ -186,10 +186,10 @@
 /// Tests if #arg[value] is of type stroke.
 ///
 /// // Tests
-/// #test(
-///   `is-stroke(red + 1pt)`,
-///   `not is-stroke(1)`,
-///   `not is-stroke(())`,
+/// #utest(
+///   `t4t.is-stroke(red + 1pt)`,
+///   `not t4t.is-stroke(1)`,
+///   `not t4t.is-stroke(())`,
 /// )
 ///
 /// - value (any): value to test
@@ -200,8 +200,8 @@
 /// // Tests
 /// #locate(loc => test(
 ///   scope: (loc:loc),
-///   `is-loc(loc)`,
-///   `not is-loc(<a-label>)`,
+///   `t4t.is-loc(loc)`,
+///   `not t4t.is-loc(<a-label>)`,
 /// ))
 ///
 /// - value (any): value to test
@@ -210,11 +210,11 @@
 /// Tests if #arg[value] is of type boolean.
 ///
 /// // Tests
-/// #test(
-///   `is-bool(true)`,
-///   `is-bool(false)`,
-///   `not is-bool(1)`,
-///   `not is-bool(())`,
+/// #utest(
+///   `t4t.is-bool(true)`,
+///   `t4t.is-bool(false)`,
+///   `not t4t.is-bool(1)`,
+///   `not t4t.is-bool(())`,
 /// )
 ///
 /// - value (any): value to test
