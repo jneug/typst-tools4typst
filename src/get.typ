@@ -128,7 +128,7 @@
 /// )
 ///
 /// - args (arguments): Argument of a function.
-/// - prefix (string): A prefix for the argument keys to extract.
+/// - prefix (str): A prefix for the argument keys to extract.
 /// -> dictionary
 #let args(
   args,
@@ -171,10 +171,10 @@
 /// )
 ///
 /// - element (any)
-/// - sep (string, content)
-/// -> string
+/// - sep (str, content)
+/// -> str
 #let text(element, sep: "") = {
-  if type(element) == "content" {
+  if type(element) == content {
     if element.has("text") {
       element.text
     } else if element.has("children") {
@@ -283,7 +283,7 @@
     cap: "round",
     join: "round",
   )
-  if type(stroke) == "dictionary" {
+  if type(stroke) == dictionary {
     dict = dict + stroke
   }
   return dict + overrides.named()
@@ -301,13 +301,13 @@
 ///   `get.inset-at(right, (right: 4pt), default:5pt) == 4pt`
 /// )
 ///
-/// - direction (string, alignment): The direction to get.
+/// - direction (str, alignment): The direction to get.
 /// - inset (length, dictionary): The inset value.
 /// - default (length): A default value.
 /// -> length
 #let inset-at(direction, inset, default: 0pt) = {
   direction = repr(direction) // allows use of alignment values
-  if type(inset) == "dictionary" {
+  if type(inset) == dictionary {
     if direction in inset {
       return inset.at(direction)
     } else if direction in ("left", "right") and "x" in inset {
@@ -348,7 +348,7 @@
     left: inset-at(left, inset),
     right: inset-at(right, inset),
   )
-  if type(inset) == "dictionary" {
+  if type(inset) == dictionary {
     dict = dict + inset
   }
   return dict + overrides.named()

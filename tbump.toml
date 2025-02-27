@@ -1,5 +1,5 @@
 # Uncomment this if your project is hosted on GitHub:
-github_url = "https://github.com/jneug/typst-tool4typst/"
+github_url = "https://github.com/typst-tools4tpst/"
 
 [version]
 current = "0.4.1"
@@ -19,9 +19,10 @@ regex = '''
 message_template = "Bump to {new_version}"
 tag_template = "v{new_version}"
 
-[[file]]
-src = "typst.toml"
-search = 'version = "{current_version}"'
+# uncomment to also update typst.toml
+# [[file]]
+# src = "typst.toml"
+# search = 'version = "{current_version}"'
 
 [[file]]
 src = "README.md"
@@ -32,4 +33,4 @@ search = "t4t:{current_version}"
 
 [[before_commit]]
 name = "compile manual"
-cmd = "typst c t4t-manual.typ"
+cmd = "just doc"

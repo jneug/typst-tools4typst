@@ -20,7 +20,7 @@
 ///   ```
 /// )
 ///
-/// - test (function, boolean): Test to negate.
+/// - test (function, bool): Test to negate.
 /// -> function
 #let neg(test) = (
   (..args) => {
@@ -38,7 +38,7 @@
 ///
 /// - compare (any): first value
 /// - value (any): second value
-/// -> boolean
+/// -> bool
 #let eq(compare, value) = {
   return value == compare
 }
@@ -55,7 +55,7 @@
 ///
 /// - compare (any): First value.
 /// - value (any): Second value.
-/// -> boolean
+/// -> bool
 #let neq(compare, value) = {
   return value != compare
 }
@@ -63,30 +63,30 @@
 /// Tests, if #arg[value] is _empty_.
 ///
 /// A value is considered _empty_ if it is an empty array,
-/// dictionary or string, or the value #value(none).
+/// dictionary or str, or the value #value(none).
 ///
 /// // Tests
 /// #utest(
-///   `t4t.is-empty(none)`,
-///   `t4t.is-empty(())`,
-///   `t4t.is-empty((:))`,
-///   `t4t.is-empty("")`,
-///   `not t4t.is-empty(auto)`,
-///   `not t4t.is-empty(" ")`,
-///   `not t4t.is-empty((none,))`,
+///   `test.is-empty(none)`,
+///   `test.is-empty(())`,
+///   `test.is-empty((:))`,
+///   `test.is-empty("")`,
+///   `not test.is-empty(auto)`,
+///   `not test.is-empty(" ")`,
+///   `not test.is-empty((none,))`,
 /// )
 ///
 /// - value (any): value to test
-/// -> boolean
+/// -> bool
 #let is-empty(value) = {
   let empty-values = (
     array: (),
     dictionary: (:),
-    string: "",
+    str: "",
     content: [],
   )
 
-  let t = str(type(value))
+  let t = repr(type(value))
   if t in empty-values {
     return value == empty-values.at(t)
   } else {
@@ -115,14 +115,14 @@
 /// )
 ///
 /// - ..values (any): Values to test.
-/// -> boolean
+/// -> bool
 #let one-not-none(..values) = {
   return values.pos().any(v => v != none)
 }
 
 /// Tests, if any value of #sarg[compare] is equal to #arg[value].
 ///
-/// See @@is-empty() for an explanation what _empty_ means.
+/// See cmd:test.is-empty for an explanation what _empty_ means.
 ///
 /// // Tests
 /// #utest(
@@ -135,7 +135,7 @@
 /// )
 ///
 /// - value (any): value to test
-/// -> boolean
+/// -> bool
 #let any(..compare, value) = {
   return value in compare.pos()
 }
@@ -155,7 +155,7 @@
 ///
 /// - ..compare (any): values to compare to
 /// - value (any): value to test
-/// -> boolean
+/// -> bool
 #let not-any(..compare, value) = {
   return not value in compare.pos()
 }
@@ -178,7 +178,7 @@
 ///
 /// - ..keys (any): keys or values to look for
 /// - value (any): value to test
-/// -> boolean
+/// -> bool
 #let has(..keys, value) = {
   if type(value) in (dictionary, array) {
     return keys.pos().all(k => k in value)
@@ -195,15 +195,15 @@
 ///
 /// // Tests
 /// #utest(
-///   `test.is-type("string", "test")`,
-///   `test.is-type("boolean", false)`,
+///   `test.is-type(str, "test")`,
+///   `test.is-type(bool, false)`,
 ///   `test.is-type("length", 1em)`,
-///   `not test.is-type("integer", "test")`,
+///   `not test.is-type(int, "test")`,
 ///   `not test.is-type("dictionary", false)`,
 ///   `not test.is-type("alignment", 1em)`,
 /// )
 ///
-/// - t (string): name of the type
+/// - t (str): name of the type
 /// - value (any): value to test
 #let is-type(t, value) = std.type(value) == t
 
@@ -211,12 +211,12 @@
 ///
 /// // Tests
 /// #utest(
-///   `test.any-type("string", "integer", 1)`,
-///   `test.any-type("string", "integer", "1")`,
-///   `not test.any-type("string", "integer", false)`
+///   `test.any-type(str, int, 1)`,
+///   `test.any-type(str, int, "1")`,
+///   `not test.any-type(str, int, false)`
 /// )
 ///
-/// - ..types (string): type names to check against
+/// - ..types (str): type names to check against
 /// - value (any): value to test
 #let any-type(..types, value) = {
   return std.type(value) in types.pos()
@@ -244,13 +244,13 @@
 ///
 /// // Tests
 /// #utest(
-///   `test.all-of-type("boolean", true, false)`,
+///   `test.all-of-type(bool, true, false)`,
 ///   `test.all-of-type("none", none)`,
 ///   `test.all-of-type("length", 1pt, 1cm, 1in)`,
-///   `not test.all-of-type("boolean", true, false, 1)`,
+///   `not test.all-of-type(bool, true, false, 1)`,
 /// )
 ///
-/// - t (string): type to test against
+/// - t (str): type to test against
 /// - ..values (any): Values to test.
 #let all-of-type(t, ..values) = values.pos().all(v => std.type(v) == t)
 
@@ -258,19 +258,19 @@
 ///
 /// // Tests
 /// #utest(
-///   `not test.none-of-type("boolean", true, false)`,
+///   `not test.none-of-type(bool, true, false)`,
 ///   `not test.none-of-type("none", none)`,
-///   `test.none-of-type("boolean", 1pt, 1cm, 1in)`,
-///   `test.none-of-type("boolean", 1, 1mm, red)`,
+///   `test.none-of-type(bool, 1pt, 1cm, 1in)`,
+///   `test.none-of-type(bool, 1, 1mm, red)`,
 /// )
 ///
-/// - t (string): type to test against
+/// - t (str): type to test against
 /// - ..values (any): Values to test.
 #let none-of-type(t, ..values) = values.pos().all(v => std.type(v) != t)
 
 /// Tests if #arg[value] is a content element with `value.func() == func`.
 ///
-/// If `func` is a string, #arg[value] will be compared to `repr(value.func())`, instead.
+/// If `func` is a str, #arg[value] will be compared to `repr(value.func())`, instead.
 /// Both of these effectively do the same:
 /// ```js
 /// #test.is-elem(raw, some_content)
@@ -289,7 +289,7 @@
 /// - func (function): element function
 /// - value (any): value to test
 #let is-elem(func, value) = if std.type(value) == content {
-  if std.type(func) == "string" {
+  if std.type(func) == str {
     return repr(value.func()) == func
   } else {
     return value.func() == func

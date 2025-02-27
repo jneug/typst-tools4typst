@@ -18,9 +18,9 @@
 ///   `math.minmax(-5cm, -4cm) == (-5cm, -4cm)`,
 /// )
 ///
-/// - a (integer, float, length, relative length, fraction, ratio): First value.
-/// - b (integer, float, length, relative length, fraction, ratio): Second value.
-/// -> integer, float, length, relative length, fraction, ratio
+/// - a (int, float, length, relative length, fraction, ratio): First value.
+/// - b (int, float, length, relative length, fraction, ratio): Second value.
+/// -> int, float, length, relative length, fraction, ratio
 #let minmax(a, b) = (
   calc.min(a, b),
   calc.max(a, b),
@@ -28,7 +28,7 @@
 
 /// Clamps a value between `min` and `max`.
 ///
-/// In contrast to @@clamp() this function works for other values
+/// In contrast to #typ.clamp this function works for other values
 /// than numbers, as long as they are comparable.
 /// #codesnippet[```typ
 /// text-size = math.clamp(0.8em, 1.2em, text-size)
@@ -43,9 +43,9 @@
 ///   `math.clamp(-5in, 8in, 4in) == 4in`,
 /// )
 ///
-/// - min (integer, float, length, relative length, fraction, ratio): Minimum for `value`.
-/// - min (integer, float, length, relative length, fraction, ratio): Maximum for `value`.
-/// - value (integer, float, length, relative length, fraction, ratio): The value to clamp.
+/// - min (int, float, length, relative length, fraction, ratio): Minimum for `value`.
+/// - min (int, float, length, relative length, fraction, ratio): Maximum for `value`.
+/// - value (int, float, length, relative length, fraction, ratio): The value to clamp.
 /// -> any
 #let clamp(min, max, value) = {
   assert.eq(type(min), type(max), message: "Can't clamp values of different types!")
@@ -63,7 +63,7 @@
 ///
 /// `t` should be a value between 0 and 1, but the interpolation works
 /// with other values, too. To constrain the result into the given
-/// interval, use @@clamp():
+/// interval, use cmd:math.clamp
 /// #codesnippet[```typ
 /// #let width = math.lerp(0%, 100%, x)
 /// #let width = math.lerp(0%, 100%, math.clamp(0, 1, x))
@@ -78,10 +78,10 @@
 ///   `math.lerp(56.7mm, 423.8mm, 0) == 56.7mm`,
 /// )
 ///
-/// - min (integer, float, length, relative length, fraction, ratio): Minimum for `value`.
-/// - max (integer, float, length, relative length, fraction, ratio): Maximum for `value`.
+/// - min (int, float, length, relative length, fraction, ratio): Minimum for `value`.
+/// - max (int, float, length, relative length, fraction, ratio): Maximum for `value`.
 /// - t (float): Interpolation parameter .
-/// -> integer, float, length, relative length, fraction, ratio
+/// -> int, float, length, relative length, fraction, ratio
 #let lerp(min, max, t) = {
   assert.eq(type(min), type(max), message: "Can't lerp values of different types!")
   return (1 - t) * min + t * max
@@ -104,12 +104,12 @@
 ///   `math.map(0%, 100%, 5.6em, 0.8em, 0%) == 5.6em`,
 /// )
 ///
-/// - min (integer, float, length, relative length, fraction, ratio): Minimum of the initial interval.
-/// - min (integer, float, length, relative length, fraction, ratio): Maximum of the initial interval.
-/// - range-min (integer, float, length, relative length, fraction, ratio): Minimum of the target interval.
-/// - range-min (integer, float, length, relative length, fraction, ratio): Maximum of the target interval.
-/// - value (integer, float, length, relative length, fraction, ratio): The value to map.
-/// -> integer, float, length, relative length, fraction, ratio
+/// - min (int, float, length, relative length, fraction, ratio): Minimum of the initial interval.
+/// - min (int, float, length, relative length, fraction, ratio): Maximum of the initial interval.
+/// - range-min (int, float, length, relative length, fraction, ratio): Minimum of the target interval.
+/// - range-min (int, float, length, relative length, fraction, ratio): Maximum of the target interval.
+/// - value (int, float, length, relative length, fraction, ratio): The value to map.
+/// -> int, float, length, relative length, fraction, ratio
 #let map(min, max, range-min, range-max, value) = {
   assert.eq(type(min), type(max), message: "Can't map values from ranges of different types!")
   assert.eq(type(range-min), type(range-max), message: "Can't map values to ranges of different types!")

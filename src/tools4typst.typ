@@ -20,7 +20,7 @@
 /// )
 ///
 /// - ..values (any): Values to test.
-/// -> boolean
+/// -> bool
 #let is-none(..values) = {
   return none in values.pos()
 }
@@ -36,7 +36,7 @@
 /// )
 ///
 /// - ..values (any): Values to test.
-/// -> boolean
+/// -> bool
 #let not-none(..values) = {
   return none not in values.pos()
 }
@@ -52,7 +52,7 @@
 /// )
 ///
 /// - ..values (any): Values to test.
-/// -> boolean
+/// -> bool
 #let is-auto(..values) = {
   return auto in values.pos()
 }
@@ -68,7 +68,7 @@
 /// )
 ///
 /// - ..values (any): Values to test.
-/// -> boolean
+/// -> bool
 #let not-auto(..values) = {
   return auto not in values.pos()
 }
@@ -76,7 +76,7 @@
 /// Tests, if #arg[value] is _empty_.
 ///
 /// A value is considered _empty_ if it is an empty array,
-/// dictionary or string, or the value #value(none).
+/// dictionary or str, or the value #value(none).
 ///
 /// // Tests
 /// #utest(
@@ -90,12 +90,12 @@
 /// )
 ///
 /// - value (any): value to test
-/// -> boolean
+/// -> bool
 #let is-empty = test.is-empty
 
 /// Tests, if #arg[value] is not _empty_.
 ///
-/// See @@empty() for an explanation what _empty_ means.
+/// See cmd:test.is-empty for an explanation what _empty_ means.
 ///
 /// // Tests
 /// #utest(
@@ -109,7 +109,7 @@
 /// )
 ///
 /// - value (any): value to test
-/// -> boolean
+/// -> bool
 #let not-empty(value) = not is-empty(value)
 
 /// Tests if #arg[value] is of type dictionary.
@@ -207,7 +207,7 @@
 /// - value (any): value to test
 #let is-loc(value) = std.type(value) == location
 
-/// Tests if #arg[value] is of type boolean.
+/// Tests if #arg[value] is of type bool.
 ///
 /// // Tests
 /// #utest(
@@ -220,14 +220,14 @@
 /// - value (any): value to test
 #let is-bool(value) = std.type(value) == bool
 #let is-str(value) = std.type(value) == str
-#let is-int(value) = std.type(value) == "integer"
-#let is-float(value) = std.type(value) == "float"
-#let is-num(value) = std.type(value) in ("float", "integer")
-#let is-frac(value) = std.type(value) == "fraction"
-#let is-length(value) = std.type(value) == "length"
-#let is-rlength(value) = std.type(value) == "relative length"
-#let is-ratio(value) = std.type(value) == "ratio"
-#let is-angle(value) = std.type(value) == "angle"
+#let is-int(value) = std.type(value) == int
+#let is-float(value) = std.type(value) == float
+#let is-num(value) = std.type(value) in (float, int)
+#let is-frac(value) = std.type(value) == fraction
+#let is-length(value) = std.type(value) == length
+#let is-relative(value) = std.type(value) == relative
+#let is-ratio(value) = std.type(value) == ratio
+#let is-angle(value) = std.type(value) == angle
 #let is-align(value) = std.type(value) == alignment
 #let is-align2d(value) = std.type(value) == alignment
-#let is-func(value) = std.type(value) == "function"
+#let is-func(value) = std.type(value) == function

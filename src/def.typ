@@ -18,7 +18,7 @@
 ///   `def.if-true(1 == 1, 2, def:3, do: (n) => n+1) == 3`,
 /// )
 ///
-/// - test (boolean): A test result.
+/// - test (bool): A test result.
 /// - value (any): The value to test.
 /// - def (any): The default value.
 /// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
@@ -43,7 +43,7 @@
 ///   `def.if-false(1 == 2, 2, def:3, do: (n) => n+1) == 3`,
 /// )
 ///
-/// - test (boolean): A test result.
+/// - test (bool): A test result.
 /// - value (any): The value to test.
 /// - def (any): The default value.
 /// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
@@ -175,7 +175,7 @@
 /// If #arg[value] is not empty and #arg[do] is set to a function,
 /// #arg[value] is passed to #arg[do], before being returned.
 ///
-/// Depends on `t4t.is-empty()`. See there for an explanation
+/// Depends on `test.is-empty()`. See there for an explanation
 /// of _empty_.
 ///
 /// // Tests
@@ -241,15 +241,19 @@
 ///   `def.as-arr(("a",), ("b",), "c") == ("a", "b", "c")`,
 ///   `def.as-arr(("a",), (("b",), "c")) == ("a", ("b", ), "c")`,
 /// )
-#let as-arr(..values) = values.pos().fold(
-  (),
-  (arr, v) => {
-    if type(v) == "array" {
-      arr += v
-    } else {
-      arr.push(v)
-    }
-    arr
-  },
+#let as-arr(..values) = (
+  values
+    .pos()
+    .fold(
+      (),
+      (arr, v) => {
+        if type(v) == array {
+          arr += v
+        } else {
+          arr.push(v)
+        }
+        arr
+      },
+    )
 )
 

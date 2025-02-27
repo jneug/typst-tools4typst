@@ -1,8 +1,8 @@
 
-#import "@preview/mantys:0.1.4": *
-#import "@preview/tidy:0.3.0"
+// #import "@preview/mantys:1.0.0": *
+#import "@local/mantys:1.0.1": *
 
-#import "tools4typst.typ"
+#import "../src/tools4typst.typ"
 
 #let module-scope = (
   t4t: tools4typst,
@@ -15,13 +15,15 @@
 
 #let show-tests(display: false, ..tests) = {
   if display {
-    let code = tests.pos().fold(
-      "",
-      (c, r) => {
-        c += r.text + "\n"
-        c
-      },
-    )
+    let code = tests
+      .pos()
+      .fold(
+        "",
+        (c, r) => {
+          c += r.text + "\n"
+          c
+        },
+      )
     scale(x: 75%, y: 75%, origin: left)[
       *Tests*\
       #v(-1.25em)
@@ -45,18 +47,17 @@
   show-tests(..tests)
 }
 
-#let show-module(name) = module-commands(name)[
-  #tidy-module(
-    read(name + ".typ"),
-    name: name,
-    scope: module-scope + (utest: test),
-    // tidy: tidy,
-  )
-]
+#let show-module(name) = tidy-module(
+  name,
+  read("../src/" + name + ".typ"),
+  scope: module-scope + (utest: test),
+  module: name,
+  legacy-parser: true,
+)
 
 
-#show: mantys.with(
-  ..toml("typst.toml"),
+#show: mantys(
+  ..toml("../typst.toml"),
 
   subtitle: [Tools For Typst],
   date: datetime.today(),
@@ -67,6 +68,8 @@
 
     Hopefully, this collection will grow over time with *Typst* to provide solutions for common problems.
   ],
+
+  theme: themes.cnltx,
 )
 
 = Usage
@@ -167,7 +170,7 @@ Almost all functions support an optional `do` argument, to be set to a function 
   #import "@preview/t4t:0.2.0": assert
   ```]
 
-This submodule overloads the default #doc("foundations/assert") function and provides more asserts to quickly check if given values are valid. All functions use `assert` in the background.
+This submodule overloads the default #typ.assert function and provides more asserts to quickly check if given values are valid. All functions use `assert` in the background.
 
 Since a module in Typst is not callable, the `assert` function is now available as #cmd(module:"assert")[that]. #cmd(module:"assert")[eq] and #cmd(module:"assert")[ne] work as expected.
 

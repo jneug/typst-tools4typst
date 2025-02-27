@@ -18,7 +18,7 @@
 ///   `def.if-true(1 == 1, 2, 3, do: (n) => n+1) == 2`,
 /// )
 ///
-/// - test (boolean): A test result.
+/// - test (bool): A test result.
 /// - default (any): A default value.
 /// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
 /// - value (any): The value to test.
@@ -43,7 +43,7 @@
 ///   `def.if-false(1 == 2, 2, 3, do: (n) => n+1) == 2`,
 /// )
 ///
-/// - test (boolean): A test result.
+/// - test (bool): A test result.
 /// - default (any): A default value.
 /// - do (function): Post-processor for #arg[value]: #lambda("any", ret:"any")
 /// - value (any): The value to test.
@@ -241,15 +241,19 @@
 ///   `def.as-arr(("a",), ("b",), "c") == ("a", "b", "c")`,
 ///   `def.as-arr(("a",), (("b",), "c")) == ("a", ("b", ), "c")`,
 /// )
-#let as-arr(..values) = values.pos().fold(
-  (),
-  (arr, v) => {
-    if type(v) == "array" {
-      arr += v
-    } else {
-      arr.push(v)
-    }
-    arr
-  },
+#let as-arr(..values) = (
+  values
+    .pos()
+    .fold(
+      (),
+      (arr, v) => {
+        if type(v) == array {
+          arr += v
+        } else {
+          arr.push(v)
+        }
+        arr
+      },
+    )
 )
 

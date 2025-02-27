@@ -14,17 +14,17 @@
   }
 
   let lazy = user-message
-  if type(lazy) != "function" {
+  if type(lazy) != function {
     lazy = (..) => str(lazy)
   }
   return lazy(..args)
 }
 
 /// Asserts that #arg[test] is #value(true).
-/// See #doc("foundations/assert").
+/// See #typ.assert.
 ///
-/// - test (boolean): Assertion to test.
-/// - message (string,function): A message to show if the assertion fails.
+/// - test (bool): Assertion to test.
+/// - message (str,function): A message to show if the assertion fails.
 #let that(test, message: "Test returned false, should be true.") = assert(
   test,
   message: lazy-message(message, test),
@@ -32,19 +32,18 @@
 
 /// Asserts that #arg[test] is #value(false).
 ///
-/// - test (boolean): Assertion to test.
-/// - message (string, function): A message to show if the assertion fails.
+/// - test (bool): Assertion to test.
+/// - message (str, function): A message to show if the assertion fails.
 #let that-not(test, message: "Test returned true, should be false.") = assert(
   not test,
   message: lazy-message(message, test),
 )
 
 /// Asserts that two values are equal.
-/// See #doc("foundations/assert", name:"assert.eq", anchor:"assert-eq").
 ///
 /// - a (any): First value.
 /// - b (any): Second value.
-/// - message (string, function): A message to show if the assertion fails.
+/// - message (str, function): A message to show if the assertion fails.
 #let eq(a, b, message: (a, b) => "Value " + repr(a) + " was not equal to " + repr(b)) = assert.eq(
   a,
   b,
@@ -52,19 +51,18 @@
 )
 
 /// Asserts that two values are not equal.
-/// See #doc("foundations/assert", name:"assert.ne", anchor:"assert-ne").
 ///
 /// - a (any): First value.
 /// - b (any): Second value.
-/// - message (string, function): A message to show if the assertion fails.
+/// - message (str, function): A message to show if the assertion fails.
 #let ne(a, b, message: (a, b) => "Value " + repr(a) + " was equal to " + repr(b)) = assert.ne(
   a,
   b,
   message: lazy-message(message, a, b),
 )
 
-/// Alias for @@ne()
-#let neq = assert.ne
+/// Alias for cmd:assert.ne
+#let neq = ne
 
 /// Asserts that not one of #arg[values] is #value(none).
 /// Positional and named arguments are tested if provided.
@@ -75,7 +73,7 @@
 /// #assert.not-none(..range(4))
 ///
 /// - ..values (any): The values to test.
-/// - message (string, function): A message to show if the assertion fails.
+/// - message (str, function): A message to show if the assertion fails.
 #let not-none(
   ..values,
   message: (..a) => "Values should not be none. Got " + repr(a),
@@ -93,7 +91,7 @@
 ///
 /// - ..values (any): A set of values to compare #arg[value] to.
 /// - value (any): Value to compare.
-/// - message (string, function): A message to show if the assertion fails.
+/// - message (str, function): A message to show if the assertion fails.
 #let any(
   ..values,
   value,
@@ -110,7 +108,7 @@
 ///
 /// - ..values (any): A set of values to compare `value` to.
 /// - value (any): Value to compare.
-/// - message (string, function): A message to show if the assertion fails.
+/// - message (str, function): A message to show if the assertion fails.
 #let not-any(
   ..values,
   value,
@@ -123,21 +121,25 @@
 /// Assert that #arg[value]s type is any one of #arg[types].
 ///
 /// // Tests
-/// #assert.any-type("float", "integer", 3)
-/// #assert.any-type("float", "integer", 3.3)
-/// #assert.any-type("string", "boolean", true)
-/// #assert.any-type("string", "boolean", "foo")
+/// #assert.any-type(float, int, 3)
+/// #assert.any-type(float, int, 3.3)
+/// #assert.any-type(str, bool, true)
+/// #assert.any-type(str, bool, "foo")
 ///
-/// - ..types (string): A set of types to compare the type of `value` to.
+/// - ..types (str): A set of types to compare the type of `value` to.
 /// - value (any): Value to compare.
-/// - message (string, function): A message to show if the assertion fails.
+/// - message (str, function): A message to show if the assertion fails.
 #let any-type(
   ..types,
   value,
   message: (..a) => (
-    "Value should have any type of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first()) + " (" + type(
-      a.pos().first(),
-    ) + ")"
+    "Value should have any type of "
+      + repr(a.pos().slice(1))
+      + ". Got "
+      + repr(a.pos().first())
+      + " ("
+      + type(a.pos().first())
+      + ")"
   ),
 ) = assert(
   type(value) in types.pos(),
@@ -147,19 +149,23 @@
 /// Assert that #arg[value]s type is not any one of #arg[types].
 ///
 /// // Tests
-/// #assert.not-any-type("float", "integer", "foo")
-/// #assert.not-any-type("string", "boolean", 1%)
+/// #assert.not-any-type(float, int, "foo")
+/// #assert.not-any-type(str, bool, 1%)
 ///
-/// - ..types (string): A set of types to compare the type of `value` to.
+/// - ..types (str): A set of types to compare the type of `value` to.
 /// - value (any): Value to compare.
-/// - message (string, function): A message to show if the assertion fails.
+/// - message (str, function): A message to show if the assertion fails.
 #let not-any-type(
   ..types,
   value,
   message: (..a) => (
-    "Value should not have any type of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first()) + " (" + type(
-      a.pos().first(),
-    ) + ")"
+    "Value should not have any type of "
+      + repr(a.pos().slice(1))
+      + ". Got "
+      + repr(a.pos().first())
+      + " ("
+      + type(a.pos().first())
+      + ")"
   ),
 ) = assert(
   type(value) not in types.pos(),
@@ -169,19 +175,22 @@
 /// Assert that the types of all #arg[values] are equal to #arg[t].
 ///
 /// // Tests
-/// #assert.all-of-type("string", "a", "b")
-/// #assert.all-of-type("length", 1pt, 3em, 4mm)
+/// #assert.all-of-type(str, "a", "b")
+/// #assert.all-of-type(length, 1pt, 3em, 4mm)
 ///
-/// - t (string): The type to test against.
+/// - t (str): The type to test against.
 /// - ..values (any): Values to test.
-/// - message (string, function): A message to show if the assertion fails.
+/// - message (str, function): A message to show if the assertion fails.
 #let all-of-type(
   t,
   ..values,
   message: (..a) => (
-    "Values need to be of type " + repr(a.pos().first()) + ". Got " + repr(a.pos().slice(1)) + " / " + repr(
-      a.pos().slice(1).map(type),
-    )
+    "Values need to be of type "
+      + repr(a.pos().first())
+      + ". Got "
+      + repr(a.pos().slice(1))
+      + " / "
+      + repr(a.pos().slice(1).map(type))
   ),
 ) = assert(
   values.pos().all(v => std.type(v) == t),
@@ -191,19 +200,22 @@
 /// Assert that none of the #arg[values] are of type #arg[t].
 ///
 /// // Tests
-/// #assert.none-of-type("integer", "a", "b", false, 1.2)
-/// #assert.none-of-type("string", 1pt, 3%, true)
+/// #assert.none-of-type(int, "a", "b", false, 1.2)
+/// #assert.none-of-type(str, 1pt, 3%, true)
 ///
-/// - t (string): The type to test against.
+/// - t (str): The type to test against.
 /// - ..values (any): Values to test.
-/// - message (string, function): A message to show if the assertion fails.
+/// - message (str, function): A message to show if the assertion fails.
 #let none-of-type(
   t,
   ..values,
   message: (..a) => (
-    "Values may not be of type " + repr(a.pos().first()) + ". Got " + repr(a.pos().slice(1)) + " / " + repr(
-      a.pos().slice(1).map(type),
-    )
+    "Values may not be of type "
+      + repr(a.pos().first())
+      + ". Got "
+      + repr(a.pos().slice(1))
+      + " / "
+      + repr(a.pos().slice(1).map(type))
   ),
 ) = assert(
   values.pos().all(v => std.type(v) != t),
@@ -216,12 +228,12 @@
 /// of _empty_.
 ///
 /// // Tests
-/// #assert.not-empty("string")
+/// #assert.not-empty(str)
 /// #assert.not-empty((1,))
 /// #assert.not-empty((a:1))
 ///
 /// - value (any): The value to test.
-/// - message (string, function): A message to show if the assertion fails.
+/// - message (str, function): A message to show if the assertion fails.
 #let not-empty(
   value,
   message: (v, ..a) => {
@@ -253,9 +265,9 @@
 /// #func(..range(4))
 /// #func(n:4, ..range(4))
 ///
-/// - n (integer, none): The mandatory number of positional arguments or #value(none).
+/// - n (int, none): The mandatory number of positional arguments or #value(none).
 /// - args (arguments): The arguments to test.
-/// - message (string,function): A message to show if the assertion fails.
+/// - message (str,function): A message to show if the assertion fails.
 #let has-pos(
   n: none,
   args,
@@ -289,7 +301,7 @@
 /// #func(a:1, b:2)
 ///
 /// - args (arguments): The arguments to test.
-/// - message (string,function): A message to show if the assertion fails.
+/// - message (str,function): A message to show if the assertion fails.
 #let no-pos(args, message: (..a) => "Unexpected positional arguments: " + repr(a)) = {
   assert.eq(args.pos(), (), message: lazy-message(message, ..args.pos()))
 }
@@ -309,9 +321,9 @@
 /// #func(a:1, b:2, c:3, names:("a", "b"))
 ///
 /// - names (array, none): An array with required keys or #value(none).
-/// - strict (boolean): If #value(true), only keys in #arg[names] are allowed.
+/// - strict (bool): If #value(true), only keys in #arg[names] are allowed.
 /// - args (arguments): The arguments to test.
-/// - message (string, function): A message to show if the assertion fails.
+/// - message (str, function): A message to show if the assertion fails.
 #let has-named(
   names: none,
   strict: false,
@@ -331,7 +343,7 @@
   if names == none {
     assert.ne(args.named(), (:), message: lazy-message(message, names: (), ..args))
   } else {
-    if type(names) != "array" {
+    if type(names) != array {
       names = (names,)
     }
     let keys = args.named().keys()
@@ -348,7 +360,7 @@
 /// #func(..range(4))
 ///
 /// - args (arguments): The arguments to test.
-/// - message (string,function): A message to show if the assertion fails.
+/// - message (str,function): A message to show if the assertion fails.
 #let no-named(args, message: (..a) => "Unexpected named arguments: " + repr(a.named())) = {
   assert.eq(args.named(), (:), message: lazy-message(message, ..args))
 }
@@ -356,7 +368,7 @@
 /// Creates a new assertion from `test`.
 ///
 /// The new assertion will take any number of  `values` and pass them to `test`.
-/// `test` should return a `boolean`.
+/// `test` should return a `bool`.
 /// #sourcecode[```typ
 /// #let assert-numeric = assert.new(t4t.is-num)
 ///
