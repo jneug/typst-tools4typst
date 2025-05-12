@@ -35,6 +35,9 @@ link target="@local":
 
 link-preview: (link "@preview")
 
+bump VERSION:
+  tbump {{VERSION}}
+
 [private]
 [working-directory(x'$TYPST_PKG_FORK')]
 prepare-fork:
