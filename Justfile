@@ -1,4 +1,6 @@
 root := justfile_directory()
+package-fork := x'$TYPST_PKG_FORK'
+
 export TYPST_ROOT := root
 
 [private]
@@ -32,6 +34,16 @@ link target="@local":
     ./scripts/link "{{ target }}"
 
 link-preview: (link "@preview")
+
+[private]
+[working-directory(x'$TYPST_PKG_FORK')]
+prepare-fork:
+    git checkout main
+    git pull typst main
+    git push origin --force
+
+# prepare: (package package-fork)
+prepare: prepare-fork (package package-fork)
 
 [private]
 remove target:
