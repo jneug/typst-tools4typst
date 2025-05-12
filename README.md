@@ -1,4 +1,4 @@
-# Tools for Typst (v0.4.2)
+# Tools for Typst (v0.4.3)
 
 > A utility package for typst package authors.
 
@@ -13,7 +13,7 @@ Hopefully, this collection will grow over time with *Typst* to provide solutions
 Either import the package from the Typst preview repository:
 
 ```typst
-#import "@preview/t4t:0.4.2": *
+#import "@preview/t4t:0.4.3": *
 ```
 
 If only a few functions from `t4t` are needed, simply copy the necessary code to the beginning of the document.
@@ -40,11 +40,11 @@ Any or all modules can be imported the usual way:
 
 ```typst
 // Import as "t4t"
-#import "@preview/t4t:0.4.2"
+#import "@preview/t4t:0.4.3"
 // Import all modules
-#import "@preview/t4t:0.4.2": *
+#import "@preview/t4t:0.4.3": *
 // Import specific modules
-#import "@preview/t4t:0.4.2": is, def
+#import "@preview/t4t:0.4.3": is, def
 ```
 
 In general, the main value is passed last to the utility functions. `#def.if-none()`, for example, takes the default value first and the value to test second. This is somewhat counterintuitive at first, but allows the use of `.with()` to generate derivative functions:
@@ -56,8 +56,8 @@ In general, the main value is passed last to the utility functions. `#def.if-non
 ### Test functions
 
 ```typst
-#import "@preview/t4t:0.4.2": *
-#import "@preview/t4t:0.4.2": test
+#import "@preview/t4t:0.4.3": *
+#import "@preview/t4t:0.4.3": test
 ```
 
 These functions provide shortcuts to common tests like `#is-eq()`. Some of these are not shorter as writing pure Typst code (e.g. `a == b`), but can easily be used in `.any()` or `.find()` calls:
@@ -78,7 +78,7 @@ let pos-bar = args.pos().position(test.is-eq.with("|"))
 Some of the more frequently used tests are available as top-level imports from `t4t`. The rest can be found in the `test` module.
 
 ```typst
-#import "@preview/t4t:0.4.2"
+#import "@preview/t4t:0.4.3"
 
 #if t4t.is-none(none) [
 	it is none
@@ -147,7 +147,7 @@ The following tests are available in the base `t4t` module:
 ### Default values
 
 ```typst
-#import "@preview/t4t:0.4.2": def
+#import "@preview/t4t:0.4.3": def
 ```
 
 These functions perform a test to decide if a given `value` is _invalid_. If the test _passes_, the default `def` is returned, `value` otherwise.
@@ -168,7 +168,7 @@ Almost all functions support an optional `do` argument to be set to a function o
 
 Note that previous versions of these functions got the default passed in as the first positional argument. Since Version 0.4.0 the default is now a named argument in favor of more readable code. To restore the old behaviour, you can import the `def.compat` module as `def`:
 ```typst
-#import "@preview/t4t:0.4.2": def
+#import "@preview/t4t:0.4.3": def
 #import def.compat as def
 ```
 
@@ -184,7 +184,7 @@ Note that previous versions of these functions got the default passed in as the 
 ### Assertions
 
 ```typst
-#import "@preview/t4t:0.4.2": assert
+#import "@preview/t4t:0.4.3": assert
 ```
 
 This submodule overloads the default `assert` function and provides more asserts to quickly check if given values are valid. All functions use `assert` in the background.
@@ -217,7 +217,7 @@ All assert functions take an optional argument `message` to set the error messag
 ## Element helpers
 
 ```typst
-#import "@preview/t4t:0.4.2": get
+#import "@preview/t4t:0.4.3": get
 ```
 
 This submodule is a collection of functions, that mostly deal with content elements and _get_ some information from them. Though some handle other types like dictionaries.
@@ -286,7 +286,7 @@ This submodule is a collection of functions, that mostly deal with content eleme
 ## Math functions
 
 ```typst
-#import "@preview/t4t:0.4.2": math
+#import "@preview/t4t:0.4.3": math
 ```
 
 Some functions to complement the native `calc` module.
