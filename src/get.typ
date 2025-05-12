@@ -65,7 +65,7 @@
 /// - ..dicts (dictionary): Dictionaries to merge.
 /// -> dictionary
 #let dict-merge(..dicts) = {
-  if all-of-type("dictionary", ..dicts.pos()) {
+  if all-of-type(dictionary, ..dicts.pos()) {
     let c = (:)
     for dict in dicts.pos() {
       for (k, v) in dict {

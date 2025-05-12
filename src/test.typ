@@ -245,8 +245,8 @@
 /// // Tests
 /// #utest(
 ///   `test.all-of-type(bool, true, false)`,
-///   `test.all-of-type("none", none)`,
-///   `test.all-of-type("length", 1pt, 1cm, 1in)`,
+///   `test.all-of-type(none, none)`,
+///   `test.all-of-type(length, 1pt, 1cm, 1in)`,
 ///   `not test.all-of-type(bool, true, false, 1)`,
 /// )
 ///
@@ -259,7 +259,7 @@
 /// // Tests
 /// #utest(
 ///   `not test.none-of-type(bool, true, false)`,
-///   `not test.none-of-type("none", none)`,
+///   `not test.none-of-type(none, none)`,
 ///   `test.none-of-type(bool, 1pt, 1cm, 1in)`,
 ///   `test.none-of-type(bool, 1, 1mm, red)`,
 /// )

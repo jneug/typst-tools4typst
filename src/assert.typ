@@ -5,7 +5,7 @@
 //  Asserts
 // =================================
 
-#let lazy-message(
+#let _lazy-message(
   user-message,
   ..args,
 ) = {
@@ -27,7 +27,7 @@
 /// - message (str,function): A message to show if the assertion fails.
 #let that(test, message: "Test returned false, should be true.") = assert(
   test,
-  message: lazy-message(message, test),
+  message: _lazy-message(message, test),
 )
 
 /// Asserts that #arg[test] is #value(false).
@@ -36,7 +36,7 @@
 /// - message (str, function): A message to show if the assertion fails.
 #let that-not(test, message: "Test returned true, should be false.") = assert(
   not test,
-  message: lazy-message(message, test),
+  message: _lazy-message(message, test),
 )
 
 /// Asserts that two values are equal.
@@ -47,7 +47,7 @@
 #let eq(a, b, message: (a, b) => "Value " + repr(a) + " was not equal to " + repr(b)) = assert.eq(
   a,
   b,
-  message: lazy-message(message, a, b),
+  message: _lazy-message(message, a, b),
 )
 
 /// Asserts that two values are not equal.
@@ -58,7 +58,7 @@
 #let ne(a, b, message: (a, b) => "Value " + repr(a) + " was equal to " + repr(b)) = assert.ne(
   a,
   b,
-  message: lazy-message(message, a, b),
+  message: _lazy-message(message, a, b),
 )
 
 /// Alias for cmd:assert.ne
@@ -80,7 +80,7 @@
 ) = {
   assert(
     values.pos().all(v => v != none) and values.named().values().all(v => v != none),
-    message: lazy-message(message, ..values),
+    message: _lazy-message(message, ..values),
   )
 }
 
@@ -98,7 +98,7 @@
   message: (..a) => "Value should be one of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first()),
 ) = assert(
   value in values.pos(),
-  message: lazy-message(message, value, ..values),
+  message: _lazy-message(message, value, ..values),
 )
 
 /// Assert that #arg[value] is not any one of #arg[values].
@@ -115,7 +115,7 @@
   message: (..a) => "Value should not be one of " + repr(a.pos().slice(1)) + ". Got " + repr(a.pos().first()),
 ) = assert(
   value not in values.pos(),
-  message: lazy-message(message, value, ..values),
+  message: _lazy-message(message, value, ..values),
 )
 
 /// Assert that #arg[value]s type is any one of #arg[types].
@@ -138,12 +138,12 @@
       + ". Got "
       + repr(a.pos().first())
       + " ("
-      + type(a.pos().first())
+      + str(type(a.pos().first()))
       + ")"
   ),
 ) = assert(
   type(value) in types.pos(),
-  message: lazy-message(message, value, ..types),
+  message: _lazy-message(message, value, ..types),
 )
 
 /// Assert that #arg[value]s type is not any one of #arg[types].
@@ -164,12 +164,12 @@
       + ". Got "
       + repr(a.pos().first())
       + " ("
-      + type(a.pos().first())
+      + str(type(a.pos().first()))
       + ")"
   ),
 ) = assert(
   type(value) not in types.pos(),
-  message: lazy-message(message, value, ..types),
+  message: _lazy-message(message, value, ..types),
 )
 
 /// Assert that the types of all #arg[values] are equal to #arg[t].
@@ -194,7 +194,7 @@
   ),
 ) = assert(
   values.pos().all(v => std.type(v) == t),
-  message: lazy-message(message, t, ..values),
+  message: _lazy-message(message, t, ..values),
 )
 
 /// Assert that none of the #arg[values] are of type #arg[t].
@@ -219,7 +219,7 @@
   ),
 ) = assert(
   values.pos().all(v => std.type(v) != t),
-  message: lazy-message(message, t, ..values),
+  message: _lazy-message(message, t, ..values),
 )
 
 /// Assert that #arg[value] is not _empty_.
@@ -242,7 +242,7 @@
 ) = {
   assert(
     not test.is-empty(value),
-    message: lazy-message(message, value),
+    message: _lazy-message(message, value),
   )
 }
 
@@ -280,9 +280,9 @@
   },
 ) = {
   if n == none {
-    assert.ne(args.pos(), (), message: lazy-message(message, n: n, ..args))
+    assert.ne(args.pos(), (), message: _lazy-message(message, n: n, ..args))
   } else {
-    assert.eq(args.pos().len(), n, message: lazy-message(message, n: n, ..args))
+    assert.eq(args.pos().len(), n, message: _lazy-message(message, n: n, ..args))
   }
 }
 
@@ -303,7 +303,7 @@
 /// - args (arguments): The arguments to test.
 /// - message (str,function): A message to show if the assertion fails.
 #let no-pos(args, message: (..a) => "Unexpected positional arguments: " + repr(a)) = {
-  assert.eq(args.pos(), (), message: lazy-message(message, ..args.pos()))
+  assert.eq(args.pos(), (), message: _lazy-message(message, ..args.pos()))
 }
 
 /// Assert that #arg[args] has named arguments.
@@ -341,13 +341,13 @@
   },
 ) = {
   if names == none {
-    assert.ne(args.named(), (:), message: lazy-message(message, names: (), ..args))
+    assert.ne(args.named(), (:), message: _lazy-message(message, names: (), ..args))
   } else {
     if type(names) != array {
       names = (names,)
     }
     let keys = args.named().keys()
-    assert(names.all(v => v in keys), message: lazy-message(message, names: names, ..args))
+    assert(names.all(v => v in keys), message: _lazy-message(message, names: names, ..args))
   }
 }
 
@@ -362,7 +362,7 @@
 /// - args (arguments): The arguments to test.
 /// - message (str,function): A message to show if the assertion fails.
 #let no-named(args, message: (..a) => "Unexpected named arguments: " + repr(a.named())) = {
-  assert.eq(args.named(), (:), message: lazy-message(message, ..args))
+  assert.eq(args.named(), (:), message: _lazy-message(message, ..args))
 }
 
 /// Creates a new assertion from `test`.
@@ -388,4 +388,4 @@
 /// #diameter(2)
 ///
 /// - test (function): A test function: #lambda("..any", ret:true)
-#let new(test, message: "") = (..v, message: message) => assert(test(..v), message: lazy-message(message, ..v))
+#let new(test, message: "") = (..v, message: message) => assert(test(..v), message: _lazy-message(message, ..v))
