@@ -1,6 +1,5 @@
 
-// #import "@preview/mantys:1.0.0": *
-#import "@local/mantys:1.0.1": *
+#import "@preview/mantys:1.0.2": *
 
 #import "../src/tools4typst.typ"
 
@@ -135,7 +134,7 @@ There are two exceptions: #cmd[is-none] and #cmd[is-auto]. Since keywords can't 
 #import "@preview/t4t:0.1.4": is-none, is-auto
 ```
 
-The `t4t.is` submodule still has these tests, but under different names (#cmd(module:"test")[n] and #cmd(module:"test")[non] for #value(none) and #cmd(module:"test")[a] and #cmd(module:"test")[aut] for #value(auto)).
+The `t4t.is` submodule still has these tests, but under different names (#cmd(module: "test")[n] and #cmd(module: "test")[non] for #value(none) and #cmd(module: "test")[a] and #cmd(module: "test")[aut] for #value(auto)).
 
 === Command reference
 #show-module("test")
@@ -172,7 +171,7 @@ Almost all functions support an optional `do` argument, to be set to a function 
 
 This submodule overloads the default #typ.assert function and provides more asserts to quickly check if given values are valid. All functions use `assert` in the background.
 
-Since a module in Typst is not callable, the `assert` function is now available as #cmd(module:"assert")[that]. #cmd(module:"assert")[eq] and #cmd(module:"assert")[ne] work as expected.
+Since a module in Typst is not callable, the `assert` function is now available as #cmd(module: "assert")[that]. #cmd(module: "assert")[eq] and #cmd(module: "assert")[ne] work as expected.
 
 All assert functions take an optional argument #arg[message] to set the error message for a failed assertion.
 
