@@ -7,11 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- Compatibility with Typst 0.13.0.
-- Restrucuring of package layout for future development.
-
-### Changed
-- Renamed `is-rlength` to `is-relative`.
 
 <!-- 
 ### Version X.X.X
@@ -28,6 +23,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 -->
+
+## Version 0.4.3
+
+### Fixed
+- Warnings in `assert.all-of-type`, `test.all-of-type` and `get.dict-merge`.
+
+## Version 0.4.2
+
+- Compatibility with Typst 0.13.0.
+- Restructuring of package layout for future development.
+
+### Changed
+- Renamed `is-rlength` to `is-relative`.
 
 ## Version 0.4.1
 
