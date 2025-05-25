@@ -83,6 +83,81 @@
   }
 }
 
+/// Recursively overrides values of the passed in dictionary (eg. loaded from a default toml config)
+/// with values from the sys.inputs dictionnary once converted to a deep dictionnary.
+/// If a value from sys.inputs is to override a non-string value, then the value is parsed as toml.
+/// Eg. given command line arguments:
+/// #codesnippet[```sh
+/// typst compile --input a=2 --input b='["c", "d"]' --input c.flag=true --input c.ignored=value
+/// ```]
+/// #codesnippet[```typ
+/// #get.override-with-inputs(
+///     (a: 1,
+///      b: ("a", "b"),
+///      c: (flag: false, d:"d"))
+/// )
+///    // gives (a: 2, b: ("c", "d"), c:(flag: true, d:"d"))
+/// ```]
+///
+/// - dict (dictionary): Dictionary to merge with sys.inputs.
+/// -> dictionary
+#let override-with-inputs(dict) = {
+  let input-to-deep-dict(key, value) = {
+    key
+      .split(".")
+      .rev()
+      .fold(none, (acc, k) => {
+        (
+          (k): {
+            if acc == none {
+              value
+            } else {
+              acc
+            }
+          },
+        )
+      })
+  }
+  let deep-override(dict1, dict2) = {
+    for (k, v) in dict2 {
+      if (k in dict1) {
+        if type(v) == dictionary {
+          dict1.insert(k, deep-override(dict1.at(k), v))
+        } else {
+          let expectedType = type(dict1.at(k))
+          let value = if expectedType == str {
+            v
+          } else {
+            let tomlValue = toml(bytes("k = " + v)).k
+            if (type(tomlValue) != expectedType) {
+              panic(
+                "Error in input override for "
+                  + k
+                  + ". Expected value of type "
+                  + repr(expectedType)
+                  + " but got '"
+                  + repr(tomlValue)
+                  + "' of type "
+                  + repr(type(tomlValue))
+                  + ".",
+              )
+            } else {
+              tomlValue
+            }
+          }
+          dict1.insert(k, value)
+        }
+      }
+    }
+    dict1
+  }
+  for (key, value) in sys.inputs {
+    dict = deep-override(dict, input-to-deep-dict(key, value))
+  }
+  dict
+}
+
+
 /// Creats a function to extract values from an argument sink #arg[args].
 ///
 /// The resulting function takes any number of positional and
